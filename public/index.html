@@ -3,22 +3,30 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="A website to remember your favorite animes"
+		/>
+		<link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 		<link
 			rel="stylesheet"
 			href="/src/font-awesome/css/fontawesome.min.css"
 		/>
-		<link rel="stylesheet" href="/src/font-awesome/css/regular.min.css" />
-		<link rel="stylesheet" href="/src/font-awesome/css/solid.min.css" />
+
 		<link rel="stylesheet" href="/src/font-awesome/css/brands.min.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+		/>
 		<link rel="stylesheet" href="/src/css/base.css" />
 		<title>myMemorableAnimes</title>
 	</head>
 	<body>
 		<header>
-			<a href="#" class="logo">myMemorableAnimes</a>
+			<a href="#" class="logo">Animes</a>
 			<ul class="nav">
 				<li>
-					<a href="#"><i class="fa-solid fa-house"></i></a>
+					<a href="#">Home</a>
 				</li>
 				<li>
 					<a href="#">About</a>
@@ -34,15 +42,15 @@
 				</li>
 			</ul>
 			<div class="search">
-				<input type="text" placeholder="Search" />
-				<i class="fa-solid fa-magnifying-glass"></i>
+				<input type="text" placeholder="Search..." />
 			</div>
 		</header>
-		<div class="banner">
+		<main class="banner">
 			<div class="content active">
 				<img
-					src="/src/assets/images/roadToNinja-titlepng.png"
-					alt="Naruto Road to Ninja Movie Title"
+					src="/src/assets/images/narutoMovie-title.png"
+					alt="Naruto
+				Road to Ninja Movie Title"
 					class="movie-title"
 				/>
 				<h4>
@@ -72,33 +80,57 @@
 				<div class="carousel">
 					<div class="carousel-item">
 						<img
-							src="/src/assets/images/narutoMovie-title.png"
+							src="/src/assets/images/roadToNinja-titlepng.png"
+							alt="Naruto Road to Ninja Movie Title"
+						/>
+					</div>
+					<div class="carousel-item">
+						<img
+							src="/src/assets/images/roadToNinja-titlepng.png"
+							alt="Naruto Road to Ninja Movie Title"
+						/>
+					</div>
+					<div class="carousel-item">
+						<img
+							src="/src/assets/images/roadToNinja-titlepng.png"
+							alt="Naruto Road to Ninja Movie Title"
+						/>
+					</div>
+					<div class="carousel-item">
+						<img
+							src="/src/assets/images/roadToNinja-titlepng.png"
+							alt="Naruto Road to Ninja Movie Title"
+						/>
+					</div>
+					<div class="carousel-item">
+						<img
+							src="/src/assets/images/roadToNinja-titlepng.png"
 							alt="Naruto Road to Ninja Movie Title"
 						/>
 					</div>
 				</div>
-				<a href="" class="play" alt="Watch Trailer"
-					><i class="fa-solid fa-play"></i> Watch Trailer</a
-				>
-				<ul class="sci">
-					<li>
-						<a href="#" alt="Twitter"
-							><i class="fa-brands fa-twitter"></i
-						></a>
-					</li>
-					<li>
-						<a href="#" alt="Facebook"
-							><i class="fa-brands fa-facebook"></i
-						></a>
-					</li>
-					<li>
-						<a href="#" alt="Instagram"
-							><i class="fa-brands fa-instagram"></i
-						></a>
-					</li>
-				</ul>
 			</div>
-		</div>
+			<a href="" class="play" alt="Watch Trailer"
+				><i class="fa-solid fa-play"></i> Watch Trailer</a
+			>
+			<ul class="sci">
+				<li>
+					<a href="#" alt="Twitter"
+						><i class="fa-brands fa-twitter"></i
+					></a>
+				</li>
+				<li>
+					<a href="#" alt="Facebook"
+						><i class="fa-brands fa-facebook"></i
+					></a>
+				</li>
+				<li>
+					<a href="#" alt="Instagram"
+						><i class="fa-brands fa-instagram"></i
+					></a>
+				</li>
+			</ul>
+		</main>
 		<script
 			src="https://code.jquery.com/jquery-3.7.1.js"
 			integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
@@ -106,5 +138,10 @@
 		></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 		<script src="/src/js/main.js"></script>
+		<script>
+			$(document).ready(function () {
+				$(".carousel").carousel();
+			});
+		</script>
 	</body>
 </html>

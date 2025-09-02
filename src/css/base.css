@@ -73,7 +73,7 @@ header {
 	border: 1 solid rgba(255, 255, 255, 0.5);
 	outline: none;
 	border-radius: 4px;
-	padding: 0 10px 0 45px !important;
+	padding: 0 10px 0 175px !important;
 	backdrop-filter: blur(10px);
 }
 
@@ -200,4 +200,14 @@ header {
 
 .banner .content .button a:hover:nth-child(2) {
 	background: var(--primary);
+}
+
+.banner .carousel-box {
+	position: relative;
+	min-width: 950px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgba(0, 0, 0, 0.2);
+	box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
 }
