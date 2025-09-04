@@ -7,13 +7,12 @@
 			name="description"
 			content="A website to remember your favorite animes"
 		/>
-		<link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
 			rel="stylesheet"
-			href="/src/font-awesome/css/fontawesome.min.css"
 		/>
-
-		<link rel="stylesheet" href="/src/font-awesome/css/brands.min.css" />
+		<link preconnect href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
@@ -26,31 +25,30 @@
 			<a href="#" class="logo">Animes</a>
 			<ul class="nav">
 				<li>
-					<a href="#">Home</a>
+					<a href="#" aria-label="Home button">Home</a>
 				</li>
 				<li>
-					<a href="#">About</a>
+					<a href="#" aria-label="About button">About</a>
 				</li>
 				<li>
-					<a href="#">My List</a>
+					<a href="#" aria-label="My List button">My List</a>
 				</li>
 				<li>
-					<a href="#">Contact</a>
+					<a href="#" aria-label="Contact button">Contact</a>
 				</li>
 				<li>
-					<a href="#">Login</a>
+					<a href="#" aria-label="Login button">Login</a>
 				</li>
 			</ul>
 			<div class="search">
-				<input type="text" placeholder="Search..." />
+				<input type="text" placeholder="Search..." alt="Search input" />
 			</div>
 		</header>
 		<main class="banner">
 			<div class="content active">
 				<img
-					src="/src/assets/images/narutoMovie-title.png"
-					alt="Naruto
-				Road to Ninja Movie Title"
+					src="/src/ass	ets/images/narutoMovie-title.png"
+					alt="Naruto  Road to Ninja Movie Title"
 					class="movie-title"
 				/>
 				<h4>
@@ -68,64 +66,90 @@
 					chocam com seus ideais opostos...
 				</p>
 				<div class="button">
-					<a href="#" class="watch-now" alt="Watch Now"
-						><i class="fa-solid fa-play"></i>Watch Now</a
+					<a href="#" class="watch-now" aria-label="Watch Now"
+						><i class="material-icons">play_arrow</i>Watch Now</a
 					>
-					<a href="#" class="add-to-list" alt="Add to List"
-						><i class="fa-solid fa-plus"></i>Add to List</a
+					<a href="#" class="add-to-list" aria-label="Add to List"
+						><i class="material-icons">add</i>Add to List</a
 					>
 				</div>
 			</div>
 			<div class="carousel-box">
 				<div class="carousel">
 					<div class="carousel-item">
-						<img
-							src="/src/assets/images/roadToNinja-titlepng.png"
-							alt="Naruto Road to Ninja Movie Title"
-						/>
+						<a href="#carouselOne" aria-label="Anime">
+							<img
+								src="/src/assets/images/roadToNinja-titlepng.png"
+								alt="Naruto Road to Ninja Poster"
+								loading="lazy"
+								width="400"
+								height="200"
+							/>
+						</a>
 					</div>
 					<div class="carousel-item">
-						<img
-							src="/src/assets/images/roadToNinja-titlepng.png"
-							alt="Naruto Road to Ninja Movie Title"
-						/>
+						<a href="#carouselTwo" aria-label="anime">
+							<img
+								src="/src/assets/images/roadToNinja-titlepng.png"
+								alt="Naruto Road to Ninja Movie Title"
+								loading="lazy"
+								width="400"
+								height="200"
+							/>
+						</a>
+					</div>
+
+					<div class="carousel-item">
+						<a href="#carouselThree" aria-label="Anime">
+							<img
+								src="/src/assets/images/roadToNinja-titlepng.png"
+								alt="Naruto Road to Ninja Movie Title"
+								loading="lazy"
+								width="400"
+								height="200"
+							/>
+						</a>
 					</div>
 					<div class="carousel-item">
-						<img
-							src="/src/assets/images/roadToNinja-titlepng.png"
-							alt="Naruto Road to Ninja Movie Title"
-						/>
+						<a href="#carouselFour" aria-label="Anime">
+							<img
+								src="/src/assets/images/roadToNinja-titlepng.png"
+								alt="Naruto Road to Ninja Movie Title"
+								loading="lazy"
+								width="400"
+								height="200"
+							/>
+						</a>
 					</div>
 					<div class="carousel-item">
-						<img
-							src="/src/assets/images/roadToNinja-titlepng.png"
-							alt="Naruto Road to Ninja Movie Title"
-						/>
-					</div>
-					<div class="carousel-item">
-						<img
-							src="/src/assets/images/roadToNinja-titlepng.png"
-							alt="Naruto Road to Ninja Movie Title"
-						/>
+						<a href="#carouselFive" aria-label="Anime">
+							<img
+								src="/src/assets/images/roadToNinja-titlepng.png"
+								alt="Naruto Road to Ninja Movie Title"
+								loading="lazy"
+								width="400"
+								height="200"
+							/>
+						</a>
 					</div>
 				</div>
 			</div>
-			<a href="" class="play" alt="Watch Trailer"
-				><i class="fa-solid fa-play"></i> Watch Trailer</a
+			<a href="#" class="play" aria-label="Watch Trailer"
+				><i class="material-icons">play_arrow</i> Watch Trailer</a
 			>
 			<ul class="sci">
 				<li>
-					<a href="#" alt="Twitter"
+					<a href="#" aria-label="Twitter"
 						><i class="fa-brands fa-twitter"></i
 					></a>
 				</li>
 				<li>
-					<a href="#" alt="Facebook"
+					<a href="#" aria-label="Facebook"
 						><i class="fa-brands fa-facebook"></i
 					></a>
 				</li>
 				<li>
-					<a href="#" alt="Instagram"
+					<a href="#" aria-label="Instagram"
 						><i class="fa-brands fa-instagram"></i
 					></a>
 				</li>
@@ -136,9 +160,12 @@
 			integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 			crossorigin="anonymous"
 		></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script
+			defer
+			src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+		></script>
 		<script src="/src/js/main.js"></script>
-		<script>
+		<script defer>
 			$(document).ready(function () {
 				$(".carousel").carousel();
 			});
