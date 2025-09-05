@@ -3,21 +3,21 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta
-			name="description"
-			content="A website to remember your favorite animes"
-		/>
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet"
-		/>
-		<link preconnect href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+		<meta name="description" content="An anime catalog website" />
+		<meta name="keywords" content="anime, catalog, list" />
+		<meta name="author" content="Gabriel Danilo" />
+		<link rel="icon" href="/src/assets/icons/fav-icon.webp" />
+
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
 		/>
 		<link rel="stylesheet" href="/src/css/base.css" />
+
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
 		<title>myMemorableAnimes</title>
 	</head>
 	<body>
@@ -46,11 +46,14 @@
 			</div>
 		</header>
 		<main class="banner">
-			<div class="content narutoShippuden active">
+			<div
+				class="content narutoShippuden active"
+				onclick="changeBackground('narutoShippuden-background.webp', 'narutoShippuden')"
+			>
 				<img
-					src="/src/assets/images/titles/narutoShippuden-title.png"
-					alt="Naruto Shippuden Title"
 					class="movie-title"
+					src="/src/assets/images/titles/narutoShippuden-title.webp"
+					alt="Naruto Shippuden Title"
 				/>
 				<h4>
 					<span>2004</span><span><i>12+</i></span
@@ -72,9 +75,9 @@
 			</div>
 			<div class="content demonSlayer">
 				<img
-					src="/src/assets/images/titles/demonSlayer-title.png"
-					alt="Demon Slayer Title"
 					class="movie-title"
+					src="/src/assets/images/titles/demonSlayer-title.webp"
+					alt="Demon Slayer Title"
 				/>
 				<h4>
 					<span>2019</span><span><i>16+</i></span
@@ -97,9 +100,9 @@
 			</div>
 			<div class="content jujutsuKaisen">
 				<img
-					src="/src/assets/images/titles/jujutsuKaisen-title.png"
-					alt="Jujutsu Kaisen Title"
 					class="movie-title"
+					src="/src/assets/images/titles/jujutsuKaisen-title.webp"
+					alt="Jujutsu Kaisen Title"
 				/>
 				<h4>
 					<span>2020</span><span><i>16+</i></span
@@ -123,9 +126,9 @@
 			</div>
 			<div class="content attackOnTitan">
 				<img
-					src="/src/assets/images/titles/attackOnTitan-title.png"
-					alt="Attack on Titan Title"
 					class="movie-title"
+					src="/src/assets/images/titles/attackOnTitan-title.webp"
+					alt="Attack on Titan Title"
 				/>
 				<h4>
 					<span>2013</span><span><i>16+</i></span
@@ -147,9 +150,9 @@
 			</div>
 			<div class="content sousouNoFrieren">
 				<img
-					src="/src/assets/images/titles/sousouNoFrieren-title.png"
-					alt="Sousou no Frieren Title"
 					class="movie-title"
+					src="/src/assets/images/titles/sousouNoFrieren-title.webp"
+					alt="Sousou no Frieren Title"
 				/>
 				<h4>
 					<span>2023</span><span><i>12+</i></span
@@ -174,54 +177,63 @@
 				<div class="carousel">
 					<div
 						class="carousel-item"
-						onClick="changeBackground('narutoShippuden-background.png', 'narutoShippuden')"
+						onClick="changeBackground('narutoShippuden-background.webp', 'narutoShippuden')"
 					>
 						<img
-							src="/src/assets/images/posters/narutoShippuden-poster.jpg"
+							src="/src/assets/images/posters/narutoShippuden-poster.webp"
 							alt="Naruto Shippuden Poster"
-							loading="lazy"
+							width="250"
+							height="374"
+							fetchpriority="high"
 						/>
 					</div>
 					<div
 						class="carousel-item"
-						onClick="changeBackground('demonSlayer-background-2.jpg', 'demonSlayer')"
-						alt="Demon Slayer Poster"
+						onClick="changeBackground('demonSlayer-background-2.webp', 'demonSlayer')"
 					>
 						<img
-							src="/src/assets/images/posters/demonSlayer-poster.jpg"
+							src="/src/assets/images/posters/demonSlayer-poster.webp"
 							alt="Demon Slayer Poster"
-							loading="lazy"
+							width="250"
+							height="374"
+							fetchpriority="high"
 						/>
 					</div>
 
 					<div
 						class="carousel-item"
-						onClick="changeBackground('jujutsuKaisen-background.jpg', 'jujutsuKaisen')"
+						onClick="changeBackground('jujutsuKaisen-background.webp', 'jujutsuKaisen')"
 					>
 						<img
-							src="/src/assets/images/posters/jujutsuKaisen-poster.jpeg"
+							src="/src/assets/images/posters/jujutsuKaisen-poster.webp"
 							alt="Jujutsu Kaisen Poster"
-							loading="lazy"
+							width="250"
+							height="374"
+							fetchpriority="high"
 						/>
 					</div>
 					<div
 						class="carousel-item"
-						onClick="changeBackground('attackOnTitan-background.jpg', 'attackOnTitan')"
+						onClick="changeBackground('attackOnTitan-background.webp', 'attackOnTitan')"
 					>
 						<img
-							src="/src/assets/images/posters/attackOnTitan-poster.jpeg"
+							src="/src/assets/images/posters/attackOnTitan-poster.webp"
 							alt="Attack on Titan Poster"
-							loading="lazy"
+							width="250"
+							height="374"
+							fetchpriority="high"
 						/>
 					</div>
 					<div
 						class="carousel-item"
-						onClick="changeBackground('sousouNoFrieren-background.jpg', 'sousouNoFrieren')"
+						onClick="changeBackground('sousouNoFrieren-background.webp', 'sousouNoFrieren')"
 					>
 						<img
-							src="/src/assets/images/posters/sousouNoFrieren-poster.jpeg"
+							src="/src/assets/images/posters/sousouNoFrieren-poster.webp"
 							alt="Sousou no Frieren Poster"
-							loading="lazy"
+							width="250"
+							height="374"
+							fetchpriority="high"
 						/>
 						/
 					</div>
@@ -264,17 +276,14 @@
 			src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
 		></script>
 		<script src="/src/js/main.js" defer></script>
-		<script defer>
-			$(document).ready(function () {
-				$(".carousel").carousel({
-					dist: -100,
-					shift: 0,
-					padding: 20,
-					numVisible: 5,
-					indicators: true,
-					noWrap: false,
-				});
-			});
-		</script>
+		<script defer src="/src/js/modules/carousel.js"></script>
+
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+			rel="stylesheet"
+		/>
 	</body>
 </html>
