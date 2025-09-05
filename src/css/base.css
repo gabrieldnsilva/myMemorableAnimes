@@ -107,8 +107,6 @@ header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: url("/src/assets/videos/page-bg-itachi.gif") no-repeat;
-	background-size: cover;
 	background-position: center;
 	overflow: hidden;
 	transition: 0.5s;
@@ -300,4 +298,3 @@ header {
 .sci a:hover {
 	color: var(--primary);
 }
-
