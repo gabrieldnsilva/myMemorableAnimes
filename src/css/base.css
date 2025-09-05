@@ -107,8 +107,7 @@ header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: url("/src/assets/images/top-itachi-background-1920x1080-images.jpg")
-		no-repeat;
+	background: url("/src/assets/videos/page-bg-itachi.gif") no-repeat;
 	background-size: cover;
 	background-position: center;
 	overflow: hidden;
@@ -224,4 +223,45 @@ header {
 	align-items: center;
 	background: rgba(0, 0, 0, 0.2);
 	box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+}
+
+.carousel {
+	position: relative;
+	height: 550px;
+	perspective: 1500;
+}
+
+.carousel .carousel-item {
+	width: 250px;
+	cursor: pointer;
+}
+
+.carousel .carousel-item img {
+	width: 100%;
+	height: auto;
+	border-radius: 10px;
+	transform: translateX(8px) translateY(-100px);
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+	object-fit: cover;
+	object-position: center;
+	transition: 0.5s;
+}
+
+.play {
+	position: absolute;
+	bottom: 50px;
+	left: 100px;
+	display: inline-flex;
+	justify-content: flex-start;
+	align-items: center;
+	color: #ffffff;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-weight: 500;
+	letter-spacing: 1px;
+	font-size: 1.2em;
+	cursor: pointer !important;
+	transition: 0.3s;
 }
