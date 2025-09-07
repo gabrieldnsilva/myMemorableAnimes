@@ -1,0 +1,152 @@
+/* Estilos para Tablets */
+@media (min-width: 768px) {
+	header {
+		padding: 20px 75px;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.logo {
+		display: block;
+		padding: 20px 50px;
+		margin: 0px 200px;
+	}
+
+	.nav {
+		display: none;
+	}
+
+	.search {
+		display: flex;
+		width: 200px;
+		position: absolute;
+		right: 75px;
+		top: 50px;
+		transform: translateY(-50%);
+	}
+
+	.banner {
+		min-height: 100vh;
+		padding-top: 120px;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.content {
+		max-width: 600px;
+		margin-top: 30px;
+	}
+
+	.banner .carousel-box {
+		width: 100%;
+		max-width: 700px;
+	}
+
+	.carousel {
+		height: 450px;
+	}
+
+	.carousel .carousel-item {
+		padding: 0 15px;
+		width: 250px;
+	}
+
+	.sci {
+		display: inline-flex;
+		position: absolute;
+		bottom: 20px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.sidenav-trigger {
+		display: none;
+	}
+
+	.nav {
+		display: flex;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		list-style: none;
+		gap: 20px;
+	}
+
+	.nav li a {
+		color: #fff;
+		text-decoration: none;
+		font-weight: 500;
+		font-size: 1em;
+	}
+
+	.logo {
+		margin: 0;
+	}
+
+	.banner {
+		/* Para Desktop, layout lado a lado */
+		flex-direction: row;
+		justify-content: space-between;
+		padding-top: 0;
+	}
+
+	.content {
+		order: 1;
+		text-align: left;
+		margin-top: 0;
+	}
+
+	.banner .content h4,
+	.banner .content .button {
+		justify-content: flex-start;
+	}
+
+	.banner .carousel-box {
+		order: 2;
+		max-width: none;
+		min-width: 600px;
+	}
+
+	.carousel-item {
+		width: 220px;
+	}
+
+	.play {
+		left: 100px;
+		transform: none;
+	}
+}
+
+@media (min-width: 1200px) {
+	/*.navbar {
+		padding: 20px 100px;
+	}
+
+	.nav {
+		display: flex;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		list-style: none;
+		gap: 20px;
+	}
+
+	.nav li a {
+		color: #fff;
+		text-decoration: none;
+		font-weight: 500;
+		font-size: 1em;
+	} */
+
+	.banner .carousel-box {
+		min-width: 950px;
+	}
+
+	.carousel {
+		height: 550px;
+	}
+
+	.carousel .carousel-item {
+		width: 300px;
+	}
+}

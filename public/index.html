@@ -8,21 +8,33 @@
 		<meta name="author" content="Gabriel Danilo" />
 		<link rel="icon" href="/src/assets/icons/fav-icon.webp" />
 
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
 		/>
 		<link rel="stylesheet" href="/src/css/base.css" />
+		<link rel="stylesheet" href="/src/css/responsive.css" />
 
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet"
-		/>
 		<title>myMemorableAnimes</title>
 	</head>
 	<body>
-		<header>
+		<header id="main-header" class="navbar">
+			<a href="#" class="sidenav-trigger" aria-label="Menu de Navegação">
+				<i class="material-icons">menu</i>
+			</a>
+
 			<a href="#" class="logo">Animes</a>
+
 			<ul class="nav">
 				<li>
 					<a href="#" aria-label="Home button">Home</a>
@@ -44,8 +56,81 @@
 				<input type="text" placeholder="Search..." alt="Search input" />
 				<i class="material-icons">search</i>
 			</div>
+			<ul id="mobile-nav" class="sidenav">
+				<li>
+					<a href="#" aria-label="Home button">Home</a>
+				</li>
+				<li>
+					<a href="#" aria-label="About button">About</a>
+				</li>
+				<li>
+					<a href="#" aria-label="My List button">My List</a>
+				</li>
+				<li>
+					<a href="#" aria-label="Contact button">Contact</a>
+				</li>
+				<li>
+					<a href="#" aria-label="Login button">Login</a>
+				</li>
+			</ul>
 		</header>
+
 		<main class="banner">
+			<div class="carousel-box">
+				<div class="carousel">
+					<div
+						class="carousel-item"
+						onClick="changeBackground('narutoShippuden-background.webp', 'narutoShippuden')"
+					>
+						<img
+							src="/src/assets/images/posters/narutoShippuden-poster.webp"
+							alt="Naruto Shippuden Poster"
+							fetchpriority="high"
+						/>
+					</div>
+					<div
+						class="carousel-item"
+						onClick="changeBackground('demonSlayer-background-2.webp', 'demonSlayer')"
+					>
+						<img
+							src="/src/assets/images/posters/demonSlayer-poster.webp"
+							alt="Demon Slayer Poster"
+							fetchpriority="high"
+						/>
+					</div>
+
+					<div
+						class="carousel-item"
+						onClick="changeBackground('jujutsuKaisen-background.webp', 'jujutsuKaisen')"
+					>
+						<img
+							src="/src/assets/images/posters/jujutsuKaisen-poster.webp"
+							alt="Jujutsu Kaisen Poster"
+							fetchpriority="high"
+						/>
+					</div>
+					<div
+						class="carousel-item"
+						onClick="changeBackground('attackOnTitan-background.webp', 'attackOnTitan')"
+					>
+						<img
+							src="/src/assets/images/posters/attackOnTitan-poster.webp"
+							alt="Attack on Titan Poster"
+							fetchpriority="high"
+						/>
+					</div>
+					<div
+						class="carousel-item"
+						onClick="changeBackground('sousouNoFrieren-background.webp', 'sousouNoFrieren')"
+					>
+						<img
+							src="/src/assets/images/posters/sousouNoFrieren-poster.webp"
+							alt="Sousou no Frieren Poster"
+							fetchpriority="high"
+						/>
+					</div>
+				</div>
+			</div>
 			<div
 				class="content narutoShippuden active"
 				onclick="changeBackground('narutoShippuden-background.webp', 'narutoShippuden')"
@@ -54,6 +139,7 @@
 					class="movie-title"
 					src="/src/assets/images/titles/narutoShippuden-title.webp"
 					alt="Naruto Shippuden Title"
+					fetchpriority="high"
 				/>
 				<h4>
 					<span>2004</span><span><i>12+</i></span
@@ -78,6 +164,7 @@
 					class="movie-title"
 					src="/src/assets/images/titles/demonSlayer-title.webp"
 					alt="Demon Slayer Title"
+					fetchpriority="high"
 				/>
 				<h4>
 					<span>2019</span><span><i>16+</i></span
@@ -103,6 +190,7 @@
 					class="movie-title"
 					src="/src/assets/images/titles/jujutsuKaisen-title.webp"
 					alt="Jujutsu Kaisen Title"
+					fetchpriority="high"
 				/>
 				<h4>
 					<span>2020</span><span><i>16+</i></span
@@ -129,6 +217,7 @@
 					class="movie-title"
 					src="/src/assets/images/titles/attackOnTitan-title.webp"
 					alt="Attack on Titan Title"
+					fetchpriority="high"
 				/>
 				<h4>
 					<span>2013</span><span><i>16+</i></span
@@ -153,6 +242,7 @@
 					class="movie-title"
 					src="/src/assets/images/titles/sousouNoFrieren-title.webp"
 					alt="Sousou no Frieren Title"
+					fetchpriority="high"
 				/>
 				<h4>
 					<span>2023</span><span><i>12+</i></span
@@ -173,81 +263,7 @@
 					>
 				</div>
 			</div>
-			<div class="carousel-box">
-				<div class="carousel">
-					<div
-						class="carousel-item"
-						onClick="changeBackground('narutoShippuden-background.webp', 'narutoShippuden')"
-					>
-						<img
-							src="/src/assets/images/posters/narutoShippuden-poster.webp"
-							alt="Naruto Shippuden Poster"
-							width="250"
-							height="374"
-							fetchpriority="high"
-						/>
-					</div>
-					<div
-						class="carousel-item"
-						onClick="changeBackground('demonSlayer-background-2.webp', 'demonSlayer')"
-					>
-						<img
-							src="/src/assets/images/posters/demonSlayer-poster.webp"
-							alt="Demon Slayer Poster"
-							width="250"
-							height="374"
-							fetchpriority="high"
-						/>
-					</div>
-
-					<div
-						class="carousel-item"
-						onClick="changeBackground('jujutsuKaisen-background.webp', 'jujutsuKaisen')"
-					>
-						<img
-							src="/src/assets/images/posters/jujutsuKaisen-poster.webp"
-							alt="Jujutsu Kaisen Poster"
-							width="250"
-							height="374"
-							fetchpriority="high"
-						/>
-					</div>
-					<div
-						class="carousel-item"
-						onClick="changeBackground('attackOnTitan-background.webp', 'attackOnTitan')"
-					>
-						<img
-							src="/src/assets/images/posters/attackOnTitan-poster.webp"
-							alt="Attack on Titan Poster"
-							width="250"
-							height="374"
-							fetchpriority="high"
-						/>
-					</div>
-					<div
-						class="carousel-item"
-						onClick="changeBackground('sousouNoFrieren-background.webp', 'sousouNoFrieren')"
-					>
-						<img
-							src="/src/assets/images/posters/sousouNoFrieren-poster.webp"
-							alt="Sousou no Frieren Poster"
-							width="250"
-							height="374"
-							fetchpriority="high"
-						/>
-						/
-					</div>
-				</div>
-			</div>
-			<a
-				href="https://www.youtube.com/watch?v=22R0j8UKRzY"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="play"
-				aria-label="Watch Trailer"
-				><i class="material-icons">play_circle_outline</i> Watch
-				Trailer</a
-			>
+			<!-- Social Media Icons -->
 			<ul class="sci">
 				<li>
 					<a href="#" aria-label="Facebook Icon"
@@ -255,17 +271,20 @@
 					>
 				</li>
 				<li>
-					<a href="#" aria-label="Facebook Icon"
-						><i class="material-icons">facebook</i></a
+					<a href="#" aria-label="Icon"
+						><i class="material-icons">...</i></a
 					>
 				</li>
 				<li>
-					<a href="#" aria-label="Facebook Icon"
-						><i class="material-icons">facebook</i></a
+					<a href="#" aria-label="Icon"
+						><i class="material-icons">...</i></a
 					>
 				</li>
 			</ul>
 		</main>
+		<footer class="footer">
+			<p>&copy; 2025 myMemorableAnimes. All rights reserved.</p>
+		</footer>
 		<script
 			src="https://code.jquery.com/jquery-3.7.1.js"
 			integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
@@ -275,15 +294,8 @@
 			defer
 			src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
 		></script>
-		<script src="/src/js/main.js" defer></script>
+		<script defer src="/src/js/main.js"></script>
 		<script defer src="/src/js/modules/carousel.js"></script>
-
-		/>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-			rel="stylesheet"
-		/>
+		<script defer src="/src/js/modules/navBar.js"></script>
 	</body>
 </html>
