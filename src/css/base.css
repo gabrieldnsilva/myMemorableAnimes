@@ -53,39 +53,6 @@ header {
 	display: none;
 }
 
-.search input {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	color: #ffffff;
-	background: transparent;
-	border: 1 solid rgba(255, 255, 255, 0.5);
-	outline: none;
-	border-radius: 4px;
-	padding: 0 15px 0 50px !important;
-	backdrop-filter: blur(10px);
-}
-
-/*
-
-.search input::placeholder {
-	color: #ffffff;
-	font-weight: 300;
-}
-
-.search i {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	left: 10px;
-	padding-right: 10px;
-	color: #ffffff;
-	border-right: 1px solid #ffffff;
-}
-*/
-
 .banner {
 	position: relative;
 	width: 100%;
