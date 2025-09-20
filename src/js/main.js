@@ -1,6 +1,8 @@
 // Importa o objeto com os dados dos animes.
 import { animesData } from "../data/animeData.js";
 
+import { changeBackground } from "./modules/carousel.js";
+
 /**
  * Função principal que atualiza o conteúdo da página com base no anime selecionado
  * @param {string} animeKey - A chave do anime no objeto animesData
@@ -19,14 +21,14 @@ function updateAnimeContent(animeKey) {
 	// createElement e textContent em vez de innerHTML para boa prática de segurança
 
 	const contentDiv = document.createElement("div");
-	contentDiv.className = `content ${animeKey} active`;
+	contentDiv.className = `content ${animeKey}`;
 
 	const titleImage = document.createElement("img");
 	titleImage.className = "anime-title";
 	titleImage.src = anime.titleImage;
-	titleImage.alt = `${anime.title} Title`;
-	titleImage.width = 700; // Atributos para evitar Layout Shift
-	titleImage.height = 336;
+	titleImage.alt = `${animeKey.replace(/([A-Z])/g, " $1")} Title`; // Formata o alt text
+	titleImage.width = 280; // Atributos para evitar Layout Shift
+	titleImage.height = 120;
 
 	const details = document.createElement("h4");
 	details.innerHTML = `
@@ -56,34 +58,37 @@ function updateAnimeContent(animeKey) {
 	contentDiv.appendChild(buttonDiv);
 	container.appendChild(contentDiv);
 
+	// Isso garante que a animação de transição (transform: scale) funcione corretamente.
+	requestAnimationFrame(() => {
+		contentDiv.classList.add("active");
+	});
+
 	// Atualiza a imagem de fundo do banner
 	const banner = document.querySelector(".banner");
 	banner.style.backgroundImage = `url('/src/assets/images/backgrounds/${anime.background}')`;
+}
 
-	// --- Inicialização da Aplicação ---
-	// Usamos DOMContentLoaded para garantir que o script só rode após o HTML estar pronto.
-	document.addEventListener("DOMContentLoaded", () => {
-		// Inicializa o Sidenav (menu sanduíche) do Materialize
-		const sidenav = document.querySelectorAll(".sidenav");
-		M.Sidenav.init(sidenav);
+/**
+ * Função que inicializa todos os componentes da página quando o DOM estiver pronto
+ */
+function initializeApp() {
+	// Inicializa o Sidenav (menu sanduíche)
+	const sidenav = document.querySelectorAll(".sidenav");
+	M.Sidenav.init(sidenav);
 
-		// Inicializa o Carousel do Materialize
-		const carousel = document.querySelectorAll(".carousel");
-		M.Carousel.init(carousel, {
-			// Esta função é chamada toda vez que um item do carrossel é selecionado
-			onCycleTo: (el) => {
-				const animeKey = el.dataset.animekey;
-				if (animeKey) {
-					updateAnimeContent(animeKey);
-				}
-			},
-		});
+	// Inicializa o Carousel
+	const carouselElem = document.querySelectorAll(".carousel");
 
-		// Garante que o primeiro anime seja exibido ao carregar a página
-		const firstAnimeKey =
-			document.querySelector(".carousel-item").dataset.animekey;
-		if (firstAnimeKey) {
-			updateAnimeContent(firstAnimeKey);
-		}
+	// onCycleTo é chamado toda vez que um item do carrossel é selecionado
+	M.Carousel.init(carouselElem, {
+		onCycleTo: (activeItem) => {
+			const animeKey = activeItem.dataset.animekey;
+			if (animeKey) {
+				updateAnimeContent(animeKey);
+			}
+		},
 	});
 }
+// --- Inicialização da Aplicação ---
+// Usamos DOMContentLoaded para garantir que o script só rode após o HTML estar pronto.
+document.addEventListener("DOMContentLoaded", initializeApp);
