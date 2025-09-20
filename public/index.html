@@ -25,10 +25,6 @@
 			rel="stylesheet"
 		/>
 		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet"
-		/>
-		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
 		/>
@@ -45,7 +41,7 @@
 				data-target="mobile-nav"
 				aria-label="Menu de Navegação"
 			>
-				<i class="material-icons">menu</i>
+				<i class="ri-menu-line"></i>
 			</a>
 
 			<a href="#" class="logo">Animes</a>
@@ -66,7 +62,7 @@
 			</ul>
 			<div class="search hide-on-med-and-down">
 				<input type="text" placeholder="Search..." alt="Search input" />
-				<i class="material-icons">search</i>
+				<i class="ri-search-line"></i>
 			</div>
 		</header>
 
@@ -76,12 +72,10 @@
 			<!-- Carousel Section -->
 			<div class="carousel-box">
 				<div class="carousel">
-					<div class="carousel-item" data-animekey="naruto">
+					<div class="carousel-item" data-animekey="narutoShippuden">
 						<img
 							src="/src/assets/images/posters/narutoShippuden-poster.webp"
 							alt="Naruto Shippuden Poster"
-							width="669"
-							height="1000"
 							fetchpriority="high"
 						/>
 					</div>
@@ -89,8 +83,6 @@
 						<img
 							src="/src/assets/images/posters/demonSlayer-poster.webp"
 							alt="Demon Slayer Poster"
-							width="799"
-							height="1200"
 							loading="lazy"
 						/>
 					</div>
@@ -98,8 +90,6 @@
 						<img
 							src="/src/assets/images/posters/jujutsuKaisen-poster.webp"
 							alt="Jujutsu Kaisen Poster"
-							width="1185"
-							height="1800"
 							loading="lazy"
 						/>
 					</div>
@@ -107,8 +97,6 @@
 						<img
 							src="/src/assets/images/posters/attackOnTitan-poster.webp"
 							alt="Attack on Titan Poster"
-							width="667"
-							height="1000"
 							loading="lazy"
 						/>
 					</div>
@@ -116,8 +104,6 @@
 						<img
 							src="/src/assets/images/posters/sousouNoFrieren-poster.webp"
 							alt="Sousou no Frieren Poster"
-							width="1280"
-							height="1809"
 							loading="lazy"
 						/>
 					</div>
@@ -131,72 +117,25 @@
 				class="play"
 				aria-label="Assistir Trailer"
 			>
-				<i class="material-icons">play_circle_outline</i> Assistir
-				Trailer
+				<i class="ri-play-circle-fill"></i> Assistir Trailer
 			</a>
 
-			<ul class="sci">
-				<li>
-					<a href="#" aria-label="Visite nosso Facebook"
-						><i class="material-icons">facebook</i></a
-					>
-				</li>
-				<li>
-					<a href="#" aria-label="Visite nosso Instagram"
-						><i class="material-icons">facebook</i></a
-					>
-				</li>
-				<li>
-					<a href="#" aria-label="Visite nosso Twitter"
-						><i class="material-icons">facebook</i></a
-					>
-				</li>
-			</ul>
-
-			<div
-				class="content narutoShippuden active"
-				onclick="changeBackground('narutoShippuden-background.webp', 'narutoShippuden')"
-			>
-				<img
-					class="anime-title"
-					src="/src/assets/images/titles/narutoShippuden-title.webp"
-					alt="Naruto Shippuden Title"
-					fetchpriority="high"
-				/>
-				<h4>
-					<span>2004</span><span><i>12+</i></span
-					><span>1h 49m</span> Shōnen<span></span>
-				</h4>
-				<p>
-					<span>Sinopse:</span> Naruto Uzumaki, um jovem ninja
-					impulsivo e determinado, retorna à sua vila natal, Konoha,
-					após dois anos e meio de treinamento intenso com Jiraiya...
-				</p>
-				<div class="button">
-					<a href="#" class="watch-now" aria-label="Watch Now"
-						><i class="material-icons">play_arrow</i>Watch Now</a
-					>
-					<a href="#" class="add-to-list" aria-label="Add to List"
-						><i class="material-icons">add</i>Add to List</a
-					>
-				</div>
-			</div>
 			<!-- Social Media Icons -->
 			<ul class="sci">
 				<li>
 					<a href="#" aria-label="Visite nosso Facebook"
-						><i class="material-icons">facebook</i></a
-					>
+						><i class="ri-facebook-circle-fill"></i
+					></a>
 				</li>
 				<li>
 					<a href="#" aria-label="Visite nosso Instagram"
-						><i class="material-icons">facebook</i></a
-					>
+						><i class="ri-instagram-fill"></i
+					></a>
 				</li>
 				<li>
 					<a href="#" aria-label="Visite nosso Twitter"
-						><i class="material-icons">facebook</i></a
-					>
+						><i class="ri-twitter-x-fill"></i
+					></a>
 				</li>
 			</ul>
 		</main>
