@@ -27,22 +27,55 @@ header {
 	flex-direction: column;
 }
 
-.sidenav-trigger {
-	display: block;
-	color: #fff;
-	position: absolute;
-	left: 40px;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
 .logo {
-	font-size: 32px;
+	display: flex;
+	font-size: 3em;
 	color: #ffffff;
 	letter-spacing: 1px;
 	font-weight: 800;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.sidenav-trigger {
+	align-self: flex-end;
+	position: absolute;
+	top: 25px;
+	right: 25px;
+	font-size: 1.5em;
+	color: #fff;
+	cursor: pointer;
+}
+
+/* Estilos para a Sidenav (Menu Mobile) */
+.sidenav {
+	background-image: -webkit-linear-gradient(60deg, #fff 50dvw, #111 50dvw);
+	width: 80dvw;
+	opacity: 0.9;
+	transition: 0.2s ease;
+}
+
+/* Estilos dentro do menu */
+.sidenav li > a {
+	color: rgba(255, 255, 255, 1);
+	font-size: 1.3em;
+	font-weight: 600;
+	padding: 0 25px;
+}
+
+/* Ícones dentro do links do menu */
+.sidenav li > a > i {
+	color: rgba(255, 255, 255, 1);
+}
+
+/* Linha divisória no menu */
+.sidenav .divider {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Hover nos links */
+.sidenav li > a:hover {
+	background-color: rgba(255, 61, 0, 0.1);
 }
 
 .nav {
@@ -97,12 +130,7 @@ header {
 	transform: scale(1);
 }
 
-.material-icons {
-	vertical-align: middle;
-	margin-right: 5px;
-}
-
-.movie-title {
+.anime-title {
 	max-width: 220px; /* Ajuste para Mobile */
 }
 
@@ -157,6 +185,10 @@ header {
 	cursor: pointer;
 }
 
+.banner .content .button a.add-to-list:hover {
+	background: rgba(255, 255, 255, 0.2);
+	transform: scale(1.05); /* Efeito de crescimento sutil */
+}
 .banner .content .button a:nth-child(2) {
 	background: rgba(0, 0, 0, 0.5);
 	border: 1px solid rgba(255, 255, 255, 0.2);
@@ -169,6 +201,7 @@ header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-top: 30px;
 	margin-bottom: 30px;
 	background: rgba(0, 0, 0, 0.2);
 	box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -196,39 +229,45 @@ header {
 	object-position: center;
 }
 
-/*
-.play:hover {
-	color: var(--primary);
-}
-
 .sci {
+	display: flex;
 	position: absolute;
-	bottom: 50px;
-	right: 30px;
-	display: inline-flex;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding-bottom: 10px;
 	justify-content: center;
 	align-items: center;
-	gap: 25px;
+	gap: 20px;
 }
 
-.sci a {
-	color: #ffffff;
+.sci li {
+	list-style: none;
+}
+
+.sci li a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(4px);
 	text-decoration: none;
-	text-transform: uppercase;
-	font-weight: 500;
-	letter-spacing: 1px;
-	font-size: 25px;
-	transition: 0.3s;
-	cursor: pointer;
+	transition: 0.3s ease;
 }
 
-.sci a:hover {
-	color: var(--primary);
+.sci li a i {
+	color: #fff;
+	font-size: 1.5em;
+	margin: 0;
 }
-*/
 
-.sci {
-	display: none;
+.sci li a:hover {
+	background: var(--primary);
+	transform: translateY(-5px);
+	box-shadow: 0 4px 15px rgba(255, 61, 0, 04);
 }
 
 .footer {
@@ -243,5 +282,3 @@ header {
 	font-size: 1em;
 	font-weight: 300;
 }
-
-/* RESPONSIVIDADE */
