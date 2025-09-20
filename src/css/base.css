@@ -29,7 +29,7 @@ header {
 
 .logo {
 	display: flex;
-	font-size: 32px;
+	font-size: 3em;
 	color: #ffffff;
 	letter-spacing: 1px;
 	font-weight: 800;
@@ -41,7 +41,7 @@ header {
 	align-self: flex-end;
 	position: absolute;
 	top: 25px;
-	right: 20px;
+	right: 25px;
 	font-size: 1.5em;
 	color: #fff;
 	cursor: pointer;
@@ -49,7 +49,7 @@ header {
 
 /* Estilos para a Sidenav (Menu Mobile) */
 .sidenav {
-	background-image: -webkit-linear-gradient(45deg, #fff 55%, #111 45%);
+	background-image: -webkit-linear-gradient(60deg, #fff 50dvw, #111 50dvw);
 	width: 80dvw;
 	opacity: 0.9;
 	transition: 0.2s ease;

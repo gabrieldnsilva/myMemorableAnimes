@@ -81,6 +81,13 @@ function initializeApp() {
 
 	// onCycleTo é chamado toda vez que um item do carrossel é selecionado
 	M.Carousel.init(carouselElem, {
+		padding: 20,
+		numVisible: 5,
+		indicators: true,
+		duration: 300,
+		noWrap: false,
+
+		// Função chamada quando o carrossel muda de item
 		onCycleTo: (activeItem) => {
 			const animeKey = activeItem.dataset.animekey;
 			if (animeKey) {
