@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="An anime catalog website" />
-		<meta name="keywords" content="anime, catalog, list" />
+		<meta
+			name="description"
+			content="Um catálogo de animes para organizar e descobrir novas séries recomendadas por mim."
+		/>
+		<meta
+			name="keywords"
+			content="anime, catalogo, lista, naruto, onepiece, frieren, demon slayer, jujutsu kaisen, attack on titan"
+		/>
 		<meta name="author" content="Gabriel Danilo" />
 		<link rel="icon" href="/src/assets/icons/fav-icon.webp" />
 
@@ -12,6 +18,10 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
 			rel="stylesheet"
 		/>
 		<link
@@ -25,118 +35,130 @@
 		<link rel="stylesheet" href="/src/css/base.css" />
 		<link rel="stylesheet" href="/src/css/responsive.css" />
 
-		<title>myMemorableAnimes</title>
+		<title>Meus Animes Memoráveis</title>
 	</head>
 	<body>
 		<header id="main-header" class="navbar">
-			<a href="#" class="sidenav-trigger" aria-label="Menu de Navegação">
+			<a
+				href="#"
+				class="sidenav-trigger"
+				data-target="mobile-nav"
+				aria-label="Menu de Navegação"
+			>
 				<i class="material-icons">menu</i>
 			</a>
 
 			<a href="#" class="logo">Animes</a>
 
-			<ul class="nav">
-				<li>
-					<a href="#" aria-label="Home button">Home</a>
-				</li>
-				<li>
-					<a href="#" aria-label="About button">About</a>
-				</li>
-				<li>
-					<a href="#" aria-label="My List button">My List</a>
-				</li>
-				<li>
-					<a href="#" aria-label="Contact button">Contact</a>
-				</li>
-				<li>
-					<a href="#" aria-label="Login button">Login</a>
-				</li>
+			<ul class="nav hide-on-med-and-down">
+				<li><a href="#" aria-label="Início">Início</a></li>
+				<li><a href="#" aria-label="Sobre">Sobre</a></li>
+				<li><a href="#" aria-label="Minha Lista">Minha Lista</a></li>
+				<li><a href="#" aria-label="Contato">Contato</a></li>
+				<li><a href="#" aria-label="Login">Login</a></li>
 			</ul>
-			<div class="search">
-				<input type="text" placeholder="Search..." alt="Search input"  />
+			<ul class="sidenav" id="mobile-nav">
+				<li><a href="#" aria-label="Início">Início</a></li>
+				<li><a href="#" aria-label="Sobre">Sobre</a></li>
+				<li><a href="#" aria-label="Minha Lista">Minha Lista</a></li>
+				<li><a href="#" aria-label="Contato">Contato</a></li>
+				<li><a href="#" aria-label="Login">Login</a></li>
+			</ul>
+			<div class="search hide-on-med-and-down">
+				<input type="text" placeholder="Search..." alt="Search input" />
 				<i class="material-icons">search</i>
 			</div>
-			<ul id="mobile-nav" class="sidenav">
-				<li>
-					<a href="#" aria-label="Home button">Home</a>
-				</li>
-				<li>
-					<a href="#" aria-label="About button">About</a>
-				</li>
-				<li>
-					<a href="#" aria-label="My List button">My List</a>
-				</li>
-				<li>
-					<a href="#" aria-label="Contact button">Contact</a>
-				</li>
-				<li>
-					<a href="#" aria-label="Login button">Login</a>
-				</li>
-			</ul>
 		</header>
 
 		<main class="banner">
+			<div id="anime-content-container"></div>
+
+			<!-- Carousel Section -->
 			<div class="carousel-box">
 				<div class="carousel">
-					<div
-						class="carousel-item"
-						onClick="changeBackground('narutoShippuden-background.webp', 'narutoShippuden')"
-					>
+					<div class="carousel-item" data-animekey="naruto">
 						<img
 							src="/src/assets/images/posters/narutoShippuden-poster.webp"
 							alt="Naruto Shippuden Poster"
+							width="669"
+							height="1000"
 							fetchpriority="high"
 						/>
 					</div>
-					<div
-						class="carousel-item"
-						onClick="changeBackground('demonSlayer-background-2.webp', 'demonSlayer')"
-					>
+					<div class="carousel-item" data-animekey="demonSlayer">
 						<img
 							src="/src/assets/images/posters/demonSlayer-poster.webp"
 							alt="Demon Slayer Poster"
-							fetchpriority="high"
+							width="799"
+							height="1200"
+							loading="lazy"
 						/>
 					</div>
-
-					<div
-						class="carousel-item"
-						onClick="changeBackground('jujutsuKaisen-background.webp', 'jujutsuKaisen')"
-					>
+					<div class="carousel-item" data-animekey="jujutsuKaisen">
 						<img
 							src="/src/assets/images/posters/jujutsuKaisen-poster.webp"
 							alt="Jujutsu Kaisen Poster"
-							fetchpriority="high"
+							width="1185"
+							height="1800"
+							loading="lazy"
 						/>
 					</div>
-					<div
-						class="carousel-item"
-						onClick="changeBackground('attackOnTitan-background.webp', 'attackOnTitan')"
-					>
+					<div class="carousel-item" data-animekey="attackOnTitan">
 						<img
 							src="/src/assets/images/posters/attackOnTitan-poster.webp"
 							alt="Attack on Titan Poster"
-							fetchpriority="high"
+							width="667"
+							height="1000"
+							loading="lazy"
 						/>
 					</div>
-					<div
-						class="carousel-item"
-						onClick="changeBackground('sousouNoFrieren-background.webp', 'sousouNoFrieren')"
-					>
+					<div class="carousel-item" data-animekey="sousouNoFrieren">
 						<img
 							src="/src/assets/images/posters/sousouNoFrieren-poster.webp"
 							alt="Sousou no Frieren Poster"
-							fetchpriority="high"
+							width="1280"
+							height="1809"
+							loading="lazy"
 						/>
 					</div>
 				</div>
 			</div>
+
+			<a
+				href="https://www.youtube.com/watch?v=22R0j8UKRzY"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="play"
+				aria-label="Assistir Trailer"
+			>
+				<i class="material-icons">play_circle_outline</i> Assistir
+				Trailer
+			</a>
+
+			<ul class="sci">
+				<li>
+					<a href="#" aria-label="Visite nosso Facebook"
+						><i class="material-icons">facebook</i></a
+					>
+				</li>
+				<li>
+					<a href="#" aria-label="Visite nosso Instagram"
+						><i class="material-icons">facebook</i></a
+					>
+				</li>
+				<li>
+					<a href="#" aria-label="Visite nosso Twitter"
+						><i class="material-icons">facebook</i></a
+					>
+				</li>
+			</ul>
+
 			<div
 				class="content narutoShippuden active"
 				onclick="changeBackground('narutoShippuden-background.webp', 'narutoShippuden')"
 			>
 				<img
-					class="movie-title"
+					class="anime-title"
 					src="/src/assets/images/titles/narutoShippuden-title.webp"
 					alt="Naruto Shippuden Title"
 					fetchpriority="high"
@@ -159,132 +181,30 @@
 					>
 				</div>
 			</div>
-			<div class="content demonSlayer">
-				<img
-					class="movie-title"
-					src="/src/assets/images/titles/demonSlayer-title.webp"
-					alt="Demon Slayer Title"
-					fetchpriority="high"
-				/>
-				<h4>
-					<span>2019</span><span><i>16+</i></span
-					><span>1h 26m</span> Shōnen<span></span>
-				</h4>
-				<p>
-					<span>Sinopse:</span> Tanjirou Kamado é um bondoso garoto de
-					família que vende carvão para sustentar sua mãe e seus
-					irmãos mais novos. Um dia, ao voltar para casa, ele encontra
-					sua família brutalmente assassinada por demônios...
-				</p>
-				<div class="button">
-					<a href="#" class="watch-now" aria-label="Watch Now"
-						><i class="material-icons">play_arrow</i>Watch Now</a
-					>
-					<a href="#" class="add-to-list" aria-label="Add to List"
-						><i class="material-icons">add</i>Add to List</a
-					>
-				</div>
-			</div>
-			<div class="content jujutsuKaisen">
-				<img
-					class="movie-title"
-					src="/src/assets/images/titles/jujutsuKaisen-title.webp"
-					alt="Jujutsu Kaisen Title"
-					fetchpriority="high"
-				/>
-				<h4>
-					<span>2020</span><span><i>16+</i></span
-					><span>1h 45m</span> Shōnen<span></span>
-				</h4>
-				<p>
-					<span>Sinopse:</span> Yuuji Itadori é um estudante do ensino
-					médio que possui uma força física extraordinária. Apesar de
-					sua habilidade, ele prefere levar uma vida normal e evitar
-					envolvimento com o oculto. No entanto, tudo muda quando ele
-					entra em contato com um objeto amaldiçoado...
-				</p>
-				<div class="button">
-					<a href="#" class="watch-now" aria-label="Watch Now"
-						><i class="material-icons">play_arrow</i>Watch Now</a
-					>
-					<a href="#" class="add-to-list" aria-label="Add to List"
-						><i class="material-icons">add</i>Add to List</a
-					>
-				</div>
-			</div>
-			<div class="content attackOnTitan">
-				<img
-					class="movie-title"
-					src="/src/assets/images/titles/attackOnTitan-title.webp"
-					alt="Attack on Titan Title"
-					fetchpriority="high"
-				/>
-				<h4>
-					<span>2013</span><span><i>16+</i></span
-					><span>1h 57m</span> Shōnen<span></span>
-				</h4>
-				<p>
-					<span>Sinopse:</span> Em um mundo onde a humanidade vive
-					dentro de cidades cercadas por enormes muralhas devido aos
-					Titãs, criaturas humanoides gigantes que devoram humanos...
-				</p>
-				<div class="button">
-					<a href="#" class="watch-now" aria-label="Watch Now"
-						><i class="material-icons">play_arrow</i>Watch Now</a
-					>
-					<a href="#" class="add-to-list" aria-label="Add to List"
-						><i class="material-icons">add</i>Add to List</a
-					>
-				</div>
-			</div>
-			<div class="content sousouNoFrieren">
-				<img
-					class="movie-title"
-					src="/src/assets/images/titles/sousouNoFrieren-title.webp"
-					alt="Sousou no Frieren Title"
-					fetchpriority="high"
-				/>
-				<h4>
-					<span>2023</span><span><i>12+</i></span
-					><span>1h 30m</span> Shōnen<span></span>
-				</h4>
-				<p>
-					<span>Sinopse:</span> Após a derrota do Rei Demônio, a
-					heroína humana Himmel e seus companheiros, o anão Eisen e o
-					elfo Frieren, embarcam em uma jornada para explorar o mundo
-					e viver novas aventuras...
-				</p>
-				<div class="button">
-					<a href="#" class="watch-now" aria-label="Watch Now"
-						><i class="material-icons">play_arrow</i>Watch Now</a
-					>
-					<a href="#" class="add-to-list" aria-label="Add to List"
-						><i class="material-icons">add</i>Add to List</a
-					>
-				</div>
-			</div>
 			<!-- Social Media Icons -->
 			<ul class="sci">
 				<li>
-					<a href="#" aria-label="Facebook Icon"
+					<a href="#" aria-label="Visite nosso Facebook"
 						><i class="material-icons">facebook</i></a
 					>
 				</li>
 				<li>
-					<a href="#" aria-label="Icon"
-						><i class="material-icons">...</i></a
+					<a href="#" aria-label="Visite nosso Instagram"
+						><i class="material-icons">facebook</i></a
 					>
 				</li>
 				<li>
-					<a href="#" aria-label="Icon"
-						><i class="material-icons">...</i></a
+					<a href="#" aria-label="Visite nosso Twitter"
+						><i class="material-icons">facebook</i></a
 					>
 				</li>
 			</ul>
 		</main>
+
 		<footer class="footer">
-			<p>&copy; 2025 myMemorableAnimes. All rights reserved.</p>
+			<p>&copy; 2025 myMemorableAnimes. Todos os direitos reservados.</p>
 		</footer>
+
 		<script
 			src="https://code.jquery.com/jquery-3.7.1.js"
 			integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
@@ -294,8 +214,6 @@
 			defer
 			src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
 		></script>
-		<script defer src="/src/js/main.js"></script>
-		<script defer src="/src/js/modules/carousel.js"></script>
-		<script defer src="/src/js/modules/navBar.js"></script>
+		<script type="module" src="/src/js/main.js"></script>
 	</body>
 </html>
