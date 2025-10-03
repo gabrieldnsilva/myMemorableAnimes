@@ -56,7 +56,6 @@ function updateAnimeContent(animeKey) {
 
 // --- Inicialização ---
 document.addEventListener("DOMContentLoaded", () => {
-	// Init modules that don't depend on carousel
 	if (window.M) {
 		// sidenav
 		const sidenav = document.querySelectorAll(".sidenav");
@@ -77,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			numVisible: 5,
 			indicators: true,
 			noWrap: false,
+			ariaLabel: "Carrossel de Animes",
 			onCycleTo: (activeItem) => {
 				if (
 					carouselBox &&
@@ -90,15 +90,31 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 
 		// Add keyboard navigation for accessibility
-		document.addEventListener("keydown", (e) => {
-			if (e.key === "ArrowLeft") {
-				e.preventDefault();
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "ArrowLeft") {
+				event.preventDefault();
 				instances.prev();
-			} else if (e.key === "ArrowRight") {
-				e.preventDefault();
+			} else if (event.key === "ArrowRight") {
+				event.preventDefault();
 				instances.next();
 			}
 		});
+
+		// Improve accessibility for indicators
+		const indicators = carouselElem.querySelector(".indicators");
+		if (indicators) {
+			indicators.setAttribute(
+				"aria-label",
+				"Indicadores do Carrossel de Animes"
+			);
+			const indicatorButtons = indicators.querySelectorAll("li");
+			indicatorButtons.forEach((button, index) => {
+				button.setAttribute(
+					"aria-label",
+					`Ir para o anime ${index + 1}`
+				);
+			});
+		}
 
 		// Ensure first item shown on load after images are ready to avoid layout shift
 		const firstItem = carouselElem.querySelector(
@@ -106,7 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		);
 
 		if (firstItem) {
-			// collect all carousel images
 			const imgs = Array.from(carouselElem.querySelectorAll("img"));
 
 			// helper to run when all images are loaded (or errored)
@@ -146,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					} else if (instances && instances._setup) {
 						instances._setup();
 					}
-				} catch (e) {
+				} catch (event) {
 					// fallback: dispatch resize so layout engines recalc
 					window.dispatchEvent(new Event("resize"));
 				}

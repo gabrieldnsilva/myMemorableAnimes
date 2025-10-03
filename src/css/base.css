@@ -99,6 +99,13 @@ header {
 	background-color: rgba(255, 61, 0, 0.1);
 }
 
+nav {
+	display: none;
+	color: #fff;
+	background-color: #ee6e73;
+	width: 100%;
+}
+
 .nav {
 	display: none; /* Escondido para futura implementação do menu */
 }
@@ -263,11 +270,6 @@ header {
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 	object-fit: cover;
 	object-position: center;
-}
-
-/* Hint the browser for smoother transforms */
-.carousel .carousel-item {
-	will-change: transform, opacity;
 }
 
 /* Accessibility helper: visually hidden but available to screen readers */

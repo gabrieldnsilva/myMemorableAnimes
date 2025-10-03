@@ -76,7 +76,13 @@
 	}
 
 	.carousel {
+		width: 100%;
 		height: 600px;
+	}
+
+	.carousel .carousel-item {
+		width: 300px;
+		top: -100px;
 	}
 
 	.sci {
@@ -89,6 +95,11 @@
 @media (min-width: 1024px) {
 	.sidenav-trigger {
 		display: none;
+	}
+
+	nav.nav-wrapper {
+		display: block;
+		width: 0%;
 	}
 
 	.nav {
@@ -133,8 +144,8 @@
 
 	.banner .carousel-box {
 		order: 2;
-		max-width: none;
-		min-width: 600px;
+		min-width: 1024px;
+		max-width: 1400px;
 	}
 
 	.play {

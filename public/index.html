@@ -55,9 +55,10 @@
 	</head>
 	<body>
 		<a
-			href="#main-content"
+			href="#main"
 			class="skip-link"
 			aria-label="Link de pular para o conteúdo principal"
+			tabindex="0"
 			>Pular para o conteúdo principal</a
 		>
 		<header id="main-header" class="navbar" role="banner">
@@ -79,39 +80,37 @@
 				/>
 			</a>
 
-			<ul
-				class="nav hide-on-med-and-down"
-				role="navigation"
-				aria-label="Menu de Navegação"
-			>
-				<li><a href="#" aria-label="Início">Início</a></li>
-				<li><a href="#" aria-label="Sobre">Sobre</a></li>
-				<li>
-					<a
-						href="#"
-						id="contact-open"
-						aria-haspopup="dialog"
-						aria-controls="contact-modal"
-						aria-label="Abrir Contato"
-						>Contato</a
-					>
-				</li>
-				<li>
-					<a
-						href="#"
-						id="login-open"
-						aria-haspopup="dialog"
-						aria-controls="login-modal"
-						aria-label="Fazer Login"
-						>Login</a
-					>
-				</li>
-			</ul>
+			<nav aria-label="Menu de Navegação Principal" class="nav-wrapper">
+				<ul class="nav hide-on-med-and-down">
+					<li><a href="#" aria-label="Início">Início</a></li>
+					<li><a href="#" aria-label="Sobre">Sobre</a></li>
+					<li>
+						<a
+							href="#"
+							id="contact-open"
+							aria-haspopup="dialog"
+							aria-controls="contact-modal"
+							aria-label="Abrir Contato"
+							>Contato</a
+						>
+					</li>
+					<li>
+						<a
+							href="#"
+							id="login-open"
+							aria-haspopup="dialog"
+							aria-controls="login-modal"
+							aria-label="Fazer Login"
+							>Login</a
+						>
+					</li>
+				</ul>
+			</nav>
 
 			<ul
 				class="sidenav"
 				id="mobile-nav"
-				role="menu"
+				role="navigation"
 				aria-label="Menu de Navegação Mobile"
 			>
 				<li>
@@ -158,12 +157,13 @@
 			<div
 				class="carousel-box"
 				aria-live="polite"
-				aria-label="Carrossel de Animes"
+				aria-label="Caixa de Carrosel de Animes"
 			>
 				<div
 					class="carousel"
 					role="list"
 					aria-roledescription="carousel"
+					aria-label="Carrossel de Animes"
 				>
 					<div
 						class="carousel-item"
@@ -188,6 +188,7 @@
 							alt="Demon Slayer Poster"
 							width="266"
 							height="400"
+							fetchpriority="high"
 						/>
 					</div>
 					<div
@@ -200,6 +201,7 @@
 							alt="Jujutsu Kaisen Poster"
 							width="263"
 							height="400"
+							fetchpriority="high"
 						/>
 					</div>
 					<div
@@ -212,6 +214,7 @@
 							alt="Attack on Titan Poster"
 							width="266"
 							height="400"
+							fetchpriority="high"
 						/>
 					</div>
 					<div
@@ -224,6 +227,7 @@
 							alt="Sousou no Frieren Poster"
 							width="283"
 							height="400"
+							fetchpriority="high"
 						/>
 					</div>
 				</div>
@@ -286,10 +290,11 @@
 			aria-modal="true"
 			aria-hidden="true"
 			aria-labelledby="contact-title"
+			aria-describedby="contact-description"
 		>
 			<div class="modal-content">
 				<h4 id="contact-title">Entre em Contato</h4>
-				<p>
+				<p id="contact-description">
 					Tem alguma dúvida ou sugestão? Preencha o formulário abaixo.
 				</p>
 				<form id="contact-form" novalidate>
