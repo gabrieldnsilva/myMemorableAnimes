@@ -6,6 +6,13 @@
 		align-items: center;
 	}
 
+	.sidenav-trigger {
+		top: 25px;
+		right: 25px;
+		font-size: 2.5em;
+		color: #fff;
+	}
+
 	.sidenav {
 		background-image: -webkit-linear-gradient(
 			60deg,
@@ -14,14 +21,16 @@
 		);
 	}
 
-	.logo {
-		letter-spacing: 1px;
-		font-weight: 800;
+	.logo img {
+		width: 220px;
+		left: 0;
+		top: -30px;
 	}
 
 	.search {
 		display: flex;
 		position: absolute;
+		font-size: 1.25em;
 		width: 200px;
 		right: 70px;
 		top: 50px;
@@ -67,7 +76,7 @@
 	}
 
 	.carousel {
-		height: 450px;
+		height: 600px;
 	}
 
 	.sci {
@@ -86,6 +95,7 @@
 		font-size: 1.5em;
 		display: flex;
 		position: absolute;
+		top: 5dvh;
 		left: 50%;
 		transform: translateX(-50%);
 		list-style: none;
@@ -134,8 +144,8 @@
 }
 
 @media (min-width: 1200px) {
-	.banner .carousel-box {
-		min-width: 600px;
+	.nav {
+		top: 5dvh;
 	}
 
 	.carousel {

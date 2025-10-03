@@ -1,24 +1,15 @@
-// Importa o objeto com os dados dos animes.
-import { animesData } from "../data/animeData.js";
-
+import { animesData } from "./../data/animeData.js";
 import { changeBackground } from "./modules/carousel.js";
+import { initAuth } from "./modules/auth.js";
+import { initContactForm } from "./modules/form.js";
 
-/**
- * Função principal que atualiza o conteúdo da página com base no anime selecionado
- * @param {string} animeKey - A chave do anime no objeto animesData
- */
+/** updateAnimeContent as before, but use changeBackground for consistency */
 function updateAnimeContent(animeKey) {
 	const anime = animesData[animeKey];
-	if (!anime) {
-		console.error(`Anime com a chave "${animeKey}" não encontrato.`);
-		return;
-	}
+	if (!anime) return;
 
 	const container = document.getElementById("anime-content-container");
-	container.innerHTML = ""; // Limpa o conteúdo anterior
-
-	// --- Criação dos elementos do DOM ---
-	// createElement e textContent em vez de innerHTML para boa prática de segurança
+	container.innerHTML = "";
 
 	const contentDiv = document.createElement("div");
 	contentDiv.className = `content ${animeKey}`;
@@ -26,8 +17,8 @@ function updateAnimeContent(animeKey) {
 	const titleImage = document.createElement("img");
 	titleImage.className = "anime-title";
 	titleImage.src = anime.titleImage;
-	titleImage.alt = `${animeKey.replace(/([A-Z])/g, " $1")} Title`; // Formata o alt text
-	titleImage.width = 280; // Atributos para evitar Layout Shift
+	titleImage.alt = `${animeKey.replace(/([A-Z])/g, " $1")} Title`;
+	titleImage.width = 280;
 	titleImage.height = 120;
 
 	const details = document.createElement("h4");
@@ -42,7 +33,7 @@ function updateAnimeContent(animeKey) {
 	const synopsisLabel = document.createElement("span");
 	synopsisLabel.textContent = "Sinopse: ";
 	synopsis.appendChild(synopsisLabel);
-	synopsis.append(anime.synopsis); // Adiciona o texto da sinopse (segurança)
+	synopsis.append(anime.synopsis);
 
 	const buttonDiv = document.createElement("div");
 	buttonDiv.className = "button";
@@ -51,51 +42,115 @@ function updateAnimeContent(animeKey) {
         <a href="#" class="add-to-list" aria-label="Adicionar à Lista"><i class="ri-add-line"></i>Adicionar à Lista</a>
     `;
 
-	// Adiciona todos os elementos criados ao container principal
 	contentDiv.appendChild(titleImage);
 	contentDiv.appendChild(details);
 	contentDiv.appendChild(synopsis);
 	contentDiv.appendChild(buttonDiv);
 	container.appendChild(contentDiv);
 
-	// Isso garante que a animação de transição (transform: scale) funcione corretamente.
-	requestAnimationFrame(() => {
-		contentDiv.classList.add("active");
-	});
+	requestAnimationFrame(() => contentDiv.classList.add("active"));
 
-	// Atualiza a imagem de fundo do banner
-	const banner = document.querySelector(".banner");
-	banner.style.backgroundImage = `url('/src/assets/images/backgrounds/${anime.background}')`;
+	// use changeBackground module for consistency with other code
+	changeBackground(anime.background, animeKey);
 }
 
-/**
- * Função que inicializa todos os componentes da página quando o DOM estiver pronto
- */
-function initializeApp() {
-	// Inicializa o Sidenav (menu sanduíche)
-	const sidenav = document.querySelectorAll(".sidenav");
-	M.Sidenav.init(sidenav);
+// --- Inicialização ---
+document.addEventListener("DOMContentLoaded", () => {
+	// Init modules that don't depend on carousel
+	if (window.M) {
+		// sidenav
+		const sidenav = document.querySelectorAll(".sidenav");
+		M.Sidenav.init(sidenav, { edge: "left" });
+	}
 
-	// Inicializa o Carousel
-	const carouselElem = document.querySelectorAll(".carousel");
+	// Init auth/form modules
+	initAuth();
+	initContactForm();
 
-	// onCycleTo é chamado toda vez que um item do carrossel é selecionado
-	M.Carousel.init(carouselElem, {
-		padding: 20,
-		numVisible: 5,
-		indicators: true,
-		duration: 300,
-		noWrap: false,
+	// Carousel init
+	const carouselElem = document.querySelector(".carousel");
+	const carouselBox = document.querySelector(".carousel-box");
 
-		// Função chamada quando o carrossel muda de item
-		onCycleTo: (activeItem) => {
-			const animeKey = activeItem.dataset.animekey;
-			if (animeKey) {
-				updateAnimeContent(animeKey);
+	if (carouselElem && window.M) {
+		const instances = M.Carousel.init(carouselElem, {
+			padding: 20,
+			numVisible: 5,
+			indicators: true,
+			noWrap: false,
+			onCycleTo: (activeItem) => {
+				if (
+					carouselBox &&
+					!carouselBox.classList.contains("initialized")
+				) {
+					carouselBox.classList.add("initialized");
+				}
+				const animeKey = activeItem.dataset.animekey;
+				if (animeKey) updateAnimeContent(animeKey);
+			},
+		});
+
+		// Add keyboard navigation for accessibility
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "ArrowLeft") {
+				e.preventDefault();
+				instances.prev();
+			} else if (e.key === "ArrowRight") {
+				e.preventDefault();
+				instances.next();
 			}
-		},
-	});
-}
-// --- Inicialização da Aplicação ---
-// Usamos DOMContentLoaded para garantir que o script só rode após o HTML estar pronto.
-document.addEventListener("DOMContentLoaded", initializeApp);
+		});
+
+		// Ensure first item shown on load after images are ready to avoid layout shift
+		const firstItem = carouselElem.querySelector(
+			".carousel-item[data-animekey]"
+		);
+
+		if (firstItem) {
+			// collect all carousel images
+			const imgs = Array.from(carouselElem.querySelectorAll("img"));
+
+			// helper to run when all images are loaded (or errored)
+			const whenImagesReady = (images, cb) => {
+				let remaining = images.length;
+				if (!remaining) return cb();
+				images.forEach((img) => {
+					if (img.complete) {
+						remaining -= 1;
+						if (!remaining) cb();
+					} else {
+						img.addEventListener("load", () => {
+							remaining -= 1;
+							if (!remaining) cb();
+						});
+						img.addEventListener("error", () => {
+							remaining -= 1;
+							if (!remaining) cb();
+						});
+					}
+				});
+			};
+
+			whenImagesReady(imgs, () => {
+				// mark carousel box initialized (fade in without layout jump)
+				if (carouselBox) carouselBox.classList.add("initialized");
+
+				// update content for first slide
+				const firstKey = firstItem.dataset.animekey;
+				if (firstKey) updateAnimeContent(firstKey);
+
+				// Force a layout recalculation in Materialize to ensure centering
+				try {
+					// instances is a NodeList or single instance depending on selection
+					if (instances && instances.toArray) {
+						instances.toArray().forEach((i) => i._setup());
+					} else if (instances && instances._setup) {
+						instances._setup();
+					}
+				} catch (e) {
+					// fallback: dispatch resize so layout engines recalc
+					window.dispatchEvent(new Event("resize"));
+				}
+			});
+		}
+	}
+});

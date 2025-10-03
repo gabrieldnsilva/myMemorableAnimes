@@ -14,56 +14,103 @@
 		<meta name="author" content="Gabriel Danilo" />
 		<link rel="icon" href="/src/assets/icons/fav-icon.webp" />
 
+		<!-- SEO / Social -->
+		<meta property="og:title" content="myMemorableAnimes" />
+		<meta
+			property="og:description"
+			content="Catálogo de animes recomendado por Gabriel Danilo."
+		/>
+		<meta property="og:type" content="website" />
+		<link rel="canonical" href="https://seu-dominio-exemplo.com/" />
+
+		<!-- Preconnect / Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
 			rel="stylesheet"
 		/>
+
+		<!-- Preload critical image to reduce CLS / LCP issues -->
 		<link
-			href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-			rel="stylesheet"
+			rel="preload"
+			href="/src/assets/images/posters/narutoShippuden-poster.webp"
+			as="image"
 		/>
+
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
 		/>
 		<link rel="stylesheet" href="/src/css/base.css" />
 		<link rel="stylesheet" href="/src/css/responsive.css" />
-
-		<title>Meus Animes Memoráveis</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+			rel="stylesheet"
+		/>
+		<title>Meus Animes</title>
 	</head>
 	<body>
-		<header id="main-header" class="navbar">
+		<a
+			href="#main-content"
+			class="skip-link"
+			aria-label="Link de pular para o conteúdo principal"
+			>Pular para o conteúdo principal</a
+		>
+		<header id="main-header" class="navbar" role="banner">
 			<a
 				href="#"
 				class="sidenav-trigger"
 				data-target="mobile-nav"
 				aria-label="Menu de Navegação"
+				aria-controls="mobile-nav"
+				aria-expanded="false"
 			>
-				<i class="ri-menu-line"></i>
+				<i class="ri-menu-line" aria-hidden="true"></i>
 			</a>
 
-			<a href="#" class="logo">Animes</a>
+			<a href="#" class="logo" aria-label="Meu site de animes">
+				<img
+					src="/src/assets/icons/fav-icon.webp"
+					alt="Logo MeusAnimes"
+				/>
+			</a>
 
-			<ul class="nav hide-on-med-and-down">
+			<ul
+				class="nav hide-on-med-and-down"
+				role="navigation"
+				aria-label="Menu de Navegação"
+			>
+				<li><a href="#" aria-label="Início">Início</a></li>
+				<li><a href="#" aria-label="Sobre">Sobre</a></li>
 				<li>
-					<a href="#" aria-label="Início">Início</a>
+					<a
+						href="#"
+						id="contact-open"
+						aria-haspopup="dialog"
+						aria-controls="contact-modal"
+						aria-label="Abrir Contato"
+						>Contato</a
+					>
 				</li>
 				<li>
-					<a href="#" aria-label="Sobre">Sobre</a>
-				</li>
-				<li>
-					<a href="#" aria-label="Minha Lista">Minha Lista</a>
-				</li>
-				<li>
-					<a href="#" aria-label="Contato">Contato</a>
-				</li>
-				<li>
-					<a href="#" aria-label="Login">Login</a>
+					<a
+						href="#"
+						id="login-open"
+						aria-haspopup="dialog"
+						aria-controls="login-modal"
+						aria-label="Fazer Login"
+						>Login</a
+					>
 				</li>
 			</ul>
-			<ul class="sidenav" id="mobile-nav">
+
+			<ul
+				class="sidenav"
+				id="mobile-nav"
+				role="menu"
+				aria-label="Menu de Navegação Mobile"
+			>
 				<li>
 					<a href="#" aria-label="Início"
 						><i class="ri-home-line"></i>Início</a
@@ -75,100 +122,252 @@
 					>
 				</li>
 				<li>
-					<a href="#" aria-label="Minha Lista"
-						><i class="ri-list-view"></i>Minha Lista</a
-					>
-				</li>
-				<li>
-					<a href="#" aria-label="Contato"
+					<a
+						href="#"
+						id="contact-open-mobile"
+						aria-haspopup="dialog"
+						aria-controls="contact-modal"
+						aria-label="Abrir Contato"
 						><i class="ri-mail-line"></i>Contato</a
 					>
 				</li>
 				<li>
-					<a href="#" aria-label="Login"
+					<a
+						href="#"
+						id="login-open-mobile"
+						aria-haspopup="dialog"
+						aria-controls="login-modal"
+						aria-label="Fazer Login"
 						><i class="ri-login-circle-line"></i>Login</a
 					>
 				</li>
 			</ul>
-			<div class="search hide-on-med-and-down">
-				<input type="text" placeholder="Search..." alt="Search input" />
-				<i class="ri-search-line"></i>
-			</div>
 		</header>
 
-		<main class="banner">
-			<div id="anime-content-container"></div>
+		<main id="main" class="banner" role="main">
+			<div
+				id="anime-content-container"
+				tabindex="-1"
+				aria-label="Conteúdo dos Animes"
+			></div>
 
 			<!-- Carousel Section -->
-			<div class="carousel-box">
-				<div class="carousel">
-					<div class="carousel-item" data-animekey="narutoShippuden">
+			<div
+				class="carousel-box"
+				aria-live="polite"
+				aria-label="Carrossel de Animes"
+			>
+				<div
+					class="carousel"
+					role="list"
+					aria-roledescription="carousel"
+				>
+					<div
+						class="carousel-item"
+						data-animekey="narutoShippuden"
+						role="listitem"
+					>
 						<img
 							src="/src/assets/images/posters/narutoShippuden-poster.webp"
 							alt="Naruto Shippuden Poster"
+							width="267"
+							height="400"
 							fetchpriority="high"
 						/>
 					</div>
-					<div class="carousel-item" data-animekey="demonSlayer">
+					<div
+						class="carousel-item"
+						data-animekey="demonSlayer"
+						role="listitem"
+					>
 						<img
 							src="/src/assets/images/posters/demonSlayer-poster.webp"
 							alt="Demon Slayer Poster"
+							width="266"
+							height="400"
 						/>
 					</div>
-					<div class="carousel-item" data-animekey="jujutsuKaisen">
+					<div
+						class="carousel-item"
+						data-animekey="jujutsuKaisen"
+						role="listitem"
+					>
 						<img
 							src="/src/assets/images/posters/jujutsuKaisen-poster.webp"
 							alt="Jujutsu Kaisen Poster"
+							width="263"
+							height="400"
 						/>
 					</div>
-					<div class="carousel-item" data-animekey="attackOnTitan">
+					<div
+						class="carousel-item"
+						data-animekey="attackOnTitan"
+						role="listitem"
+					>
 						<img
 							src="/src/assets/images/posters/attackOnTitan-poster.webp"
 							alt="Attack on Titan Poster"
+							width="266"
+							height="400"
 						/>
 					</div>
-					<div class="carousel-item" data-animekey="sousouNoFrieren">
+					<div
+						class="carousel-item"
+						data-animekey="sousouNoFrieren"
+						role="listitem"
+					>
 						<img
 							src="/src/assets/images/posters/sousouNoFrieren-poster.webp"
 							alt="Sousou no Frieren Poster"
+							width="283"
+							height="400"
 						/>
 					</div>
 				</div>
 			</div>
-
-			<!-- Social Media Icons -->
-			<ul class="sci">
-				<li>
-					<a href="#" aria-label="Visite nosso Facebook"
-						><i class="ri-facebook-circle-fill"></i
-					></a>
-				</li>
-				<li>
-					<a href="#" aria-label="Visite nosso Instagram"
-						><i class="ri-instagram-fill"></i
-					></a>
-				</li>
-				<li>
-					<a href="#" aria-label="Visite nosso Twitter"
-						><i class="ri-twitter-x-fill"></i
-					></a>
-				</li>
-			</ul>
 		</main>
 
-		<footer class="footer">
+		<footer class="footer" role="contentinfo">
 			<p>&copy; 2025 myMemorableAnimes. Todos os direitos reservados.</p>
 		</footer>
 
+		<!-- Login modal -->
+		<div
+			id="login-modal"
+			class="modal"
+			role="dialog"
+			aria-modal="true"
+			aria-hidden="true"
+			aria-labelledby="login-title"
+		>
+			<div class="modal-content">
+				<h4 id="login-title" aria-label="Título do modal de login">
+					Entrar
+				</h4>
+				<form id="login-form" novalidate>
+					<div class="input-field">
+						<i class="ri-mail-line prefix"></i>
+						<label for="login-email" aria-label="Email"
+							>Email</label
+						>
+						<input id="login-email" type="email" required />
+					</div>
+					<div class="input-field">
+						<i class="ri-lock-password-line prefix"></i>
+						<label for="login-password" aria-label="Senha"
+							>Senha</label
+						>
+						<input
+							id="login-password"
+							type="password"
+							aria-label="Senha"
+							required
+						/>
+					</div>
+					<div class="modal-footer-custom">
+						<button
+							class="btn waves-effect waves-light btn-large"
+							type="submit"
+							name="action"
+							aria-label="Enviar formulário de login"
+						>
+							ENVIAR
+							<i class="ri-send-plane-fill right"></i>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Contact modal -->
+		<div
+			id="contact-modal"
+			class="modal"
+			role="dialog"
+			aria-modal="true"
+			aria-hidden="true"
+			aria-labelledby="contact-title"
+		>
+			<div class="modal-content">
+				<h4 id="contact-title">Entre em Contato</h4>
+				<p>
+					Tem alguma dúvida ou sugestão? Preencha o formulário abaixo.
+				</p>
+				<form id="contact-form" novalidate>
+					<div class="input-field col s12">
+						<i class="ri-user-line prefix"></i>
+						<input
+							id="name"
+							type="text"
+							class="validate"
+							aria-label="Nome Completo"
+							required
+						/>
+						<label for="name">Nome Completo</label>
+					</div>
+
+					<div class="input-field col s12">
+						<i class="ri-mail-line prefix"></i>
+						<input
+							id="email"
+							type="email"
+							class="validate"
+							aria-label="Email"
+							required
+						/>
+						<label for="email">Email</label>
+					</div>
+
+					<div class="input-field col s12">
+						<i class="ri-file-list-2-line prefix"></i>
+						<input
+							id="cpf"
+							type="text"
+							class="validate"
+							aria-label="CPF"
+							required
+							maxlength="14"
+							placeholder="000.000.000-00"
+						/>
+						<label for="cpf">CPF</label>
+					</div>
+
+					<div class="input-field col s12">
+						<i class="ri-message-2-line prefix"></i>
+						<textarea
+							id="message"
+							class="materialize-textarea"
+							aria-label="Sua Mensagem"
+							required
+						></textarea>
+						<label for="message">Sua Mensagem</label>
+					</div>
+
+					<div class="modal-footer-custom">
+						<button
+							class="btn waves-effect waves-light btn-large"
+							aria-label="Enviar Formulário de Contato"
+							type="submit"
+							name="action"
+						>
+							ENVIAR
+							<i class="ri-send-plane-fill right"></i>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
 		<script
-			src="https://code.jquery.com/jquery-3.7.1.js"
-			integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+			src="https://code.jquery.com/jquery-3.7.1.min.js"
 			crossorigin="anonymous"
+			defer
 		></script>
 		<script
 			defer
 			src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
 		></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script type="module" src="/src/js/main.js"></script>
 	</body>
 </html>
