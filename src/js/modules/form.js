@@ -29,14 +29,14 @@ export function initContactForm() {
 
 	// 4. Listeners para abrir o modal a partir dos links
 	if (contactOpen) {
-		contactOpen.addEventListener("click", (e) => {
-			e.preventDefault();
+		contactOpen.addEventListener("click", (event) => {
+			event.preventDefault();
 			openContact();
 		});
 	}
 	if (contactOpenMobile) {
-		contactOpenMobile.addEventListener("click", (e) => {
-			e.preventDefault();
+		contactOpenMobile.addEventListener("click", (event) => {
+			event.preventDefault();
 			const sidenavInstance = M.Sidenav.getInstance(
 				document.getElementById("mobile-nav")
 			);
@@ -55,8 +55,8 @@ export function initContactForm() {
 	});
 
 	// 6. Lógica do Modelo (Aprimorada): Listener de submit com SweetAlert2
-	form.addEventListener("submit", (e) => {
-		e.preventDefault();
+	form.addEventListener("submit", (event) => {
+		event.preventDefault();
 		const name = form.name.value.trim();
 		const email = form.email.value.trim();
 		const cpf = form.cpf.value.trim();
@@ -122,8 +122,8 @@ export function initContactForm() {
 
 	// 7. Lógica Original: Função de validação de CPF (agora interna ao módulo)
 	function validateCPF(cpfString) {
-		const cpf = cpfString.replace(/\D/g, "");
-		if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+		const cpf = cpfString.replace(/\D/g, ""); // Regex para remover não dígitos
+		if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false; // Regex para CPFs inválidos
 
 		const calc = (digits) => {
 			let sum = 0;
