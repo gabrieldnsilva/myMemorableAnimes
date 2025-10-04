@@ -48,6 +48,12 @@ header {
 	flex-direction: column;
 }
 
+header,
+.navbar,
+.logo {
+	z-index: 1000;
+}
+
 .logo img {
 	display: flex;
 	position: absolute;
@@ -71,9 +77,25 @@ header {
 /* Estilos para a Sidenav (Menu Mobile) */
 .sidenav {
 	background-image: -webkit-linear-gradient(60deg, #fff 50dvw, #111 50dvw);
+	top: 0;
+	left: 0;
+	height: 100vh !important;
 	width: 80dvw;
-	opacity: 0.9;
-	transition: 0.2s ease;
+	max-width: 360px;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	z-index: 2200 !important;
+	pointer-events: auto;
+}
+
+.sidenav-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 2000 !important;
+	pointer-events: auto; /* allow overlay clicks to close the menu */
 }
 
 /* Estilos dentro do menu */
@@ -82,6 +104,7 @@ header {
 	font-size: 1.3em;
 	font-weight: 600;
 	padding: 0 25px;
+	pointer-events: auto;
 }
 
 /* Ícones dentro do links do menu */

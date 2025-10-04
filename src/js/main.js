@@ -3,7 +3,10 @@ import { changeBackground } from "./modules/carousel.js";
 import { initAuth } from "./modules/auth.js";
 import { initContactForm } from "./modules/form.js";
 
-/** updateAnimeContent as before, but use changeBackground for consistency */
+/**
+ * Updates the content displayed for a specific anime.
+ * @param {string} animeKey
+ */
 function updateAnimeContent(animeKey) {
 	const anime = animesData[animeKey];
 	if (!anime) return;
@@ -54,19 +57,114 @@ function updateAnimeContent(animeKey) {
 	changeBackground(anime.background, animeKey);
 }
 
-// --- Inicialização ---
+// --- Event Listener Init ---
 document.addEventListener("DOMContentLoaded", () => {
-	if (window.M) {
-		// sidenav
-		const sidenav = document.querySelectorAll(".sidenav");
-		M.Sidenav.init(sidenav, { edge: "left" });
+	const mobileNavEl = document.getElementById("mobile-nav");
+	if (mobileNavEl && mobileNavEl.parentElement !== document.body) {
+		document.body.appendChild(mobileNavEl);
 	}
+
+	// --- Sidenav: init each element once, with ARIA callbacks ---
+	const sidenavEls = Array.from(document.querySelectorAll(".sidenav"));
+	const sidenavTrigger = document.querySelector(".sidenav-trigger");
+
+	const sidenavOptions = {
+		edge: "left",
+		onOpenStart: () => {
+			if (sidenavTrigger)
+				sidenavTrigger.setAttribute("aria-expanded", "true");
+
+			// ensure overlay is below the sidenav (overlay is added dynamically by Materialize -> use rAF)
+			requestAnimationFrame(() => {
+				const overlay = document.querySelector(".sidenav-overlay");
+				const sidenavEl = document.querySelector(".sidenav");
+				if (overlay && sidenavEl) {
+					overlay.style.zIndex = "2000";
+					overlay.style.pointerEvents = "auto";
+					sidenavEl.style.zIndex = "2200";
+					sidenavEl.style.pointerEvents = "auto";
+				}
+			});
+		},
+		onCloseEnd: () => {
+			if (sidenavTrigger)
+				sidenavTrigger.setAttribute("aria-expanded", "false");
+		},
+	};
+
+	// Initialize each sidenav element individually
+	const sidenavInstances = sidenavEls.map((el) =>
+		M.Sidenav.init(el, sidenavOptions)
+	);
+
+	// --- Delegated click handler for modal triggers (desktop + mobile) ---
+	document.body.addEventListener("click", (event) => {
+		const loginTrigger = event.target.closest(
+			"#login-open, #login-open-mobile"
+		);
+		const contactTrigger = event.target.closest(
+			"#contact-open, #contact-open-mobile"
+		);
+
+		// Helper to close mobile sidenav if trigger came from mobile menu
+		const closeMobileIfNeeded = (triggerEl) => {
+			if (!triggerEl) return;
+			if (triggerEl.id && triggerEl.id.endsWith("-mobile")) {
+				const mobileNavEl = document.getElementById("mobile-nav");
+				const mobileSidenav =
+					mobileNavEl && M.Sidenav.getInstance(mobileNavEl);
+				if (
+					mobileSidenav &&
+					typeof mobileSidenav.close === "function"
+				) {
+					mobileSidenav.close();
+				}
+			}
+		};
+
+		if (loginTrigger) {
+			event.preventDefault();
+			closeMobileIfNeeded(loginTrigger);
+
+			const loginModalEl = document.getElementById("login-modal");
+			let loginModalInst =
+				loginModalEl && M.Modal.getInstance(loginModalEl);
+			if (!loginModalInst && loginModalEl)
+				loginModalInst = M.Modal.init(loginModalEl);
+			if (loginModalInst) {
+				loginModalInst.open();
+				const emailInput = document.getElementById("login-email");
+				if (emailInput) emailInput.focus();
+			}
+			return;
+		}
+
+		if (contactTrigger) {
+			event.preventDefault();
+			closeMobileIfNeeded(contactTrigger);
+
+			const contactModalEl = document.getElementById("contact-modal");
+			let contactModalInst =
+				contactModalEl && M.Modal.getInstance(contactModalEl);
+			if (!contactModalInst && contactModalEl)
+				contactModalInst = M.Modal.init(contactModalEl);
+			if (contactModalInst) {
+				contactModalInst.open();
+				const nameInput = document.getElementById("name");
+				if (nameInput) nameInput.focus();
+			}
+			return;
+		}
+	});
 
 	// Init auth/form modules
 	initAuth();
 	initContactForm();
 
-	// Carousel init
+	/**
+	 * Carousel init
+	 * This section initializes the carousel and sets up accessibility features.
+	 */
 	const carouselElem = document.querySelector(".carousel");
 	const carouselBox = document.querySelector(".carousel-box");
 

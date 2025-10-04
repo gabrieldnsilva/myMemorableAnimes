@@ -1,7 +1,6 @@
 export function initContactForm() {
 	const contactModalEl = document.getElementById("contact-modal");
 	const contactOpen = document.getElementById("contact-open");
-	const contactOpenMobile = document.getElementById("contact-open-mobile");
 	const form = document.getElementById("contact-form");
 	const cpfInput = document.getElementById("cpf");
 
@@ -31,16 +30,6 @@ export function initContactForm() {
 	if (contactOpen) {
 		contactOpen.addEventListener("click", (event) => {
 			event.preventDefault();
-			openContact();
-		});
-	}
-	if (contactOpenMobile) {
-		contactOpenMobile.addEventListener("click", (event) => {
-			event.preventDefault();
-			const sidenavInstance = M.Sidenav.getInstance(
-				document.getElementById("mobile-nav")
-			);
-			sidenavInstance.close(); // Fecha o menu antes de abrir o modal
 			openContact();
 		});
 	}

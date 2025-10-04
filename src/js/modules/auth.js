@@ -2,8 +2,11 @@ export function initAuth() {
 	const loginModalEl = document.getElementById("login-modal");
 	const loginForm = document.getElementById("login-form");
 	const loginOpen = document.getElementById("login-open");
-	const loginOpenMobile = document.getElementById("login-open-mobile");
 
+	/**
+	 * Instância do Modal
+	 * Verifica se o modal já foi inicializado para evitar múltiplas instâncias
+	 */
 	let modalInstance = null;
 	if (window.M && loginModalEl) {
 		modalInstance = M.Modal.init(loginModalEl, {
@@ -14,19 +17,16 @@ export function initAuth() {
 		});
 	}
 
+	// Função para abrir o modal e gerenciar o foco
 	function openLogin() {
 		modalInstance && modalInstance.open();
 		const emailInput = document.getElementById("login-email");
 		if (emailInput) emailInput.focus();
 	}
 
+	// Desktop login link
 	if (loginOpen)
 		loginOpen.addEventListener("click", (event) => {
-			event.preventDefault();
-			openLogin();
-		});
-	if (loginOpenMobile)
-		loginOpenMobile.addEventListener("click", (event) => {
 			event.preventDefault();
 			openLogin();
 		});
