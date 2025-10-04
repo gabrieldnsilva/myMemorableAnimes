@@ -96,10 +96,8 @@ export const animesData = {
 - Keyboard: carousel responde às setas e elementos focáveis possuem `tabindex` quando necessário.
 - Se estiver adicionando imagens ao README, use `alt` e, quando relevante, legendas em português.
 
-## Telas e Demonstrações
-
-### Demonstração do projeto
-![Demonstração do projeto](/docs/images/gif/demo-myAnimes.gif)
+## Preview das Telas (Desktop)
+clear
 
 ### Conteúdo dinâmico
 ![Conteúdo dinâmico](/docs/images/anime-content.png)
