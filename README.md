@@ -4,12 +4,6 @@
 
 Um catálogo de animes simples e bonito, feito com HTML, CSS e JavaScript vanilla. O objetivo é apresentar títulos, sinopses e uma experiência interativa com carrossel, modais para login e contato, priorizando performance, acessibilidade e design temático (anime).
 
-Repositório: [https://github.com/gabrieldnsilva/myMemorableAnimes](https://github.com/gabrieldnsilva/myMemorableAnimes)
-
-## Demonstração
-
-Rode localmente (ver seção "Como rodar") e abra `http://localhost:8000/public/`.
-
 ## Principais features
 
 - SPA estático (vanilla JS) com renderização dinâmica do conteúdo a partir de `src/data/animeData.js`.
@@ -97,18 +91,21 @@ export const animesData = {
 - Se estiver adicionando imagens ao README, use `alt` e, quando relevante, legendas em português.
 
 ## Preview das Telas (Desktop)
-clear
 
 ### Conteúdo dinâmico
+
 ![Conteúdo dinâmico](/docs/images/anime-content.png)
 
 ### Carrossel de animes
+
 ![Carrossel de animes](/docs/images/carousel-items.png)
 
 ### Modal de login
+
 ![Modal de login](/docs/images/login-modal.png)
 
 ### Modal de contato
+
 ![Modal de contato](/docs/images/contact-modal.png)
 
 ## Problemas conhecidos e notas técnicas
