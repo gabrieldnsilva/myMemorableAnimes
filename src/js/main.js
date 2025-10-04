@@ -1,4 +1,4 @@
-import { animesData } from "./../data/animeData.js";
+import { animesData } from "../data/animeData.js";
 import { changeBackground } from "./modules/carousel.js";
 import { initAuth } from "./modules/auth.js";
 import { initContactForm } from "./modules/form.js";
