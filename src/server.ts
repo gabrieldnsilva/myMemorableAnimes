@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { testConnection, syncDatabase } from "./config/database";
 import authRoutes from "./routes/authRoutes";
+import profileRoutes from "./routes/profileRoutes";
 
 // Configuração de variáveis de ambiente
 dotenv.config();
@@ -56,6 +57,9 @@ app.use("/src/assets", express.static(path.join(__dirname, "../src/assets")));
 
 // Rotas de autenticação
 app.use("/api/auth", authRoutes);
+
+// Rotas de perfil
+app.use("/api/profile", profileRoutes);
 
 // Rota de teste (placeholder)
 app.get("/", (_req: Request, res: Response) => {
