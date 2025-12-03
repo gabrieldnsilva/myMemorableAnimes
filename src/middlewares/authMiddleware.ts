@@ -2,6 +2,8 @@ import { Response, NextFunction } from "express";
 import AuthService from "../services/AuthService";
 import { AuthenticatedRequest } from "../types/auth";
 
+export type { AuthenticatedRequest };
+
 /**
  * Middleware to verify JWT token and attach user to request
  */
