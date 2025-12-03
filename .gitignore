@@ -41,3 +41,7 @@ Thumbs.db
 # Large files (demos)
 docs/images/gif/*.gif
 
+# Temporary files (docs)
+docs/BACKEND_SETUP.md
+NEXT_STEPS.md
+
