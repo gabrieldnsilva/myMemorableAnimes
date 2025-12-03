@@ -10,14 +10,46 @@ Um catálogo de animes simples e bonito, feito com HTML, CSS e JavaScript vanill
 
 A aplicação está sendo migrada para uma arquitetura full-stack profissional:
 
-- **Backend**: Node.js + Express + TypeScript + Sequelize (SQLite)
-- **Autenticação**: Sistema completo com JWT + bcrypt
-- **Views**: EJS templates com partials
-- **Padrão**: MVC (Model-View-Controller)
-- **Testes**: Jest com cobertura >70%
-- **Qualidade**: ESLint + TypeScript strict mode
+-   **Backend**: Node.js + Express + TypeScript + Sequelize (SQLite)
+-   **Autenticação**: Sistema completo com JWT + bcrypt ✅
+-   **Perfil de Usuário**: CRUD completo com estatísticas ✅
+-   **Lista de Animes**: CRUD, favoritos, avaliações ✅
+-   **API Externa**: Integração com Jikan (MyAnimeList) ✅
+-   **Views**: EJS templates com partials (em progresso)
+-   **Padrão**: MVC (Model-View-Controller)
+-   **Testes**: Jest com 90%+ cobertura (110 testes) ✅
+-   **Qualidade**: ESLint + TypeScript strict mode
 
 📖 [Ver documentação completa do backend](./docs/BACKEND_SETUP.md)
+
+### 🎯 Features Implementadas
+
+#### Autenticação & Perfil
+
+-   ✅ Registro de usuário com validação
+-   ✅ Login com JWT (Bearer token)
+-   ✅ Perfil do usuário (visualizar, editar, excluir)
+-   ✅ Alteração de senha
+-   ✅ Estatísticas (dias desde cadastro, total de animes)
+
+#### Lista de Animes
+
+-   ✅ Listar todos os animes (público)
+-   ✅ Ver detalhes de anime (público)
+-   ✅ Adicionar anime à minha lista (protegido)
+-   ✅ Remover anime da minha lista (protegido)
+-   ✅ Atualizar status/episódios/rating (protegido)
+-   ✅ Marcar/desmarcar favorito (protegido)
+-   ✅ Filtros: gênero, ano, status, favorito
+-   ✅ Paginação e ordenação
+
+#### API Externa (Jikan - MyAnimeList)
+
+-   ✅ Buscar animes por título
+-   ✅ Obter detalhes de anime por ID
+-   ✅ Listar top animes
+-   ✅ Obter recomendações recentes
+-   ✅ Anime aleatório
 
 ### Como rodar (v2.0)
 
@@ -40,29 +72,29 @@ npm start
 
 ## Principais features
 
-- SPA estático (vanilla JS) com renderização dinâmica do conteúdo a partir de `src/data/animeData.js`.
-- Carrossel de animes com background dinâmico e navegação por teclado.
-- Modais: login e formulário de contato (com validação básica e máscara de CPF).
-- Design responsivo com `src/css/base.css` e `src/css/responsive.css`.
-- Integração com Materialize CSS, jQuery e RemixIcon via CDN.
-- Notificações com SweetAlert2 (opcional, via CDN).
-- Foco em acessibilidade: atalhos de teclado, atributos ARIA, `skip-link` e melhorias no DOM para leitores de tela.
+-   SPA estático (vanilla JS) com renderização dinâmica do conteúdo a partir de `src/data/animeData.js`.
+-   Carrossel de animes com background dinâmico e navegação por teclado.
+-   Modais: login e formulário de contato (com validação básica e máscara de CPF).
+-   Design responsivo com `src/css/base.css` e `src/css/responsive.css`.
+-   Integração com Materialize CSS, jQuery e RemixIcon via CDN.
+-   Notificações com SweetAlert2 (opcional, via CDN).
+-   Foco em acessibilidade: atalhos de teclado, atributos ARIA, `skip-link` e melhorias no DOM para leitores de tela.
 
 ## Estrutura do projeto
 
-- `public/` – ponto de entrada da aplicação (arquivo `index.html`).
+-   `public/` – ponto de entrada da aplicação (arquivo `index.html`).
 
-  Use este diretório para servir a aplicação (ex.: `python -m http.server --directory public 8000`).
+    Use este diretório para servir a aplicação (ex.: `python -m http.server --directory public 8000`).
 
-- `src/`
+-   `src/`
 
-  - `assets/` – imagens, ícones (posters, backgrounds, titles).
-  - `css/` – `base.css`, `responsive.css` (estilos principais).
-  - `data/animeData.js` – "banco" local com objetos de animes exibidos.
-  - `js/`
+    -   `assets/` – imagens, ícones (posters, backgrounds, titles).
+    -   `css/` – `base.css`, `responsive.css` (estilos principais).
+    -   `data/animeData.js` – "banco" local com objetos de animes exibidos.
+    -   `js/`
 
-    - `main.js` – inicialização e orquestração da aplicação.
-    - `modules/` – módulos pequenos e reutilizáveis: `carousel.js`, `auth.js`, `form.js`.
+        -   `main.js` – inicialização e orquestração da aplicação.
+        -   `modules/` – módulos pequenos e reutilizáveis: `carousel.js`, `auth.js`, `form.js`.
 
 ## Como rodar localmente
 
@@ -79,10 +111,10 @@ Alternativas: usar Live Server (VSCode) ou `npx http-server ./public -p 8000`.
 
 ## Dependências (CDN)
 
-- Materialize CSS (1.0.0) – componentes (modals, carousel, sidenav).
-- jQuery – dependência do Materialize.
-- RemixIcon – ícones.
-- SweetAlert2 – alertas e confirmações (opcional).
+-   Materialize CSS (1.0.0) – componentes (modals, carousel, sidenav).
+-   jQuery – dependência do Materialize.
+-   RemixIcon – ícones.
+-   SweetAlert2 – alertas e confirmações (opcional).
 
 Essas bibliotecas são carregadas por CDN em `public/index.html` para manter o repositório simples.
 
@@ -94,7 +126,10 @@ Essas bibliotecas são carregadas por CDN em `public/index.html` para manter o r
 
 ```html
 <div class="carousel-item" data-animekey="novoAnime" role="listitem">
-  <img src="/src/assets/images/posters/novo-anime-poster.webp" alt="Novo Anime Poster" />
+	<img
+		src="/src/assets/images/posters/novo-anime-poster.webp"
+		alt="Novo Anime Poster"
+	/>
 </div>
 ```
 
@@ -102,16 +137,16 @@ Essas bibliotecas são carregadas por CDN em `public/index.html` para manter o r
 
 ```javascript
 export const animesData = {
-  // ...existing entries
-  novoAnime: {
-    titleImage: "/src/assets/images/titles/novo-anime-title.webp",
-    year: "2025",
-    rating: "12+",
-    duration: "1h 48m",
-    genre: "Shōnen",
-    synopsis: "Uma sinopse curta aqui...",
-    background: "novo-anime-background.webp",
-  },
+	// ...existing entries
+	novoAnime: {
+		titleImage: "/src/assets/images/titles/novo-anime-title.webp",
+		year: "2025",
+		rating: "12+",
+		duration: "1h 48m",
+		genre: "Shōnen",
+		synopsis: "Uma sinopse curta aqui...",
+		background: "novo-anime-background.webp",
+	},
 };
 ```
 
@@ -119,10 +154,10 @@ export const animesData = {
 
 ## Acessibilidade e design
 
-- `skip-link` para pular ao conteúdo principal está implementado (`public/index.html`).
-- ARIA: modais e carrossel possuem atributos ARIA; indicadores e overlays foram reforçados no JS.
-- Keyboard: carousel responde às setas e elementos focáveis possuem `tabindex` quando necessário.
-- Se estiver adicionando imagens ao README, use `alt` e, quando relevante, legendas em português.
+-   `skip-link` para pular ao conteúdo principal está implementado (`public/index.html`).
+-   ARIA: modais e carrossel possuem atributos ARIA; indicadores e overlays foram reforçados no JS.
+-   Keyboard: carousel responde às setas e elementos focáveis possuem `tabindex` quando necessário.
+-   Se estiver adicionando imagens ao README, use `alt` e, quando relevante, legendas em português.
 
 ## Preview das Telas (Desktop)
 
@@ -144,8 +179,8 @@ export const animesData = {
 
 ## Problemas conhecidos e notas técnicas
 
-- O projeto é carregado por CDNs para simplicidade; para produção, considere pinning de versões ou bundling.
-- Modais e sidenav do Materialize criam overlays dinâmicos. Se você tiver problemas de `z-index` (links não clicáveis no mobile), verifique `src/css/base.css` e se `#mobile-nav` é filho direto de `body` (o `main.js` já tem um trecho que move `#mobile-nav` para `document.body`).
+-   O projeto é carregado por CDNs para simplicidade; para produção, considere pinning de versões ou bundling.
+-   Modais e sidenav do Materialize criam overlays dinâmicos. Se você tiver problemas de `z-index` (links não clicáveis no mobile), verifique `src/css/base.css` e se `#mobile-nav` é filho direto de `body` (o `main.js` já tem um trecho que move `#mobile-nav` para `document.body`).
 
 ## Como contribuir
 
