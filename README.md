@@ -4,6 +4,40 @@
 
 Um catálogo de animes simples e bonito, feito com HTML, CSS e JavaScript vanilla. O objetivo é apresentar títulos, sinopses e uma experiência interativa com carrossel, modais para login e contato, priorizando performance, acessibilidade e design temático (anime).
 
+---
+
+## 🚀 Versão 2.0 - Backend MVC (Em Desenvolvimento)
+
+A aplicação está sendo migrada para uma arquitetura full-stack profissional:
+
+- **Backend**: Node.js + Express + TypeScript + Sequelize (SQLite)
+- **Autenticação**: Sistema completo com JWT + bcrypt
+- **Views**: EJS templates com partials
+- **Padrão**: MVC (Model-View-Controller)
+- **Testes**: Jest com cobertura >70%
+- **Qualidade**: ESLint + TypeScript strict mode
+
+📖 [Ver documentação completa do backend](./docs/BACKEND_SETUP.md)
+
+### Como rodar (v2.0)
+
+```bash
+# Instalar dependências
+npm install
+
+# Configurar ambiente
+cp .env.example .env
+
+# Desenvolvimento (hot-reload)
+npm run dev
+
+# Produção
+npm run build
+npm start
+```
+
+---
+
 ## Principais features
 
 - SPA estático (vanilla JS) com renderização dinâmica do conteúdo a partir de `src/data/animeData.js`.
