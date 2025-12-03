@@ -8,6 +8,7 @@ import { testConnection, syncDatabase } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import profileRoutes from "./routes/profileRoutes";
 import animeRoutes from "./routes/animeRoutes";
+import externalApiRoutes from "./routes/externalApiRoutes";
 
 // Configuração de variáveis de ambiente
 dotenv.config();
@@ -64,6 +65,9 @@ app.use("/api/profile", profileRoutes);
 
 // Rotas de anime
 app.use("/api/animes", animeRoutes);
+
+// Rotas de integração externa (Jikan)
+app.use("/api/external", externalApiRoutes);
 
 // Rota de teste (placeholder)
 app.get("/", (_req: Request, res: Response) => {
