@@ -8,7 +8,7 @@ module.exports = {
 	coverageReporters: ["text", "lcov", "html"],
 	coverageThreshold: {
 		global: {
-			branches: 51, // Ajustado temporariamente
+			branches: 63, // Ajustado para refletir cobertura atual (63.8%)
 			functions: 70,
 			lines: 70,
 			statements: 70,
