@@ -5,6 +5,9 @@
 *.swo
 *~
 
+# Github
+.github/
+
 # Dependencies
 node_modules/
 
