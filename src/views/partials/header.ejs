@@ -1,0 +1,76 @@
+<header x-data="{ mobileOpen: false }" class="bg-gray-900 text-white shadow-md">
+	<nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+		<a href="/" class="flex items-center space-x-2">
+			<img
+				src="/src/assets/icons/fav-icon.webp"
+				alt="Logo"
+				class="w-8 h-8"
+			/>
+			<span class="text-lg font-semibold">myMemorableAnimes</span>
+		</a>
+
+		<div class="hidden md:flex items-center space-x-6">
+			<a href="/" class="hover:text-accent-500 transition">Início</a>
+			<a href="/search" class="hover:text-accent-500 transition"
+				>Buscar</a
+			>
+			<% if (user) { %>
+			<a href="/animes" class="hover:text-accent-500 transition"
+				>Minha Lista</a
+			>
+			<a href="/profile" class="hover:text-accent-500 transition"
+				>Perfil</a
+			>
+			<a href="/logout" class="hover:text-accent-500 transition">Sair</a>
+			<% } else { %>
+			<a href="/login" class="hover:text-accent-500 transition">Login</a>
+			<a href="/register" class="hover:text-accent-500 transition"
+				>Cadastro</a
+			>
+			<% } %>
+		</div>
+
+		<button
+			@click="mobileOpen = !mobileOpen"
+			class="md:hidden"
+			aria-label="Abrir menu"
+		>
+			<svg
+				class="w-6 h-6"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M4 6h16M4 12h16M4 18h16"
+				/>
+			</svg>
+		</button>
+	</nav>
+
+	<div x-show="mobileOpen" x-transition class="md:hidden bg-gray-800">
+		<div class="px-4 py-2 space-y-2">
+			<a href="/" class="block py-2 hover:text-accent-500">Início</a>
+			<a href="/search" class="block py-2 hover:text-accent-500"
+				>Buscar</a
+			>
+			<% if (user) { %>
+			<a href="/animes" class="block py-2 hover:text-accent-500"
+				>Minha Lista</a
+			>
+			<a href="/profile" class="block py-2 hover:text-accent-500"
+				>Perfil</a
+			>
+			<a href="/logout" class="block py-2 hover:text-accent-500">Sair</a>
+			<% } else { %>
+			<a href="/login" class="block py-2 hover:text-accent-500">Login</a>
+			<a href="/register" class="block py-2 hover:text-accent-500"
+				>Cadastro</a
+			>
+			<% } %>
+		</div>
+	</div>
+</header>
