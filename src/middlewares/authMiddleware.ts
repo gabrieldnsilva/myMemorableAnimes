@@ -41,3 +41,27 @@ export const authenticateToken = async (
 		});
 	}
 };
+
+/**
+ * Middleware to verify session-based authentication (for EJS views and HTMX)
+ */
+export const authenticateSession = (
+	req: AuthenticatedRequest,
+	res: Response,
+	next: NextFunction
+): void => {
+	if (req.session?.user) {
+		req.user = req.session.user;
+		next();
+	} else {
+		// For HTMX requests, return HTML error
+		if (req.headers["hx-request"]) {
+			res.render("partials/htmx/error", {
+				error: "Você precisa fazer login para realizar esta ação",
+			});
+		} else {
+			req.flash("error", "Você precisa fazer login");
+			res.redirect("/login");
+		}
+	}
+};
