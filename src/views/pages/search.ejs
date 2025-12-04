@@ -1,4 +1,99 @@
-<div class="container mx-auto px-4 py-8">
-	<h1 class="text-3xl font-bold mb-6">Buscar Animes</h1>
-	<p class="text-gray-600">Página de busca será implementada na Phase 5.</p>
-</div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title><%= title || 'Buscar Animes' %></title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<link rel="stylesheet" href="/css/output.css" />
+		<link rel="icon" href="/images/icons/fav-icon.webp" />
+
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+		></script>
+		<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+	</head>
+	<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+		<%- include('../partials/header') %>
+
+		<main class="flex-grow container mx-auto px-4 py-8">
+			<%- include('../partials/flashMessages') %>
+
+			<header class="mb-8">
+				<h1 class="text-3xl font-bold text-gray-900 mb-2">
+					Buscar Animes
+				</h1>
+				<p class="text-gray-600">
+					Encontre animes usando a base de dados MyAnimeList (Jikan API)
+				</p>
+			</header>
+
+			<!-- Search Form -->
+			<div class="bg-white rounded-lg shadow-md p-6 mb-8" x-data="{ query: '', loading: false }">
+				<form
+					hx-get="/api/external/search"
+					hx-target="#search-results"
+					hx-indicator="#loading-indicator"
+					hx-swap="innerHTML"
+					class="flex gap-4"
+					@htmx:before-request="loading = true"
+					@htmx:after-request="loading = false"
+				>
+					<input
+						type="text"
+						name="q"
+						x-model="query"
+						placeholder="Digite o nome do anime..."
+						required
+						minlength="3"
+						class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					/>
+					<button
+						type="submit"
+						:disabled="loading || query.length < 3"
+						class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+					>
+						<span x-show="!loading">Buscar</span>
+						<span x-show="loading">Buscando...</span>
+					</button>
+				</form>
+
+				<!-- Loading Indicator -->
+				<div id="loading-indicator" class="htmx-indicator mt-4 text-center">
+					<div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+					<p class="text-gray-600 mt-2">Buscando animes...</p>
+				</div>
+			</div>
+
+			<!-- Search Results -->
+			<div id="search-results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				<!-- Results will be loaded here via HTMX -->
+				<div class="col-span-full text-center text-gray-500 py-12">
+					<svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+					</svg>
+					<p class="text-lg">Digite um nome para buscar animes</p>
+				</div>
+			</div>
+		</main>
+
+		<%- include('../partials/footer') %>
+
+		<style>
+			.htmx-indicator {
+				display: none;
+			}
+			.htmx-request .htmx-indicator {
+				display: block;
+			}
+		</style>
+	</body>
+</html>

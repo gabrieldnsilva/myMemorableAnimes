@@ -54,7 +54,8 @@ app.use(flash());
 
 // Middleware para passar user e flash messages para todas as views
 app.use((req, res, next) => {
-	res.locals.user = req.session?.user || null;
+	// Set user from session (null if not authenticated)
+	res.locals.user = req.session?.userId ? { id: req.session.userId } : null;
 	res.locals.success = req.flash("success");
 	res.locals.error = req.flash("error");
 	res.locals.body = "";
@@ -66,8 +67,8 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // Servir arquivos estáticos (CSS, JS, imagens)
-app.use(express.static(path.join(__dirname, "../public")));
-app.use("/src/assets", express.static(path.join(__dirname, "../src/assets")));
+app.use(express.static(path.join(__dirname, "../public/")));
+app.use("../public", express.static(path.join(__dirname, "../public/")));
 
 // Rotas de views EJS (devem vir antes das rotas de API)
 app.use("/", viewRoutes);
