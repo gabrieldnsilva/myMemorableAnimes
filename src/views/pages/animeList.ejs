@@ -1,0 +1,17 @@
+<div class="container mx-auto px-4 py-8">
+	<h1 class="text-3xl font-bold mb-6">Minha Lista de Animes</h1>
+	<% if (typeof animes !== 'undefined' && animes.length > 0) { %>
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+		<% animes.forEach(function(anime) { %>
+		<div class="card p-4">
+			<h3 class="font-semibold"><%= anime.title %></h3>
+		</div>
+		<% }); %>
+	</div>
+	<% } else { %>
+	<p class="text-gray-600">
+		Sua lista está vazia.
+		<a href="/" class="text-accent-500">Adicione animes!</a>
+	</p>
+	<% } %>
+</div>

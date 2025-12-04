@@ -1,120 +1,216 @@
-<section class="relative">
-	<!-- Hero Background (naruto como exemplo) -->
-	<div class="absolute inset-0 -z-10">
-		<img
-			src="/src/assets/images/backgrounds/narutoShippuden-background.webp"
-			alt="Background Naruto"
-			class="w-full h-full object-cover opacity-40"
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>
+			<%= typeof title !== 'undefined' ? title : 'Catálogo de Animes' %>
+		</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+			rel="stylesheet"
 		/>
-		<div
-			class="absolute inset-0 bg-gradient-to-b from-transparent to-black/60"
-		></div>
-	</div>
 
-	<div class="container mx-auto px-4 py-8">
-		<header class="mb-8">
-			<h1 class="text-3xl md:text-4xl font-bold text-white">
-				Catálogo de Animes
-			</h1>
-			<p class="text-gray-200">
-				Explore, favorite e gerencie sua lista pessoal.
-			</p>
-		</header>
+		<link rel="stylesheet" href="/css/output.css" />
 
-		<!-- Carousel básico com Alpine (placeholders) -->
-		<div x-data="carousel()" class="relative">
-			<div class="overflow-hidden">
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+		></script>
+
+		<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+	</head>
+	<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans">
+		<%- include('../partials/header') %> <%-
+		include('../partials/flashMessages') %>
+
+		<main id="main-content" class="flex-grow">
+			<section class="relative h-[600px] overflow-hidden">
+				<div class="absolute inset-0 -z-10">
+					<img
+						src="/images/backgrounds/narutoShippuden-background.webp"
+						alt="Background Naruto"
+						class="w-full h-full object-cover opacity-40"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-b from-transparent to-black/60"
+					></div>
+				</div>
+
 				<div
-					class="flex transition-transform duration-500"
-					:style="`transform: translateX(-${current * 100}%)`"
+					class="container mx-auto px-4 py-8 h-full flex flex-col justify-center"
 				>
-					<% animes.forEach((anime) => { %>
-					<div class="min-w-full flex justify-center p-4">
-						<div class="card max-w-md">
-							<img
-								src="/src/assets/images/posters/<%= anime.poster || 'narutoShippuden-poster.webp' %>"
-								alt="<%= anime.title %>"
-								class="w-full h-96 object-cover"
-							/>
-							<div class="p-6">
-								<h3 class="text-xl font-semibold">
-									<%= anime.title %>
-								</h3>
-								<p class="text-gray-700 mt-2 line-clamp-3">
-									<%= anime.synopsis || 'Sinopse breve do
-									anime...' %>
-								</p>
-								<div class="mt-4 flex space-x-2">
-									<% if (user) { %>
-									<button class="btn-primary">
-										Adicionar à Lista
-									</button>
-									<button class="btn-secondary">
-										Favoritar
-									</button>
-									<% } else { %>
-									<a href="/login" class="btn-secondary"
-										>Faça login para adicionar</a
+					<header class="mb-8 text-center">
+						<h1
+							class="text-3xl md:text-4xl font-bold text-white drop-shadow-md"
+						>
+							Catálogo de Animes
+						</h1>
+						<p class="text-gray-200 drop-shadow-sm">
+							Explore, favorite e gerencie sua lista pessoal.
+						</p>
+					</header>
+
+					<% if (typeof animes !== 'undefined' && animes.length > 0) {
+					%>
+
+					<div
+						x-data="carousel()"
+						class="relative max-w-2xl mx-auto w-full"
+					>
+						<div
+							class="overflow-hidden rounded-xl shadow-2xl bg-white/10 backdrop-blur-sm"
+						>
+							<div
+								class="flex transition-transform duration-500 ease-out"
+								:style="`transform: translateX(-${current * 100}%)`"
+							>
+								<% animes.forEach((anime) => { %>
+								<div class="min-w-full flex justify-center p-0">
+									<div
+										class="card w-full flex flex-col md:flex-row bg-white h-full"
 									>
-									<% } %>
+										<div
+											class="w-full md:w-1/2 h-64 md:h-auto relative"
+										>
+											<img
+												src="/images/posters/<%= anime.poster || 'default-poster.svg' %>"
+												alt="<%= anime.title %>"
+												class="absolute inset-0 w-full h-full object-cover"
+											/>
+										</div>
+
+										<div
+											class="w-full md:w-1/2 p-6 flex flex-col justify-between"
+										>
+											<div>
+												<h3
+													class="text-xl font-bold text-gray-800 mb-2"
+												>
+													<%= anime.title %>
+												</h3>
+												<p
+													class="text-gray-600 text-sm line-clamp-4"
+												>
+													<%= anime.synopsis ||
+													'Sinopse não disponível.' %>
+												</p>
+											</div>
+
+											<div
+												class="mt-4 flex flex-col gap-2"
+											>
+												<% if (typeof user !==
+												'undefined' && user) { %>
+												<button
+													class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+												>
+													Adicionar à Lista
+												</button>
+												<button
+													class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100 transition"
+												>
+													Favoritar
+												</button>
+												<% } else { %>
+												<a
+													href="/login"
+													class="text-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+												>
+													Faça login para interagir
+												</a>
+												<% } %>
+											</div>
+										</div>
+									</div>
 								</div>
+								<% }) %>
 							</div>
 						</div>
+
+						<% if (animes.length > 1) { %>
+						<button
+							@click="prev()"
+							class="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition"
+						>
+							◀
+						</button>
+						<button
+							@click="next()"
+							class="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition"
+						>
+							▶
+						</button>
+						<% } %>
+
+						<div class="flex justify-center space-x-2 mt-4">
+							<template x-for="i in total" :key="i">
+								<button
+									@click="go(i-1)"
+									class="w-3 h-3 rounded-full transition-all border border-white/50"
+									:class="current === (i-1) ? 'bg-blue-500 scale-110' : 'bg-white/50 hover:bg-white'"
+								></button>
+							</template>
+						</div>
 					</div>
-					<% }) %>
+
+					<script id="animes-meta" type="application/json">
+						<%- JSON.stringify({ total: animes.length }) %>
+					</script>
+
+					<% } else { %>
+					<div
+						class="text-center text-white py-12 bg-black/30 rounded-lg backdrop-blur-sm"
+					>
+						<p class="text-xl">
+							Nenhum anime encontrado no catálogo.
+						</p>
+					</div>
+					<% } %>
+
+					<script>
+						function carousel() {
+							// Tenta ler o JSON, se falhar retorna 0 para evitar erros
+							let meta = { total: 0 };
+							try {
+								const metaEl =
+									document.getElementById("animes-meta");
+								if (metaEl)
+									meta = JSON.parse(metaEl.textContent);
+							} catch (e) {
+								console.error(
+									"Erro ao ler metadados dos animes",
+									e
+								);
+							}
+
+							return {
+								current: 0,
+								total: meta.total,
+								next() {
+									if (this.total === 0) return;
+									this.current =
+										(this.current + 1) % this.total;
+								},
+								prev() {
+									if (this.total === 0) return;
+									this.current =
+										(this.current - 1 + this.total) %
+										this.total;
+								},
+								go(i) {
+									this.current = i;
+								},
+							};
+						}
+					</script>
 				</div>
-			</div>
+			</section>
+		</main>
 
-			<!-- Prev/Next -->
-			<button
-				@click="prev()"
-				class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full"
-			>
-				◀
-			</button>
-			<button
-				@click="next()"
-				class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full"
-			>
-				▶
-			</button>
-
-			<!-- Indicators -->
-			<div class="flex justify-center space-x-2 mt-4">
-				<% animes.forEach((_, i) => { %>
-				<button
-					@click="go(i)"
-					:class="current === <%= i %> ? 'bg-accent-500' : 'bg-gray-400'"
-					class="w-3 h-3 rounded-full"
-				></button>
-				<% }) %>
-			</div>
-		</div>
-
-		<script id="animes-meta" type="application/json">
-			<%- JSON.stringify({ total: animes.length }) %>
-		</script>
-		<script>
-			function carousel() {
-				const metaEl = document.getElementById("animes-meta");
-				const meta = metaEl
-					? JSON.parse(metaEl.textContent)
-					: { total: 0 };
-				return {
-					current: 0,
-					total: meta.total,
-					next() {
-						this.current = (this.current + 1) % this.total;
-					},
-					prev() {
-						this.current =
-							(this.current - 1 + this.total) % this.total;
-					},
-					go(i) {
-						this.current = i;
-					},
-				};
-			}
-		</script>
-	</div>
-</section>
+		<%- include('../partials/footer') %>
+	</body>
+</html>
