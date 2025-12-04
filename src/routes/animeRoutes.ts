@@ -8,8 +8,13 @@ import {
 	updateAnimeEntry,
 	toggleFavorite,
 	updateRating,
+	addToMyListHTMX,
+	toggleFavoriteHTMX,
 } from "../controllers/AnimeController";
-import { authenticateToken } from "../middlewares/authMiddleware";
+import {
+	authenticateToken,
+	authenticateSession,
+} from "../middlewares/authMiddleware";
 import {
 	addToListValidator,
 	updateAnimeValidator,
@@ -39,5 +44,9 @@ router.patch(
 	updateRatingValidator,
 	updateRating
 );
+
+// HTMX-specific routes (return HTML partials, use session auth)
+router.post("/:id/add/htmx", authenticateSession, addToMyListHTMX);
+router.patch("/:id/favorite/htmx", authenticateSession, toggleFavoriteHTMX);
 
 export default router;
