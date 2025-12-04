@@ -55,7 +55,7 @@ app.use(flash());
 // Middleware para passar user e flash messages para todas as views
 app.use((req, res, next) => {
 	// Set user from session (null if not authenticated)
-	res.locals.user = req.session?.userId ? { id: req.session.userId } : null;
+	res.locals.user = req.session?.user || null;
 	res.locals.success = req.flash("success");
 	res.locals.error = req.flash("error");
 	res.locals.body = "";
