@@ -12,6 +12,7 @@ interface AnimeAttributes {
   duration: string;
   imageUrl: string;
   backgroundImage: string;
+  poster: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -29,6 +30,7 @@ class Anime extends Model<AnimeAttributes, AnimeCreationAttributes> implements A
   public duration!: string;
   public imageUrl!: string;
   public backgroundImage!: string;
+  public poster!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -74,6 +76,11 @@ Anime.init(
     backgroundImage: {
       type: DataTypes.STRING(500),
       allowNull: false,
+    },
+    poster: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+      defaultValue: 'default-poster.svg',
     },
   },
   {
