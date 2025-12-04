@@ -1,0 +1,11 @@
+<div class="container mx-auto px-4 py-8">
+	<h1 class="text-3xl font-bold mb-6">Meu Perfil</h1>
+	<% if (typeof profile !== 'undefined') { %>
+	<div class="card max-w-2xl p-6">
+		<p><strong>Nome:</strong> <%= profile.name %></p>
+		<p><strong>Email:</strong> <%= profile.email %></p>
+	</div>
+	<% } else { %>
+	<p class="text-gray-600">Por favor, faça login para ver seu perfil.</p>
+	<% } %>
+</div>
