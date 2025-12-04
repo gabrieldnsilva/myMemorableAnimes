@@ -26,7 +26,7 @@ export const testConnection = async (): Promise<void> => {
 
 export const syncDatabase = async (): Promise<void> => {
 	try {
-		await sequelize.sync({ alter: process.env.NODE_ENV === "development" });
+		await sequelize.sync({ alter: false });
 		console.log("✅ Database synchronized.");
 	} catch (error) {
 		console.error("❌ Database sync error:", error);
