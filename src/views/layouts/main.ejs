@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="description"
+			content="Catálogo de animes personalizado - myMemorableAnimes"
+		/>
+		<meta
+			name="keywords"
+			content="anime, catalogo, lista, naruto, demon slayer, jujutsu kaisen"
+		/>
+		<meta name="author" content="Gabriel Danilo" />
+
+		<!-- Favicon -->
+		<link rel="icon" href="/images/icons/fav-icon.webp" />
+
+		<!-- SEO / Social -->
+		<meta
+			property="og:title"
+			content="<%= title || 'myMemorableAnimes' %>"
+		/>
+		<meta
+			property="og:description"
+			content="Seu catálogo personalizado de animes"
+		/>
+		<meta property="og:type" content="website" />
+
+		<!-- Google Fonts - Poppins -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<!-- TailwindCSS -->
+		<link rel="stylesheet" href="/css/output.css" />
+
+		<!-- Alpine.js -->
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+		></script>
+
+		<!-- HTMX -->
+		<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+		<title><%= title || 'myMemorableAnimes' %></title>
+	</head>
+	<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans">
+		<!-- Skip Link para acessibilidade -->
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-accent-500 focus:text-white"
+		>
+			Pular para o conteúdo principal
+		</a>
+
+		<%- include('../partials/header') %> <%-
+		include('../partials/flashMessages') %>
+
+		<main id="main-content" class="flex-grow"><%- body %></main>
+
+		<%- include('../partials/footer') %>
+	</body>
+</html>

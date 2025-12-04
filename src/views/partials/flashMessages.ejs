@@ -1,0 +1,21 @@
+<div class="container mx-auto px-4">
+	<% if (success && success.length) { %>
+	<div
+		x-data="{ show: true }"
+		x-show="show"
+		x-init="setTimeout(() => show = false, 4000)"
+		class="mt-4 bg-green-500 text-white px-4 py-3 rounded"
+	>
+		<%= success[0] %>
+	</div>
+	<% } %> <% if (error && error.length) { %>
+	<div
+		x-data="{ show: true }"
+		x-show="show"
+		x-init="setTimeout(() => show = false, 4000)"
+		class="mt-4 bg-red-500 text-white px-4 py-3 rounded"
+	>
+		<%= error[0] %>
+	</div>
+	<% } %>
+</div>
