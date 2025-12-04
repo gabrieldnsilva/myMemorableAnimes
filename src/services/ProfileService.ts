@@ -19,7 +19,7 @@ interface UserStats {
 	joinedDays: number;
 }
 
-class ProfileService {
+ export class ProfileService {
 	/**
 	 * Get user statistics
 	 */

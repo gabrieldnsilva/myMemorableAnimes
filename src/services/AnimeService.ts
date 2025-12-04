@@ -35,7 +35,7 @@ interface UpdateAnimeData {
   notes?: string;
 }
 
-class AnimeService {
+export class AnimeService {
   /**
    * Get all animes with optional filters and pagination
    */

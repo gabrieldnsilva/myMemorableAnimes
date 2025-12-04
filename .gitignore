@@ -8,6 +8,9 @@
 # Github
 .github/
 
+# Requirements files
+docs/requirements_guides
+
 # Dependencies
 node_modules/
 

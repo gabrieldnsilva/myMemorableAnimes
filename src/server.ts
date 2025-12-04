@@ -4,11 +4,15 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import session from "express-session";
+import flash from "connect-flash";
 import { testConnection, syncDatabase } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import profileRoutes from "./routes/profileRoutes";
 import animeRoutes from "./routes/animeRoutes";
 import externalApiRoutes from "./routes/externalApiRoutes";
+import viewRoutes from "./routes/viewRoutes";
+import "./types/session";
 
 // Configuração de variáveis de ambiente
 dotenv.config();
@@ -29,33 +33,44 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Session middleware
+app.use(
+	session({
+		secret:
+			process.env.SESSION_SECRET ||
+			"your-secret-key-change-in-production",
+		resave: false,
+		saveUninitialized: false,
+		cookie: {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			maxAge: 1000 * 60 * 60 * 24 * 7, // 7 dias
+		},
+	})
+);
+
+// Flash messages
+app.use(flash());
+
+// Middleware para passar user e flash messages para todas as views
+app.use((req, res, next) => {
+	res.locals.user = req.session?.user || null;
+	res.locals.success = req.flash("success");
+	res.locals.error = req.flash("error");
+	res.locals.body = "";
+	next();
+});
+
 // Configuração do EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Variável para controlar se o banco foi inicializado
-let dbInitialized = false;
-
-// Middleware para garantir que o banco esteja pronto
-app.use(async (_req, res, next) => {
-	if (!dbInitialized) {
-		try {
-			await testConnection();
-			await syncDatabase();
-			dbInitialized = true;
-		} catch (error) {
-			res.status(500).json({
-				error: "Database initialization failed",
-			});
-			return;
-		}
-	}
-	next();
-});
-
 // Servir arquivos estáticos (CSS, JS, imagens)
 app.use(express.static(path.join(__dirname, "../public")));
 app.use("/src/assets", express.static(path.join(__dirname, "../src/assets")));
+
+// Rotas de views EJS (devem vir antes das rotas de API)
+app.use("/", viewRoutes);
 
 // Rotas de autenticação
 app.use("/api/auth", authRoutes);
@@ -69,26 +84,9 @@ app.use("/api/animes", animeRoutes);
 // Rotas de integração externa (Jikan)
 app.use("/api/external", externalApiRoutes);
 
-// Rota de teste (placeholder)
-app.get("/", (_req: Request, res: Response) => {
-	res.json({
-		message: "myMemorableAnimes API v2.0",
-		status: "running",
-		timestamp: new Date().toISOString(),
-	});
-});
-
 // Rota de health check
 app.get("/health", (_req: Request, res: Response) => {
 	res.status(200).json({ status: "OK", uptime: process.uptime() });
-});
-
-// Middleware de erro 404
-app.use((req: Request, res: Response) => {
-	res.status(404).json({
-		error: "Not Found",
-		message: `Route ${req.originalUrl} not found`,
-	});
 });
 
 // Middleware de tratamento de erros global
