@@ -17,6 +17,7 @@
 			<a href="/profile" class="hover:text-accent-500 transition"
 				>Perfil</a
 			>
+			<span class="text-accent-500 font-semibold">Olá, <%= user.name %>!</span>
 			<a href="/logout" class="hover:text-accent-500 transition">Sair</a>
 			<% } else { %>
 			<a href="/login" class="hover:text-accent-500 transition">Login</a>
@@ -54,6 +55,9 @@
 				>Buscar</a
 			>
 			<% if (user) { %>
+			<div class="py-2 text-accent-500 font-semibold border-b border-gray-700">
+				Olá, <%= user.name %>!
+			</div>
 			<a href="/animes" class="block py-2 hover:text-accent-500"
 				>Minha Lista</a
 			>
