@@ -1,46 +1,91 @@
-<div class="container mx-auto px-4 py-8 max-w-md">
-	<h1 class="text-3xl font-bold mb-6">Cadastro</h1>
-	<form method="POST" action="/register" class="space-y-4">
-		<div>
-			<label for="name" class="block text-sm font-medium mb-1"
-				>Nome</label
-			>
-			<input
-				type="text"
-				id="name"
-				name="name"
-				required
-				class="input-field"
-			/>
+<div class="min-h-screen flex items-center justify-center px-4 py-12 bg-gradient-to-br from-gray-900 via-black to-gray-900">
+	<div class="w-full max-w-md">
+		<!-- Card -->
+		<div class="bg-gray-800/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-700 p-8">
+			<!-- Header -->
+			<div class="text-center mb-8">
+				<h1 class="text-3xl font-bold text-white mb-2">Criar sua conta</h1>
+				<p class="text-gray-400">Comece a organizar seus animes favoritos</p>
+			</div>
+
+			<!-- Form -->
+			<form method="POST" action="/register" class="space-y-6">
+				<div>
+					<label for="name" class="block text-sm font-medium text-gray-300 mb-2"
+						>Nome</label
+					>
+					<input
+						type="text"
+						id="name"
+						name="name"
+						required
+						placeholder="Seu nome completo"
+						class="w-full px-4 py-3 bg-gray-900/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+					/>
+				</div>
+				<div>
+					<label for="email" class="block text-sm font-medium text-gray-300 mb-2"
+						>Email</label
+					>
+					<input
+						type="email"
+						id="email"
+						name="email"
+						required
+						placeholder="seu@email.com"
+						class="w-full px-4 py-3 bg-gray-900/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+					/>
+				</div>
+				<div>
+					<label for="password" class="block text-sm font-medium text-gray-300 mb-2"
+						>Senha</label
+					>
+					<input
+						type="password"
+						id="password"
+						name="password"
+						required
+						placeholder="••••••••"
+						minlength="6"
+						class="w-full px-4 py-3 bg-gray-900/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+					/>
+					<p class="mt-2 text-xs text-gray-400">Mínimo de 6 caracteres</p>
+				</div>
+				<button 
+					type="submit" 
+					class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition transform hover:scale-105 shadow-lg"
+				>
+					Criar Conta
+				</button>
+			</form>
+
+			<!-- Divider -->
+			<div class="relative my-6">
+				<div class="absolute inset-0 flex items-center">
+					<div class="w-full border-t border-gray-700"></div>
+				</div>
+				<div class="relative flex justify-center text-sm">
+					<span class="px-2 bg-gray-800/50 text-gray-400">ou</span>
+				</div>
+			</div>
+
+			<!-- Login Link -->
+			<p class="text-center text-gray-400">
+				Já tem conta?
+				<a href="/login" class="text-blue-500 hover:text-blue-400 font-semibold transition"
+					>Faça login aqui</a
+				>
+			</p>
 		</div>
-		<div>
-			<label for="email" class="block text-sm font-medium mb-1"
-				>Email</label
-			>
-			<input
-				type="email"
-				id="email"
-				name="email"
-				required
-				class="input-field"
-			/>
+
+		<!-- Back to Home -->
+		<div class="text-center mt-6">
+			<a href="/" class="text-gray-400 hover:text-white transition flex items-center justify-center space-x-2">
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+				</svg>
+				<span>Voltar para home</span>
+			</a>
 		</div>
-		<div>
-			<label for="password" class="block text-sm font-medium mb-1"
-				>Senha</label
-			>
-			<input
-				type="password"
-				id="password"
-				name="password"
-				required
-				class="input-field"
-			/>
-		</div>
-		<button type="submit" class="btn-primary w-full">Cadastrar</button>
-	</form>
-	<p class="mt-4 text-center text-sm">
-		Já tem conta?
-		<a href="/login" class="text-accent-500 hover:underline">Faça login</a>
-	</p>
+	</div>
 </div>
