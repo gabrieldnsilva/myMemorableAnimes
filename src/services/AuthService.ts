@@ -45,13 +45,13 @@ class AuthService {
     // Find user by email
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      throw new Error('Invalid credentials');
+      throw new Error('Credenciais inválidas');
     }
 
     // Compare password
     const isValidPassword = await user.comparePassword(password);
     if (!isValidPassword) {
-      throw new Error('Invalid credentials');
+      throw new Error('Credenciais inválidas');
     }
 
     return user;
