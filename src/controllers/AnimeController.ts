@@ -384,12 +384,27 @@ export const toggleFavoriteHTMX = async (
 		}
 
 		const userId = req.user!.id;
-		const userAnime = await AnimeService.toggleFavorite(userId, animeId);
+
+		// Check if anime is already in user's list
+		let userAnime = await AnimeService.getUserAnimeEntry(userId, animeId);
+
+		// If not in list, add it first with plan_to_watch status
+		if (!userAnime) {
+			await AnimeService.addAnimeToUserList(userId, animeId, {
+				status: WatchStatus.PLAN_TO_WATCH,
+				isFavorite: true,
+			});
+			userAnime = await AnimeService.getUserAnimeEntry(userId, animeId);
+		} else {
+			// Otherwise toggle the favorite status
+			userAnime = await AnimeService.toggleFavorite(userId, animeId);
+		}
+
 		const anime = await AnimeService.getAnimeById(animeId);
 
 		res.render("partials/htmx/favoriteButton", {
 			anime,
-			isFavorite: userAnime.isFavorite,
+			isFavorite: userAnime?.isFavorite,
 		});
 	} catch (error) {
 		res.render("partials/htmx/error", {
@@ -397,6 +412,33 @@ export const toggleFavoriteHTMX = async (
 				error instanceof Error
 					? error.message
 					: "Erro ao favoritar anime",
+		});
+	}
+};
+
+export const removeFromListHTMX = async (
+	req: AuthenticatedRequest,
+	res: Response
+): Promise<void> => {
+	try {
+		const animeId = parseInt(req.params.id);
+		if (isNaN(animeId)) {
+			return res.render("partials/htmx/error", {
+				error: "ID de anime inválido",
+			});
+		}
+
+		const userId = req.user!.id;
+		await AnimeService.removeAnimeFromUserList(userId, animeId);
+
+		// Return empty response to remove the card
+		res.send("");
+	} catch (error) {
+		res.render("partials/htmx/error", {
+			error:
+				error instanceof Error
+					? error.message
+					: "Erro ao remover anime",
 		});
 	}
 };

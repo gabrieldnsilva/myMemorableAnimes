@@ -65,3 +65,20 @@ export const authenticateSession = (
 		}
 	}
 };
+
+/**
+ * Middleware to verify session for view pages (similar to authenticateSession but for router)
+ */
+export const requireAuth = (
+	req: AuthenticatedRequest,
+	res: Response,
+	next: NextFunction
+): void => {
+	if (req.session?.user) {
+		req.user = req.session.user;
+		next();
+	} else {
+		req.flash("error", "Você precisa fazer login para acessar esta página");
+		res.redirect("/login");
+	}
+};

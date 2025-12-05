@@ -90,6 +90,13 @@ app.get("/health", (_req: Request, res: Response) => {
 	res.status(200).json({ status: "OK", uptime: process.uptime() });
 });
 
+// 404 handler para páginas não encontradas
+app.use((_req: Request, res: Response) => {
+	res.status(404).render("errors/404", {
+		title: "404 - Página não encontrada",
+	});
+});
+
 // Middleware de tratamento de erros global
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 	console.error("❌ Error:", err.stack);
