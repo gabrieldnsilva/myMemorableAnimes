@@ -1,11 +1,148 @@
-<div class="container mx-auto px-4 py-8">
-	<h1 class="text-3xl font-bold mb-6">Meu Perfil</h1>
-	<% if (typeof profile !== 'undefined') { %>
-	<div class="card max-w-2xl p-6">
-		<p><strong>Nome:</strong> <%= profile.name %></p>
-		<p><strong>Email:</strong> <%= profile.email %></p>
+<div class="min-h-screen bg-black text-white">
+	<!-- Header com título -->
+	<div class="bg-gradient-to-b from-black via-black/80 to-black/50 py-8 border-b border-white/10">
+		<div class="container mx-auto px-4 max-w-4xl">
+			<h1 class="text-4xl md:text-5xl font-bold">Meu Perfil</h1>
+		</div>
 	</div>
-	<% } else { %>
-	<p class="text-gray-600">Por favor, faça login para ver seu perfil.</p>
-	<% } %>
+
+	<!-- Conteúdo Principal -->
+	<div class="container mx-auto px-4 py-12 max-w-4xl">
+		<% if (typeof profile !== 'undefined' && profile && profile.user) { %>
+			<!-- Card de Perfil -->
+			<div class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-8 space-y-8">
+				<!-- Informações Básicas -->
+				<div>
+					<h2 class="text-2xl font-bold mb-6 flex items-center space-x-3">
+						<span class="text-3xl">👤</span>
+						<span>Informações Pessoais</span>
+					</h2>
+
+					<div class="space-y-4">
+						<!-- Nome -->
+						<div class="flex flex-col md:flex-row md:items-center md:justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+							<span class="text-white/60 font-medium">Nome:</span>
+							<span class="text-white text-lg font-semibold mt-2 md:mt-0">
+								<%= profile.user.name %>
+							</span>
+						</div>
+
+						<!-- Email -->
+						<div class="flex flex-col md:flex-row md:items-center md:justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+							<span class="text-white/60 font-medium">Email:</span>
+							<span class="text-white text-lg font-semibold mt-2 md:mt-0 break-all">
+								<%= profile.user.email %>
+							</span>
+						</div>
+
+						<!-- Data de Cadastro -->
+						<div class="flex flex-col md:flex-row md:items-center md:justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+							<span class="text-white/60 font-medium">Membro desde:</span>
+							<span class="text-white text-lg font-semibold mt-2 md:mt-0">
+								<%= new Date(profile.user.createdAt).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+							</span>
+						</div>
+
+						<!-- Status -->
+						<div class="flex flex-col md:flex-row md:items-center md:justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+							<span class="text-white/60 font-medium">Status:</span>
+							<span class="inline-block mt-2 md:mt-0 px-4 py-2 bg-green-600/20 text-green-400 rounded-full font-semibold">
+								✅ Ativo
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Estatísticas -->
+				<div class="border-t border-white/10 pt-8">
+					<h2 class="text-2xl font-bold mb-6 flex items-center space-x-3">
+						<span class="text-3xl">📊</span>
+						<span>Estatísticas</span>
+					</h2>
+
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<!-- Total de Animes -->
+						<div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+							<div class="text-3xl font-bold text-blue-400 mb-2">
+								<%= profile.stats.totalAnimes %>
+							</div>
+							<div class="text-white/60">Animes na Lista</div>
+						</div>
+
+						<!-- Assistidos -->
+						<div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+							<div class="text-3xl font-bold text-green-400 mb-2">
+								<%= profile.stats.completedAnimes %>
+							</div>
+							<div class="text-white/60">Animes Completos</div>
+						</div>
+
+						<!-- Favoritos -->
+						<div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+							<div class="text-3xl font-bold text-red-400 mb-2">
+								<%= profile.stats.favoriteCount %>
+							</div>
+							<div class="text-white/60">Animes Favoritos</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Ações -->
+				<div class="border-t border-white/10 pt-8">
+					<h2 class="text-2xl font-bold mb-6 flex items-center space-x-3">
+						<span class="text-3xl">⚙️</span>
+						<span>Ações</span>
+					</h2>
+
+					<div class="space-y-3">
+						<button
+							onclick="if(confirm('Tem certeza que deseja deletar sua conta? Esta ação é irreversível!')) window.location.href='/profile/delete'"
+							class="w-full px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition"
+						>
+							🗑️ Deletar Conta
+						</button>
+						<a
+							href="/logout"
+							class="block text-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition"
+						>
+							🚪 Sair
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Atalhos Rápidos -->
+			<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+				<a
+					href="/animes"
+					class="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-blue-400/50 transition text-center"
+				>
+					<div class="text-3xl mb-2">📋</div>
+					<h3 class="font-bold">Minha Lista</h3>
+					<p class="text-sm text-white/60">Ver e gerenciar seus animes</p>
+				</a>
+				<a
+					href="/search"
+					class="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-blue-400/50 transition text-center"
+				>
+					<div class="text-3xl mb-2">🔍</div>
+					<h3 class="font-bold">Buscar Animes</h3>
+					<p class="text-sm text-white/60">Adicionar novos animes à sua lista</p>
+				</a>
+			</div>
+		<% } else { %>
+			<!-- Estado Deslogado -->
+			<div class="text-center py-20">
+				<div class="text-6xl mb-6">🔐</div>
+				<h2 class="text-3xl font-bold mb-3">Acesso Restrito</h2>
+				<p class="text-white/60 mb-8">Por favor, faça login para ver seu perfil</p>
+				<a
+					href="/login"
+					class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition"
+				>
+					Fazer Login
+				</a>
+			</div>
+		<% } %>
+	</div>
 </div>

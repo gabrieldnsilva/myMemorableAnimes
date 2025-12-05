@@ -10,6 +10,7 @@ import {
 	updateRating,
 	addToMyListHTMX,
 	toggleFavoriteHTMX,
+	removeFromListHTMX,
 } from "../controllers/AnimeController";
 import {
 	authenticateToken,
@@ -48,5 +49,6 @@ router.patch(
 // HTMX-specific routes (return HTML partials, use session auth)
 router.post("/:id/add/htmx", authenticateSession, addToMyListHTMX);
 router.patch("/:id/favorite/htmx", authenticateSession, toggleFavoriteHTMX);
+router.delete("/:id/list/htmx", authenticateSession, removeFromListHTMX);
 
 export default router;

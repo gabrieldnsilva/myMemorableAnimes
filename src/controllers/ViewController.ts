@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import AnimeService from "../services/AnimeService";
 import ProfileService from "../services/ProfileService";
 import AuthService from "../services/AuthService";
+import { AuthenticatedRequest } from "../types/auth";
 
 export class ViewController {
 	// Home page - Carrossel de animes
-	static async home(req: Request, res: Response): Promise<void> {
+	static async home(_req: Request, res: Response): Promise<void> {
 		try {
 			const result = await AnimeService.getAllAnimes({ limit: 10 });
 
@@ -44,9 +45,12 @@ export class ViewController {
 	}
 
 	// Profile page (protected)
-	static async profilePage(req: Request, res: Response): Promise<void> {
+	static async profilePage(
+		req: AuthenticatedRequest,
+		res: Response
+	): Promise<void> {
 		try {
-			const userId = req.session?.userId;
+			const userId = req.user?.id;
 			if (!userId) {
 				return res.redirect("/login");
 			}
@@ -65,9 +69,12 @@ export class ViewController {
 	}
 
 	// Anime list page (protected)
-	static async animeListPage(req: Request, res: Response): Promise<void> {
+	static async animeListPage(
+		req: AuthenticatedRequest,
+		res: Response
+	): Promise<void> {
 		try {
-			const userId = req.session?.userId;
+			const userId = req.user?.id;
 			if (!userId) {
 				return res.redirect("/login");
 			}
@@ -113,7 +120,7 @@ export class ViewController {
 	}
 
 	// Search page
-	static searchPage(req: Request, res: Response): void {
+	static searchPage(_req: Request, res: Response): void {
 		res.render("pages/search", {
 			title: "Buscar Animes - myMemorableAnimes",
 		});
@@ -127,7 +134,7 @@ export class ViewController {
 				req.flash("error", "Erro ao fazer logout");
 				return res.redirect("/");
 			}
-			res.redirect("/login");
+			res.redirect("/");
 		});
 	}
 
@@ -154,8 +161,15 @@ export class ViewController {
 				name: user.name,
 			};
 
-			req.flash("success", `Bem-vindo, ${user.name}!`);
-			res.redirect("/");
+			// Save session before redirecting
+			req.session.save((err) => {
+				if (err) {
+					req.flash("error", "Erro ao salvar sessão");
+					return res.redirect("/login");
+				}
+				req.flash("success", `Bem-vindo, ${user.name}!`);
+				res.redirect("/");
+			});
 		} catch (error) {
 			req.flash(
 				"error",
@@ -189,11 +203,18 @@ export class ViewController {
 				name: user.name,
 			};
 
-			req.flash(
-				"success",
-				`Conta criada com sucesso! Bem-vindo, ${user.name}!`
-			);
-			res.redirect("/");
+			// Save session before redirecting
+			req.session.save((err) => {
+				if (err) {
+					req.flash("error", "Erro ao salvar sessão");
+					return res.redirect("/register");
+				}
+				req.flash(
+					"success",
+					`Conta criada com sucesso! Bem-vindo, ${user.name}!`
+				);
+				res.redirect("/");
+			});
 		} catch (error) {
 			req.flash(
 				"error",
@@ -204,7 +225,7 @@ export class ViewController {
 	}
 
 	// 404 Not Found
-	static notFound(req: Request, res: Response): void {
+	static notFound(_req: Request, res: Response): void {
 		res.status(404).render("errors/404", {
 			title: "404 - Página não encontrada",
 		});
@@ -213,7 +234,7 @@ export class ViewController {
 	// 500 Internal Server Error
 	static serverError(
 		err: Error,
-		req: Request,
+		_req: Request,
 		res: Response,
 		_next: NextFunction
 	): void {

@@ -1,17 +1,136 @@
-<div class="container mx-auto px-4 py-8">
-	<h1 class="text-3xl font-bold mb-6">Minha Lista de Animes</h1>
-	<% if (typeof animes !== 'undefined' && animes.length > 0) { %>
-	<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-		<% animes.forEach(function(anime) { %>
-		<div class="card p-4">
-			<h3 class="font-semibold"><%= anime.title %></h3>
+<div class="min-h-screen bg-black text-white">
+	<!-- Header com título -->
+	<div class="bg-gradient-to-b from-black via-black/80 to-black/50 py-8 border-b border-white/10">
+		<div class="container mx-auto px-4 max-w-7xl">
+			<h1 class="text-4xl md:text-5xl font-bold">Minha Lista de Animes</h1>
+			<p class="text-white/60 mt-2">Total: <span class="text-blue-400 font-semibold"><%= typeof animes !== 'undefined' ? animes.length : 0 %></span> animes</p>
 		</div>
-		<% }); %>
 	</div>
-	<% } else { %>
-	<p class="text-gray-600">
-		Sua lista está vazia.
-		<a href="/" class="text-accent-500">Adicione animes!</a>
-	</p>
-	<% } %>
+
+	<!-- Conteúdo Principal -->
+	<div class="container mx-auto px-4 py-12 max-w-7xl">
+		<% if (typeof animes !== 'undefined' && animes.length > 0) { %>
+			<!-- Grid de Animes -->
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				<% animes.forEach(entry => { %>
+					<div class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl overflow-hidden hover:border-blue-400/50 transition group">
+						<!-- Poster -->
+						<div class="relative overflow-hidden bg-gradient-to-b from-white/10 to-black/50 aspect-square">
+							<img
+								src="/images/posters/<%= entry.anime.poster %>"
+								alt="<%= entry.anime.title %>"
+								class="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+								onerror="this.src='/images/icons/fav-icon.webp'"
+							/>
+							<!-- Badge de Status -->
+							<div class="absolute top-4 right-4 px-3 py-1 bg-blue-600/80 backdrop-blur rounded-full text-xs font-bold">
+								<% 
+									const statusMap = {
+										'watching': '👀 Assistindo',
+										'completed': '✅ Completo',
+										'on_hold': '⏸ Pausado',
+										'dropped': '❌ Abandonado',
+										'plan_to_watch': '📋 Planejado'
+									};
+								%>
+								<%= statusMap[entry.status] || entry.status %>
+							</div>
+
+							<!-- Favorito Badge -->
+							<% if (entry.isFavorite) { %>
+								<div class="absolute top-4 left-4 text-2xl">❤️</div>
+							<% } %>
+						</div>
+
+						<!-- Info -->
+						<div class="p-6 space-y-4">
+							<!-- Título -->
+							<div>
+								<h3 class="text-xl font-bold line-clamp-2 group-hover:text-blue-400 transition">
+									<%= entry.anime.title %>
+								</h3>
+								<p class="text-sm text-white/50 mt-1">
+									<%= entry.anime.year %> • <%= entry.anime.genre %>
+								</p>
+							</div>
+
+							<!-- Rating -->
+							<div class="flex items-center justify-between py-2 border-t border-b border-white/10">
+								<span class="text-sm text-white/60">Sua nota:</span>
+								<% if (entry.rating) { %>
+									<span class="text-lg font-bold text-yellow-400">
+										<%= '⭐'.repeat(entry.rating) %>
+										(<%= entry.rating %>/5)
+									</span>
+								<% } else { %>
+									<span class="text-sm text-white/40">Sem nota</span>
+								<% } %>
+							</div>
+
+							<!-- Progresso de Episódios -->
+							<div class="space-y-2">
+								<div class="flex justify-between text-sm">
+									<span class="text-white/60">Progresso:</span>
+									<span class="text-white/80">
+										<%= entry.watchedEpisodes || 0 %>/<%= entry.anime.episodeCount || '?' %> eps
+									</span>
+								</div>
+								<div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+									<% 
+										const episodeCount = entry.anime.episodeCount || 1;
+										const progress = Math.min((entry.watchedEpisodes || 0) / episodeCount * 100, 100);
+									%>
+									<div class="bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full" style="width: <%= progress %>%"></div>
+								</div>
+							</div>
+
+							<!-- Notas -->
+							<% if (entry.notes) { %>
+								<div class="text-sm text-white/60 italic bg-white/5 p-3 rounded border-l-2 border-blue-400">
+									"<%= entry.notes %>"
+								</div>
+							<% } %>
+
+							<!-- Botões de Ação -->
+							<div class="flex gap-2 pt-2">
+								<a
+									href="/anime/<%= entry.anime.id %>"
+									class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-center font-semibold transition text-sm"
+								>
+									Detalhes
+								</a>
+								<button
+									hx-delete="/api/animes/<%= entry.anime.id %>/list/htmx"
+									hx-target="closest div"
+									hx-swap="outerHTML swap:1s"
+									class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition text-sm"
+									title="Remover da lista"
+								>
+									🗑️ Remover
+								</button>
+							</div>
+
+							<!-- Data de Adição -->
+							<p class="text-xs text-white/40 text-right">
+								Adicionado: <%= new Date(entry.createdAt).toLocaleDateString('pt-BR') %>
+							</p>
+						</div>
+					</div>
+				<% }); %>
+			</div>
+		<% } else { %>
+			<!-- Estado Vazio -->
+			<div class="text-center py-20">
+				<div class="text-6xl mb-6">📭</div>
+				<h2 class="text-3xl font-bold mb-3">Sua lista está vazia</h2>
+				<p class="text-white/60 mb-8">Comece adicionando seus animes favoritos!</p>
+				<a
+					href="/search"
+					class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition"
+				>
+					🔍 Buscar Animes
+				</a>
+			</div>
+		<% } %>
+	</div>
 </div>
