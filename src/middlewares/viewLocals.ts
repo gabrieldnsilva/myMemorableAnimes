@@ -10,7 +10,7 @@ export const viewLocals = (
 	next: NextFunction
 ): void => {
 	// Set user from session (if authenticated)
-	res.locals.user = req.session?.userId ? { id: req.session.userId } : null;
+	res.locals.user = req.session?.user || null;
 
 	// Set flash messages (if using connect-flash)
 	if (req.flash) {

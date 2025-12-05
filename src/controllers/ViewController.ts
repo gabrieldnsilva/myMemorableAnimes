@@ -24,7 +24,7 @@ export class ViewController {
 
 	// Login page
 	static loginPage(req: Request, res: Response): void {
-		if (req.session?.userId) {
+		if (req.session?.user) {
 			return res.redirect("/");
 		}
 
@@ -35,7 +35,7 @@ export class ViewController {
 
 	// Register page
 	static registerPage(req: Request, res: Response): void {
-		if (req.session?.userId) {
+		if (req.session?.user) {
 			return res.redirect("/");
 		}
 
