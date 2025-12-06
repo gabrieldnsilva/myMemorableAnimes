@@ -180,8 +180,7 @@ export const importAndAddFromJikanHTMX = async (
 			existing.isFavorite = true;
 			await existing.save();
 		} else {
-			const animeService = new AnimeService();
-			await animeService.addAnimeToUserList(userId, malId, {
+			await AnimeService.addAnimeToUserList(userId, malId, {
 				isFavorite: true,
 			});
 		}
