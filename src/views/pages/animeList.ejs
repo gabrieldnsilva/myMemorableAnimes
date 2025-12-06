@@ -84,7 +84,7 @@
 							<div class="anime-card bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl overflow-hidden hover:border-blue-400/50 transition group">
 								<div class="relative overflow-hidden bg-gradient-to-b from-white/10 to-black/50 aspect-square">
 									<img
-										src="/images/posters/<%= entry.anime.poster %>"
+										src="<%= entry.anime.poster && entry.anime.poster.startsWith('http') ? entry.anime.poster : '/images/posters/' + entry.anime.poster %>"
 										alt="<%= entry.anime.title %>"
 										class="w-full h-full object-cover group-hover:scale-110 transition duration-300"
 										onerror="this.src='/images/icons/fav-icon.webp'"

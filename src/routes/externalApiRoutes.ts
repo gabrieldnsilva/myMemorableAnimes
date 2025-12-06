@@ -6,12 +6,19 @@ import {
 	getTopAnime,
 	getRecentAnimeRecommendations,
 	getRandomAnime,
+	importAndAddFromJikanHTMX,
 } from "../controllers/ExternalApiController";
+import { authenticateSession } from "../middlewares/authMiddleware";
 
 const router = Router();
 
 // HTMX endpoint (renders partial)
 router.get("/search", searchAnimesHTMX);
+router.post(
+	"/import-and-add/:malId/htmx",
+	authenticateSession,
+	importAndAddFromJikanHTMX
+);
 
 // JSON API endpoints
 router.get("/search-json", searchAnime);

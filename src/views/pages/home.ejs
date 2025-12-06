@@ -91,7 +91,7 @@
 											class="w-full lg:w-2/5 h-64 lg:h-full relative overflow-hidden group rounded-2xl flex-shrink-0"
 										>
 											<img
-												src="/images/posters/<%= anime.poster || 'default-poster.svg' %>"
+												src="<%= anime.poster && anime.poster.startsWith('http') ? anime.poster : '/images/posters/' + (anime.poster || 'default-poster.svg') %>"
 												alt="<%= anime.title %>"
 												class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
 											/>
