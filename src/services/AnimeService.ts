@@ -17,6 +17,9 @@ interface GetUserAnimeListOptions {
   favorite?: boolean;
   sortBy?: 'title' | 'addedAt' | 'rating';
   sortOrder?: 'ASC' | 'DESC';
+  page?: number;
+  limit?: number;
+  withPagination?: boolean;
 }
 
 interface AddToListData {
@@ -152,7 +155,15 @@ export class AnimeService {
    * Get user's anime list with optional filters
    */
   async getUserAnimeList(userId: number, options: GetUserAnimeListOptions = {}) {
-    const { status, favorite, sortBy = 'addedAt', sortOrder = 'DESC' } = options;
+    const {
+      status,
+      favorite,
+      sortBy = 'addedAt',
+      sortOrder = 'DESC',
+      page = 1,
+      limit = 12,
+      withPagination = false,
+    } = options;
 
     const where: Record<string, unknown> = { userId };
 
@@ -164,13 +175,33 @@ export class AnimeService {
       where.isFavorite = favorite;
     }
 
-    const userAnimes = await UserAnimeList.findAll({
+    if (!withPagination) {
+      return await UserAnimeList.findAll({
+        where,
+        include: [{ model: Anime, as: 'anime' }],
+        order: [[sortBy, sortOrder]],
+      });
+    }
+
+    const offset = (page - 1) * limit;
+    const { count, rows } = await UserAnimeList.findAndCountAll({
       where,
       include: [{ model: Anime, as: 'anime' }],
       order: [[sortBy, sortOrder]],
+      limit,
+      offset,
     });
 
-    return userAnimes;
+    return {
+      entries: rows,
+      pagination: {
+        total: count,
+        page,
+        limit,
+        totalPages: Math.max(1, Math.ceil(count / limit)),
+      },
+    };
+
   }
 
   /**

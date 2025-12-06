@@ -1,106 +1,192 @@
-<div class="min-h-screen bg-black text-white">
-	<!-- Header com título -->
-	<div class="bg-gradient-to-b from-black via-black/80 to-black/50 py-8 border-b border-white/10">
-		<div class="container mx-auto px-4 max-w-4xl">
-			<h1 class="text-4xl md:text-5xl font-bold">Meu Perfil</h1>
-		</div>
-	</div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title><%= title || 'Perfil - myMemorableAnimes' %></title>
 
-	<!-- Conteúdo Principal -->
-	<div class="container mx-auto px-4 py-12 max-w-4xl">
-		<% if (typeof profile !== 'undefined' && profile && profile.user) { %>
-			<!-- Card de Perfil -->
-			<div class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-8 space-y-8">
-				<!-- Informações Básicas -->
-				<div>
-					<h2 class="text-2xl font-bold mb-6 flex items-center space-x-3">
-						<span class="text-3xl">👤</span>
-						<span>Informações Pessoais</span>
-					</h2>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+			rel="stylesheet"
+		/>
 
-					<div class="space-y-4">
-						<!-- Nome -->
-						<div class="flex flex-col md:flex-row md:items-center md:justify-between p-4 bg-white/5 rounded-lg border border-white/10">
-							<span class="text-white/60 font-medium">Nome:</span>
-							<span class="text-white text-lg font-semibold mt-2 md:mt-0">
-								<%= profile.user.name %>
-							</span>
-						</div>
+		<link rel="stylesheet" href="/css/output.css" />
 
-						<!-- Email -->
-						<div class="flex flex-col md:flex-row md:items-center md:justify-between p-4 bg-white/5 rounded-lg border border-white/10">
-							<span class="text-white/60 font-medium">Email:</span>
-							<span class="text-white text-lg font-semibold mt-2 md:mt-0 break-all">
-								<%= profile.user.email %>
-							</span>
-						</div>
+		<script
+			defer
+			src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+		></script>
+		<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+	</head>
+	<body class="bg-black text-white min-h-screen flex flex-col font-sans">
+		<%- include('../partials/header') %>
+		<%- include('../partials/flashMessages') %>
 
-						<!-- Data de Cadastro -->
-						<div class="flex flex-col md:flex-row md:items-center md:justify-between p-4 bg-white/5 rounded-lg border border-white/10">
-							<span class="text-white/60 font-medium">Membro desde:</span>
-							<span class="text-white text-lg font-semibold mt-2 md:mt-0">
-								<%= new Date(profile.user.createdAt).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) %>
-							</span>
-						</div>
+		<main class="flex-grow">
+			<div class="bg-gradient-to-b from-black via-black/80 to-black/50 py-8 border-b border-white/10">
+				<div class="container mx-auto px-4 max-w-4xl">
+					<h1 class="text-4xl md:text-5xl font-bold">Meu Perfil</h1>
+				</div>
+			</div>
 
-						<!-- Status -->
-						<div class="flex flex-col md:flex-row md:items-center md:justify-between p-4 bg-white/5 rounded-lg border border-white/10">
-							<span class="text-white/60 font-medium">Status:</span>
-							<span class="inline-block mt-2 md:mt-0 px-4 py-2 bg-green-600/20 text-green-400 rounded-full font-semibold">
-								✅ Ativo
-							</span>
+			<div class="container mx-auto px-4 py-12 max-w-4xl">
+				<% if (typeof profile !== 'undefined' && profile && profile.user) { %>
+				<div class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-8 space-y-10">
+					<!-- Informações Básicas -->
+					<div>
+						<h2 class="text-2xl font-bold mb-6 flex items-center space-x-3">
+							<span class="text-3xl">👤</span>
+							<span>Informações Pessoais</span>
+						</h2>
+
+						<div class="grid md:grid-cols-2 gap-4">
+							<div class="p-4 bg-white/5 rounded-lg border border-white/10">
+								<p class="text-white/60 text-sm">Nome</p>
+								<p class="text-lg font-semibold"><%= profile.user.name %></p>
+							</div>
+							<div class="p-4 bg-white/5 rounded-lg border border-white/10">
+								<p class="text-white/60 text-sm">Email</p>
+								<p class="text-lg font-semibold break-all"><%= profile.user.email %></p>
+							</div>
+							<div class="p-4 bg-white/5 rounded-lg border border-white/10">
+								<p class="text-white/60 text-sm">Membro desde</p>
+								<p class="text-lg font-semibold">
+									<%= new Date(profile.user.createdAt).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+								</p>
+							</div>
+							<div class="p-4 bg-white/5 rounded-lg border border-white/10">
+								<p class="text-white/60 text-sm">Status</p>
+								<span class="inline-block mt-2 px-4 py-2 bg-green-600/20 text-green-400 rounded-full font-semibold">
+									✅ Ativo
+								</span>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Estatísticas -->
-				<div class="border-t border-white/10 pt-8">
-					<h2 class="text-2xl font-bold mb-6 flex items-center space-x-3">
-						<span class="text-3xl">📊</span>
-						<span>Estatísticas</span>
-					</h2>
+					<!-- Estatísticas -->
+					<div class="border-t border-white/10 pt-8">
+						<h2 class="text-2xl font-bold mb-6 flex items-center space-x-3">
+							<span class="text-3xl">📊</span>
+							<span>Estatísticas</span>
+						</h2>
 
-					<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-						<!-- Total de Animes -->
-						<div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
-							<div class="text-3xl font-bold text-blue-400 mb-2">
-								<%= profile.stats.totalAnimes %>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+							<div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+								<div class="text-3xl font-bold text-blue-400 mb-2"><%= profile.stats.totalAnimes %></div>
+								<div class="text-white/60">Animes na Lista</div>
 							</div>
-							<div class="text-white/60">Animes na Lista</div>
-						</div>
-
-						<!-- Assistidos -->
-						<div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
-							<div class="text-3xl font-bold text-green-400 mb-2">
-								<%= profile.stats.completedAnimes %>
+							<div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+								<div class="text-3xl font-bold text-green-400 mb-2"><%= profile.stats.completedAnimes %></div>
+								<div class="text-white/60">Animes Completos</div>
 							</div>
-							<div class="text-white/60">Animes Completos</div>
-						</div>
-
-						<!-- Favoritos -->
-						<div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
-							<div class="text-3xl font-bold text-red-400 mb-2">
-								<%= profile.stats.favoriteCount %>
+							<div class="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
+								<div class="text-3xl font-bold text-red-400 mb-2"><%= profile.stats.favoriteCount %></div>
+								<div class="text-white/60">Animes Favoritos</div>
 							</div>
-							<div class="text-white/60">Animes Favoritos</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Ações -->
-				<div class="border-t border-white/10 pt-8">
-					<h2 class="text-2xl font-bold mb-6 flex items-center space-x-3">
-						<span class="text-3xl">⚙️</span>
-						<span>Ações</span>
-					</h2>
+					<!-- Formulário: Atualizar Perfil -->
+					<div class="border-t border-white/10 pt-8">
+						<h2 class="text-2xl font-bold mb-4 flex items-center space-x-3">
+							<span class="text-3xl">✏️</span>
+							<span>Editar Perfil</span>
+						</h2>
+						<form method="POST" action="/profile" class="space-y-4">
+							<div>
+								<label class="block text-sm text-white/70 mb-2" for="name">Nome</label>
+								<input
+									type="text"
+									id="name"
+									name="name"
+									required
+									value="<%= profile.user.name %>"
+									class="w-full px-4 py-3 rounded-lg bg-gray-900/70 border border-white/10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+								/>
+							</div>
+							<div>
+								<label class="block text-sm text-white/70 mb-2" for="email">Email</label>
+								<input
+									type="email"
+									id="email"
+									name="email"
+									required
+									value="<%= profile.user.email %>"
+									class="w-full px-4 py-3 rounded-lg bg-gray-900/70 border border-white/10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+								/>
+							</div>
+							<div>
+								<label class="block text-sm text-white/70 mb-2" for="bio">Bio (opcional)</label>
+								<textarea
+									id="bio"
+									name="bio"
+									rows="3"
+									class="w-full px-4 py-3 rounded-lg bg-gray-900/70 border border-white/10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+								><%= profile.user.bio || '' %></textarea>
+							</div>
+							<button
+								type="submit"
+								class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition"
+							>
+								💾 Salvar alterações
+							</button>
+						</form>
+					</div>
 
-					<div class="space-y-3">
-						<button
-							onclick="if(confirm('Tem certeza que deseja deletar sua conta? Esta ação é irreversível!')) window.location.href='/profile/delete'"
-							class="w-full px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition"
-						>
-							🗑️ Deletar Conta
-						</button>
+					<!-- Formulário: Alterar Senha -->
+					<div class="border-t border-white/10 pt-8">
+						<h2 class="text-2xl font-bold mb-4 flex items-center space-x-3">
+							<span class="text-3xl">🔒</span>
+							<span>Alterar Senha</span>
+						</h2>
+						<form method="POST" action="/profile/password" class="space-y-4">
+							<div>
+								<label class="block text-sm text-white/70 mb-2" for="oldPassword">Senha atual</label>
+								<input
+									type="password"
+									name="oldPassword"
+									id="oldPassword"
+									required
+									class="w-full px-4 py-3 rounded-lg bg-gray-900/70 border border-white/10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+								/>
+							</div>
+							<div>
+								<label class="block text-sm text-white/70 mb-2" for="newPassword">Nova senha</label>
+								<input
+									type="password"
+									name="newPassword"
+									id="newPassword"
+									minlength="6"
+									required
+									class="w-full px-4 py-3 rounded-lg bg-gray-900/70 border border-white/10 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+								/>
+							</div>
+							<button
+								type="submit"
+								class="w-full px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition"
+							>
+								🔑 Atualizar senha
+							</button>
+						</form>
+					</div>
+
+					<!-- Ações -->
+					<div class="border-t border-white/10 pt-8 space-y-4">
+						<h2 class="text-2xl font-bold mb-4 flex items-center space-x-3">
+							<span class="text-3xl">⚙️</span>
+							<span>Ações</span>
+						</h2>
+						<form method="POST" action="/profile/delete" class="space-y-3">
+							<button
+								type="submit"
+								onclick="return confirm('Tem certeza que deseja deletar sua conta? Esta ação é irreversível!')"
+								class="w-full px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition"
+							>
+								🗑️ Deletar Conta
+							</button>
+						</form>
 						<a
 							href="/logout"
 							class="block text-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition"
@@ -109,40 +195,40 @@
 						</a>
 					</div>
 				</div>
-			</div>
 
-			<!-- Atalhos Rápidos -->
-			<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-				<a
-					href="/animes"
-					class="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-blue-400/50 transition text-center"
-				>
-					<div class="text-3xl mb-2">📋</div>
-					<h3 class="font-bold">Minha Lista</h3>
-					<p class="text-sm text-white/60">Ver e gerenciar seus animes</p>
-				</a>
-				<a
-					href="/search"
-					class="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-blue-400/50 transition text-center"
-				>
-					<div class="text-3xl mb-2">🔍</div>
-					<h3 class="font-bold">Buscar Animes</h3>
-					<p class="text-sm text-white/60">Adicionar novos animes à sua lista</p>
-				</a>
+				<!-- Atalhos Rápidos -->
+				<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+					<a
+						href="/animes"
+						class="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-blue-400/50 transition text-center"
+					>
+						<div class="text-3xl mb-2">📋</div>
+						<h3 class="font-bold">Minha Lista</h3>
+						<p class="text-sm text-white/60">Ver e gerenciar seus animes</p>
+					</a>
+					<a
+						href="/search"
+						class="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-blue-400/50 transition text-center"
+					>
+						<div class="text-3xl mb-2">🔍</div>
+						<h3 class="font-bold">Buscar Animes</h3>
+						<p class="text-sm text-white/60">Adicionar novos animes à sua lista</p>
+					</a>
+				</div>
+				<% } else { %>
+				<div class="text-center py-20">
+					<div class="text-6xl mb-6">🔐</div>
+					<h2 class="text-3xl font-bold mb-3">Acesso Restrito</h2>
+					<p class="text-white/60 mb-8">Por favor, faça login para ver seu perfil</p>
+					<a
+						href="/login"
+						class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition"
+					>
+						Fazer Login
+					</a>
+				</div>
+				<% } %>
 			</div>
-		<% } else { %>
-			<!-- Estado Deslogado -->
-			<div class="text-center py-20">
-				<div class="text-6xl mb-6">🔐</div>
-				<h2 class="text-3xl font-bold mb-3">Acesso Restrito</h2>
-				<p class="text-white/60 mb-8">Por favor, faça login para ver seu perfil</p>
-				<a
-					href="/login"
-					class="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition"
-				>
-					Fazer Login
-				</a>
-			</div>
-		<% } %>
-	</div>
-</div>
+		</main>
+	</body>
+</html>

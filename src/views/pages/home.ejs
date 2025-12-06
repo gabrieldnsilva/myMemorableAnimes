@@ -180,22 +180,13 @@
 												<% if (typeof user !==
 												'undefined' && user) { %>
 												<button
-													hx-post="/api/animes/<%= anime.id %>/add/htmx"
-													hx-target="#flash-messages"
-													hx-swap="beforeend"
-													class="flex-1 min-w-[140px] px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition transform hover:scale-105"
-													title="Adicionar este anime à sua lista"
-												>
-													➕ Adicionar
-												</button>
-												<button
 													hx-patch="/api/animes/<%= anime.id %>/favorite/htmx"
 													hx-target="this"
 													hx-swap="outerHTML"
 													class="px-6 py-3 border-2 border-red-500 hover:bg-red-500/10 text-white font-bold rounded-lg transition"
 													title="Adicionar aos favoritos"
 												>
-													🤍
+													🤍 Favoritar
 												</button>
 												<% } else { %>
 												<a
