@@ -3,6 +3,7 @@ import app from "../src/server";
 import sequelize from "../src/config/database";
 import Anime from "../src/models/Anime";
 import UserAnimeList, { WatchStatus } from "../src/models/UserAnimeList";
+import AnimeService from "../src/services/AnimeService";
 
 // Test data
 const testUser = {
@@ -26,6 +27,7 @@ const testAnime1 = {
 	duration: "24min",
 	imageUrl: "/images/naruto.jpg",
 	backgroundImage: "naruto-bg.jpg",
+	poster: "naruto-poster.jpg",
 };
 
 const testAnime2 = {
@@ -37,6 +39,7 @@ const testAnime2 = {
 	duration: "24min",
 	imageUrl: "/images/aot.jpg",
 	backgroundImage: "aot-bg.jpg",
+	poster: "aot-poster.jpg",
 };
 
 const testAnime3 = {
@@ -48,6 +51,7 @@ const testAnime3 = {
 	duration: "23min",
 	imageUrl: "/images/deathnote.jpg",
 	backgroundImage: "deathnote-bg.jpg",
+	poster: "deathnote-poster.jpg",
 };
 
 describe("Anime List System", () => {
@@ -690,6 +694,227 @@ describe("Anime List System", () => {
 			expect(res.status).toBe(400);
 			expect(res.body.success).toBe(false);
 			expect(res.body.errors).toBeDefined();
+		});
+	});
+
+	describe("AnimeService Direct Tests - Extended Coverage", () => {
+		it("should return paginated user anime list with metadata", async () => {
+			// Add 3 animes to list
+			await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.WATCHING,
+				isFavorite: true,
+			});
+			await UserAnimeList.create({
+				userId,
+				animeId: anime2Id,
+				status: WatchStatus.COMPLETED,
+				isFavorite: false,
+			});
+			await UserAnimeList.create({
+				userId,
+				animeId: anime3Id,
+				status: WatchStatus.PLAN_TO_WATCH,
+				isFavorite: true,
+			});
+
+			// Test paginated fetch
+			const result = (await AnimeService.getUserAnimeList(userId, {
+				withPagination: true,
+				page: 1,
+				limit: 2,
+			})) as {
+				entries: any[];
+				pagination: {
+					total: number;
+					page: number;
+					limit: number;
+					totalPages: number;
+				};
+			};
+
+			expect(result).toHaveProperty("entries");
+			expect(result).toHaveProperty("pagination");
+			expect(result.pagination.total).toBe(3);
+			expect(result.pagination.page).toBe(1);
+			expect(result.pagination.limit).toBe(2);
+			expect(result.pagination.totalPages).toBe(2);
+			expect(result.entries.length).toBe(2);
+		});
+
+		it("should filter user anime list by favorite status", async () => {
+			await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.WATCHING,
+				isFavorite: true,
+			});
+			await UserAnimeList.create({
+				userId,
+				animeId: anime2Id,
+				status: WatchStatus.COMPLETED,
+				isFavorite: false,
+			});
+
+			const favorites = (await AnimeService.getUserAnimeList(userId, {
+				favorite: true,
+			})) as UserAnimeList[];
+
+			expect(Array.isArray(favorites)).toBe(true);
+			expect(favorites.length).toBe(1);
+			expect(favorites[0]!.isFavorite).toBe(true);
+		});
+
+		it("should filter user anime list by watch status", async () => {
+			await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.WATCHING,
+				isFavorite: false,
+			});
+			await UserAnimeList.create({
+				userId,
+				animeId: anime2Id,
+				status: WatchStatus.COMPLETED,
+				isFavorite: false,
+			});
+
+			const watchingList = (await AnimeService.getUserAnimeList(userId, {
+				status: WatchStatus.WATCHING,
+			})) as UserAnimeList[];
+
+			expect(Array.isArray(watchingList)).toBe(true);
+			expect(watchingList.length).toBe(1);
+			expect(watchingList[0]!.status).toBe(WatchStatus.WATCHING);
+		});
+
+		it("should get non-paginated user anime list (backward compatibility)", async () => {
+			await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.WATCHING,
+				isFavorite: false,
+			});
+
+			const result = (await AnimeService.getUserAnimeList(userId, {
+				withPagination: false,
+			})) as UserAnimeList[];
+
+			expect(Array.isArray(result)).toBe(true);
+			expect(result.length).toBe(1);
+		});
+
+		it("should toggle favorite status correctly", async () => {
+			const entry = await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.WATCHING,
+				isFavorite: false,
+			});
+
+			expect(entry.isFavorite).toBe(false);
+
+			const toggled = (await AnimeService.toggleFavorite(
+				userId,
+				anime1Id
+			))!;
+
+			expect(toggled.isFavorite).toBe(true);
+
+			const toggledAgain = (await AnimeService.toggleFavorite(
+				userId,
+				anime1Id
+			))!;
+
+			expect(toggledAgain.isFavorite).toBe(false);
+		});
+
+		it("should update rating successfully", async () => {
+			await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.COMPLETED,
+				rating: 3,
+			});
+
+			const updated = (await AnimeService.updateRating(
+				userId,
+				anime1Id,
+				5
+			))!;
+
+			expect(updated.rating).toBe(5);
+		});
+
+		it("should reject invalid rating values", async () => {
+			await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.COMPLETED,
+			});
+
+			await expect(
+				AnimeService.updateRating(userId, anime1Id, 6)
+			).rejects.toThrow("Rating must be between 1 and 5");
+			await expect(
+				AnimeService.updateRating(userId, anime1Id, 0)
+			).rejects.toThrow("Rating must be between 1 and 5");
+		});
+
+		it("should update watched episodes successfully", async () => {
+			await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.WATCHING,
+				watchedEpisodes: 5,
+			});
+
+			const updated = (await AnimeService.updateWatchedEpisodes(
+				userId,
+				anime1Id,
+				12
+			))!;
+
+			expect(updated.watchedEpisodes).toBe(12);
+		});
+
+		it("should reject negative watched episodes", async () => {
+			await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.WATCHING,
+			});
+
+			await expect(
+				AnimeService.updateWatchedEpisodes(userId, anime1Id, -1)
+			).rejects.toThrow("Watched episodes cannot be negative");
+		});
+
+		it("should get user anime entry if it exists", async () => {
+			await UserAnimeList.create({
+				userId,
+				animeId: anime1Id,
+				status: WatchStatus.WATCHING,
+			});
+
+			const entry = await AnimeService.getUserAnimeEntry(
+				userId,
+				anime1Id
+			);
+
+			expect(entry).not.toBeNull();
+			expect(entry?.userId).toBe(userId);
+			expect(entry?.animeId).toBe(anime1Id);
+		});
+
+		it("should return null if user anime entry does not exist", async () => {
+			const entry = await AnimeService.getUserAnimeEntry(
+				userId,
+				anime1Id
+			);
+
+			expect(entry).toBeNull();
 		});
 	});
 });
