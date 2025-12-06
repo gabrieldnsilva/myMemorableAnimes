@@ -28,23 +28,6 @@
 			<%= anime.synopsis || 'Sem sinopse disponível.' %>
 		</p>
 		<div class="flex gap-2">
-			<% if (user) { %>
-			<button
-				hx-post="/api/external/import-and-add/<%= anime.mal_id %>/htmx"
-				hx-target="this"
-				hx-swap="outerHTML"
-				class="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm"
-			>
-				❤️ Favoritar
-			</button>
-			<% } else { %>
-			<a
-				href="/login"
-				class="flex-1 text-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm"
-			>
-				Faça login
-			</a>
-			<% } %>
 			<a
 				href="/anime/<%= anime.mal_id %>"
 				class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100 transition text-sm"
