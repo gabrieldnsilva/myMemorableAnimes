@@ -5,7 +5,7 @@ export class JikanService {
 
   static async searchAnime(title: string) {
     const response = await axios.get(`${this.BASE_URL}/anime`, {
-      params: { q: title, limit: 10 },
+      params: { q: title, limit: 24 },
     });
     return response.data;
   }
@@ -17,14 +17,14 @@ export class JikanService {
 
   static async getTopAnime() {
     const response = await axios.get(`${this.BASE_URL}/top/anime`, {
-      params: { limit: 10 },
+      params: { limit: 24 },
     });
     return response.data;
   }
 
   static async getRecentAnimeRecommendations() {
     const response = await axios.get(`${this.BASE_URL}/recommendations/anime`, {
-      params: { limit: 10 },
+      params: { limit: 24 },
     });
     return response.data;
   }

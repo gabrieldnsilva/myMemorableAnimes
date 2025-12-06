@@ -1,3 +1,10 @@
+import { Request, Response } from "express";
+import JikanService from "../services/JikanService";
+import Anime from "../models/Anime";
+import UserAnimeList from "../models/UserAnimeList";
+import AnimeService from "../services/AnimeService";
+import { AuthenticatedRequest } from "../types/auth";
+
 export const getTopAnime = async (_req: Request, res: Response) => {
 	try {
 		const data = await JikanService.getTopAnime();
@@ -36,12 +43,6 @@ export const getRandomAnime = async (_req: Request, res: Response) => {
 		});
 	}
 };
-import { Request, Response } from "express";
-import JikanService from "../services/JikanService";
-import Anime from "../models/Anime";
-import UserAnimeList from "../models/UserAnimeList";
-import AnimeService from "../services/AnimeService";
-import { AuthenticatedRequest } from "../types/auth";
 
 export const searchAnime = async (req: Request, res: Response) => {
 	try {
