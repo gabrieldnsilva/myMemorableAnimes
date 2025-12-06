@@ -30,11 +30,12 @@
 		<div class="flex gap-2">
 			<% if (user) { %>
 			<button
-				hx-post="/api/animes/<%= anime.mal_id %>/add"
+				hx-post="/api/external/import-and-add/<%= anime.mal_id %>/htmx"
+				hx-target="this"
 				hx-swap="outerHTML"
 				class="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm"
 			>
-				Adicionar à Lista
+				❤️ Favoritar
 			</button>
 			<% } else { %>
 			<a

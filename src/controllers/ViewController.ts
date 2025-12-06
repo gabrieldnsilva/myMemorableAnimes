@@ -4,16 +4,27 @@ import UserAnimeList, { WatchStatus } from "../models/UserAnimeList";
 import ProfileService from "../services/ProfileService";
 import AuthService from "../services/AuthService";
 import { AuthenticatedRequest } from "../types/auth";
+import JikanService from "../services/JikanService";
+import Anime from "../models/Anime";
 
 export class ViewController {
 	// Home page - Carrossel de animes
 	static async home(_req: Request, res: Response): Promise<void> {
 		try {
-			const result = await AnimeService.getAllAnimes({ limit: 10 });
+			const result = await AnimeService.getAllAnimes({ limit: 20 });
+
+			// Apenas animes curados com assets locais devem aparecer no carrossel
+			const curatedAnimes = result.animes.filter((anime) => {
+				const hasLocalBg =
+					anime.backgroundImage &&
+					typeof anime.backgroundImage === "string" &&
+					!anime.backgroundImage.startsWith("http");
+				return Boolean(hasLocalBg);
+			});
 
 			res.render("pages/home", {
 				title: "Início - myMemorableAnimes",
-				animes: result.animes,
+				animes: curatedAnimes,
 			});
 		} catch (error) {
 			console.error("Error rendering home:", error);
@@ -224,7 +235,63 @@ export class ViewController {
 				return res.redirect("/");
 			}
 
-			const anime = await AnimeService.getAnimeById(animeId);
+			let anime = await AnimeService.getAnimeById(animeId);
+
+			// Se não encontrado localmente, tenta importar do Jikan (mal_id)
+			if (!anime) {
+				try {
+					const apiResponse = await JikanService.getAnimeById(
+						animeId
+					);
+					const data = apiResponse?.data;
+
+					if (data) {
+						const poster =
+							data.images?.webp?.large_image_url ||
+							data.images?.webp?.image_url ||
+							"/images/posters/default-poster.svg";
+
+						const backgroundImage =
+							data.trailer?.images?.maximum_image_url ||
+							data.images?.webp?.large_image_url ||
+							data.images?.webp?.image_url ||
+							"/images/backgrounds/default-bg.webp";
+
+						await Anime.upsert({
+							id: animeId,
+							title:
+								data.title ||
+								data.title_english ||
+								data.title_japanese ||
+								"Título desconhecido",
+							synopsis:
+								data.synopsis || "Sinopse não disponível.",
+							genre:
+								(data.genres || [])
+									.map((g: any) => g.name)
+									.join(", ") || "",
+							year:
+								data.year?.toString() ||
+								data.aired?.prop?.from?.year?.toString() ||
+								"N/A",
+							rating:
+								data.rating ||
+								(data.score ? `${data.score}` : "N/A"),
+							duration: data.duration || "N/A",
+							imageUrl: poster,
+							backgroundImage,
+							poster,
+						});
+
+						anime = await AnimeService.getAnimeById(animeId);
+					}
+				} catch (importErr) {
+					console.error(
+						"Error importing anime for details:",
+						importErr
+					);
+				}
+			}
 
 			if (!anime) {
 				req.flash("error", "Anime não encontrado");
