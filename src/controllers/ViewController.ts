@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import AnimeService from "../services/AnimeService";
+import UserAnimeList, { WatchStatus } from "../models/UserAnimeList";
 import ProfileService from "../services/ProfileService";
 import AuthService from "../services/AuthService";
 import { AuthenticatedRequest } from "../types/auth";
@@ -68,6 +69,95 @@ export class ViewController {
 		}
 	}
 
+	// Update profile data (session-based)
+	static async profileUpdate(
+		req: AuthenticatedRequest,
+		res: Response
+	): Promise<void> {
+		try {
+			const userId = req.user?.id;
+			if (!userId) {
+				req.flash("error", "Você precisa estar logado");
+				return res.redirect("/login");
+			}
+
+			const { name, email, bio } = req.body;
+			await ProfileService.updateUserData(userId, { name, email, bio });
+
+			// Keep session in sync
+			req.session.user = {
+				id: req.session.user!.id,
+				email,
+				name,
+			};
+
+			req.flash("success", "Perfil atualizado com sucesso");
+			res.redirect("/profile");
+		} catch (error) {
+			req.flash(
+				"error",
+				error instanceof Error
+					? error.message
+					: "Erro ao atualizar perfil"
+			);
+			res.redirect("/profile");
+		}
+	}
+
+	// Update password (session-based)
+	static async profilePasswordUpdate(
+		req: AuthenticatedRequest,
+		res: Response
+	): Promise<void> {
+		try {
+			const userId = req.user?.id;
+			if (!userId) {
+				req.flash("error", "Você precisa estar logado");
+				return res.redirect("/login");
+			}
+
+			const { oldPassword, newPassword } = req.body;
+			await ProfileService.changePassword(userId, {
+				oldPassword,
+				newPassword,
+			});
+
+			req.flash("success", "Senha atualizada com sucesso");
+			res.redirect("/profile");
+		} catch (error) {
+			req.flash(
+				"error",
+				error instanceof Error ? error.message : "Erro ao alterar senha"
+			);
+			res.redirect("/profile");
+		}
+	}
+
+	// Delete account (session-based)
+	static async profileDelete(
+		req: AuthenticatedRequest,
+		res: Response
+	): Promise<void> {
+		try {
+			const userId = req.user?.id;
+			if (!userId) {
+				req.flash("error", "Você precisa estar logado");
+				return res.redirect("/login");
+			}
+
+			await ProfileService.deactivateAccount(userId);
+			req.session.destroy(() => {
+				res.redirect("/");
+			});
+		} catch (error) {
+			req.flash(
+				"error",
+				error instanceof Error ? error.message : "Erro ao excluir conta"
+			);
+			res.redirect("/profile");
+		}
+	}
+
 	// Anime list page (protected)
 	static async animeListPage(
 		req: AuthenticatedRequest,
@@ -79,11 +169,44 @@ export class ViewController {
 				return res.redirect("/login");
 			}
 
-			const animes = await AnimeService.getUserAnimeList(userId);
+			const status = req.query.status as WatchStatus | undefined;
+			const favorite =
+				req.query.favorite === "true"
+					? true
+					: req.query.favorite === "false"
+					? false
+					: undefined;
+			const sortBy =
+				(req.query.sortBy as "title" | "addedAt" | "rating") ||
+				"addedAt";
+			const sortOrder = (req.query.sortOrder as "ASC" | "DESC") || "DESC";
+			const page = parseInt(req.query.page as string) || 1;
+			const limit = parseInt(req.query.limit as string) || 12;
+
+			const { entries, pagination } =
+				(await AnimeService.getUserAnimeList(userId, {
+					status,
+					favorite,
+					sortBy,
+					sortOrder,
+					page,
+					limit,
+					withPagination: true,
+				})) as unknown as {
+					entries: UserAnimeList[];
+					pagination: {
+						total: number;
+						page: number;
+						limit: number;
+						totalPages: number;
+					};
+				};
 
 			res.render("pages/animeList", {
 				title: "Minha Lista - myMemorableAnimes",
-				animes,
+				animes: entries,
+				pagination,
+				filters: { status, favorite, sortBy, sortOrder, limit },
 			});
 		} catch (error) {
 			console.error("Error rendering anime list:", error);

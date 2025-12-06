@@ -16,6 +16,13 @@ router.get("/anime/:id", ViewController.animeDetailsPage);
 // Protected routes (require authentication)
 router.get("/profile", requireAuth, ViewController.profilePage);
 router.get("/animes", requireAuth, ViewController.animeListPage);
+router.post("/profile", requireAuth, ViewController.profileUpdate);
+router.post(
+	"/profile/password",
+	requireAuth,
+	ViewController.profilePasswordUpdate
+);
+router.post("/profile/delete", requireAuth, ViewController.profileDelete);
 
 // Logout
 router.get("/logout", ViewController.logout);

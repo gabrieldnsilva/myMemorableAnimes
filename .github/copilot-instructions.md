@@ -1,184 +1,340 @@
 # myMemorableAnimes Copilot Instructions
 
-AI agents working on this codebase should understand both the v1.0 frontend and v2.0 full-stack architecture.
+**Status**: v2.0 full-stack MVC with server-rendered EJS (Phase 3 authentication complete, 96.4% tests passing)
 
 ---
 
-## Architecture Overview
+## Architecture & Critical Patterns
 
-**v2.0** is a **full-stack MVC application** with Node.js + Express + TypeScript + Sequelize (SQLite) + JWT authentication + EJS templates. The v1.0 vanilla JS frontend is being migrated to server-rendered EJS views.
+**Core Stack**: Express + TypeScript + EJS (server-rendered) + Sequelize ORM (SQLite) + Session-based auth + TailwindCSS + Alpine.js
 
-### Directory Structure
+**Key Architectural Decision**: This is **server-rendered** (NOT API-first). Page views include complete HTML with `<!DOCTYPE>`, `<head>`, and CSS/JS links—never render partial content as standalone pages.
 
-```
-src/
-├── server.ts              # Express entry point
-├── config/                # Database, environment config
-├── controllers/           # Route handlers (business logic)
-├── models/                # Sequelize models (User, Anime, UserAnimeList)
-├── routes/                # Express route definitions
-├── middlewares/           # Auth JWT, validators, error handlers
-├── services/              # Reusable business logic
-├── views/                 # EJS templates (future: partials)
-├── css/, js/, data/       # v1.0 frontend assets (being migrated)
-public/                    # Static files served by Express
-database/                  # SQLite database file (*.db)
-tests/                     # Jest unit/integration tests
-```
+### View Rendering Pattern
+
+Each page in `src/views/pages/` must include:
+
+1. Full HTML5 structure with `<head>` containing `/css/output.css`, Alpine.js CDN, HTMX CDN
+2. Include `<%- include('../partials/header') %>` and `<%- include('../partials/flashMessages') %>`
+3. Body: `<body class="bg-black text-white min-h-screen flex flex-col font-sans">`
+
+**Example** (`src/views/pages/login.ejs`): [Has correct structure with head/fonts/CSS/Alpine]
+
+### Session & User Context
+
+-   Session middleware: 7-day httpOnly cookies, `req.session?.user = {id, email, name, ...}`
+-   **Middleware order in server.ts**: session → flash → user locals → EJS config
+-   `res.locals.user` available in ALL templates (set by inline middleware, NOT viewLocals.ts)
+-   Protected routes: use `requireAuth` middleware from `src/middlewares/authMiddleware.ts`
 
 ---
 
-## Key Technologies
+## Code Conventions & Patterns
 
-**Backend (TypeScript strict mode, ES2020)**:
+**TypeScript & Async**:
 
--   Express 4.18 (REST API, EJS rendering)
--   Sequelize 6.35 ORM + SQLite3 5.1.7 (NO raw SQL allowed)
--   JWT 9.0 + bcrypt 5.1 (10 rounds) for auth
--   Helmet 7.1, CORS 2.8 (security)
--   express-validator 7.0 (validation)
+-   Strict mode enabled; no `any` types. Use proper interfaces (e.g., `AuthenticatedRequest extends Request`)
+-   Always `async/await`. Controllers use `try-catch` and return `{ success: false, error: string }`
 
-**Frontend (v1.0 legacy, being migrated)**:
+**Database**:
 
--   Vanilla JS, Materialize CSS 1.0, jQuery 3.7.1, RemixIcon
--   `src/js/main.js` initializes carousel/modals
--   `src/data/animeData.js` is the local anime database (will migrate to Sequelize models)
+-   Sequelize ONLY—NO raw SQL. Models in `src/models/` with TypeScript: `User.init({...}, {sequelize, modelName: "User"})`
+-   Example: `const user = await User.findByPk(id)` or `await User.create({email, password})`
 
-**Testing**: Jest 29.7 + Supertest 6.3 (>70% coverage required)
-**External API**: Jikan API v4 (MyAnimeList data) via axios 1.6
+**Authentication** (Session-based, NOT JWT):
+
+-   Login/register routes in `src/routes/viewRoutes` use `POST` with form data, then `req.session.save()` before redirect
+-   Format: `req.session.user = {id, email, name}` (store full user object, not just ID)
+-   Protected views use `requireAuth` middleware (checks `req.session?.user`)
+-   Flash messages via `connect-flash`: `req.flash("success", "message")`; auto-dismiss in templates with Alpine
+
+**Controllers & Services**:
+
+-   Controllers (`src/controllers/`) call services (`src/services/`) for business logic—keep controllers thin
+-   Example: `AuthService.validateCredentials({email, password})` returns User or throws error
+-   Services handle validation, bcrypt, Sequelize queries
+
+**Styling** (TailwindCSS v3.4.18):
+
+-   Dark theme: `bg-black text-white` + glassmorphism (e.g., `bg-gray-800/50 backdrop-blur-xl`)
+-   Colors: `text-accent-500` (orange), `bg-blue-600` (interactive), gradients like `bg-gradient-to-br from-gray-900 via-black to-gray-900`
+-   Responsive: `hidden md:flex`, `md:text-3xl`, etc.
+-   Recompile CSS: `npm run dev:css` watches `src/styles/input.css` → `public/css/output.css`
+
+**Views & Partials**:
+
+-   Partials in `src/views/partials/`: `header.ejs`, `flashMessages.ejs`, `searchResults.ejs`, `htmx/error.ejs`
+-   Include syntax: `<%- include('../partials/header') %>` (use `<%- ... %>` not `<%= ... %>`)
+-   EJS conditionals: `<% if (user) { %>` + `</ %>` for logic; `<%= var %>` for output
+
+**Validation**:
+
+-   Use `express-validator` in route definitions: `router.post("/register", authValidator.register, registerSubmit)`
+-   Validators in `src/middlewares/validators/`: import and chain `.isEmail().normalizeEmail()` etc.
 
 ---
 
 ## Development Workflow
 
-### Running the Project
-
 ```bash
-# Install dependencies (first time)
-npm install
+# Start dev (all concurrently: CSS watch + TS hot-reload + seeding)
+npm run dev
 
-# Development (hot-reload with ts-node-dev)
-npm run dev  # Runs on http://localhost:3000
-
-# Production build
-npm run build && npm start
-
-# Tests with coverage
+# Run tests with coverage (target: 70% global threshold)
 npm test
+
+# Watch tests during development
+npm run test:watch
+
+# Lint TypeScript
+npm run lint:fix
 ```
 
-### Creating New Features
+**Key Files**:
 
-1. **Branch naming**: `feature/<feature-name>` (e.g., `feature/auth-system`)
-2. **Commits**: Follow [Conventional Commits](https://www.conventionalcommits.org/) (e.g., `feat: add user registration endpoint`)
-3. **Models**: Use Sequelize with TypeScript. Example:
-
-    ```typescript
-    // src/models/User.ts
-    import { Model, DataTypes } from "sequelize";
-    import sequelize from "../config/database";
-
-    class User extends Model {
-    	public id!: number;
-    	public email!: string;
-    	public password!: string;
-    }
-
-    User.init(
-    	{
-    		email: { type: DataTypes.STRING, unique: true, allowNull: false },
-    		password: { type: DataTypes.STRING, allowNull: false },
-    	},
-    	{ sequelize, modelName: "User" }
-    );
-    ```
-
-4. **Controllers**: Async/await with try-catch, call services for logic:
-
-    ```typescript
-    // src/controllers/AuthController.ts
-    export const register = async (req: Request, res: Response) => {
-    	try {
-    		const user = await AuthService.createUser(req.body);
-    		res.status(201).json({ success: true, user });
-    	} catch (error) {
-    		res.status(400).json({ success: false, error: error.message });
-    	}
-    };
-    ```
-
-5. **Routes**: Define in `src/routes/`, apply validators and middlewares:
-
-    ```typescript
-    // src/routes/authRoutes.ts
-    import { Router } from "express";
-    import { register, login } from "../controllers/AuthController";
-    import { authValidator } from "../middlewares/validators/authValidator";
-
-    const router = Router();
-    router.post("/register", authValidator.register, register);
-    router.post("/login", authValidator.login, login);
-    ```
-
-6. **Tests**: Use Supertest for API tests, mock services:
-
-    ```typescript
-    // tests/auth.test.ts
-    import request from "supertest";
-    import app from "../src/server";
-
-    describe("POST /api/auth/register", () => {
-    	it("should register a new user", async () => {
-    		const res = await request(app)
-    			.post("/api/auth/register")
-    			.send({ email: "test@example.com", password: "Test123!" });
-    		expect(res.status).toBe(201);
-    	});
-    });
-    ```
+-   `src/server.ts`: Express setup (session, flash, viewLocals, routes)
+-   `src/routes/viewRoutes.ts`: View page routes (use ViewController methods)
+-   `src/controllers/ViewController.ts`: `home()`, `loginPage()`, `registerPage()`, etc. (renders pages, NOT JSON)
+-   `src/config/database.ts`: Sequelize connection & sync
+-   `tailwind.config.js`: Scans `src/views/**/*.ejs` for CSS generation
+-   `jest.config.js`: Coverage threshold 70% global (branches: 63%, functions/lines/statements: 70%)
 
 ---
 
-## Code Conventions
+## Common Gotchas & Solutions
 
--   **TypeScript**: Strict mode enabled. Avoid `any`, use proper types.
--   **Async**: Always use `async/await`, never callbacks or raw promises.
--   **SQL**: NEVER write raw SQL queries. Use Sequelize ORM methods only.
--   **Auth**: JWT tokens in `Authorization: Bearer <token>` header. Middleware: `src/middlewares/authMiddleware.ts`.
--   **Error Handling**: Use `try-catch` in controllers, return `{ success: false, error: string }` on failure.
--   **Validation**: Use `express-validator` for all user inputs.
--   **Security**: Passwords hashed with bcrypt (10 rounds), JWT secret in `.env`.
+1. **Pages render blank**: Verify page has full HTML structure with `<link rel="stylesheet" href="/css/output.css">` and Alpine/HTMX CDN links
+2. **User data not in header**: Check `req.session.user` is set AFTER login (use `req.session.save(cb)` before redirect)
+3. **CSS not applying**: Run `npm run dev:css` and confirm `/public/css/output.css` exists; clear browser cache
+4. **Tests failing**: Check database is clean (jest teardown drops tables); use maxWorkers: 1 in jest.config.js
+5. **Route not rendering**: Verify middleware order in server.ts (session → flash → locals → EJS → routes)
 
 ---
 
-## Current Status (as of Dec 3, 2025)
+## Testing Strategy
 
-**✅ Completed Features**:
-
--   Feature 1: Backend Setup (MVC structure, Express, TypeScript, Sequelize)
--   Feature 2: Authentication System (JWT, bcrypt, register/login/profile)
--   Feature 3: User Profile (update profile, change password, delete account, stats)
--   Feature 4: Anime List CRUD (add/remove/update animes, favorites, ratings)
--   Feature 5: External API Integration (Jikan/MyAnimeList - search, details, top, recommendations, random)
-
-**📊 Test Coverage**: 90.39% statements, 64.67% branches, 94.73% functions (110 tests passing)
-
-**🔄 Next**: Feature 6 - EJS Views Migration
-
-Refer to `NEXT_STEPS.md` for detailed roadmap and `docs/BACKEND_SETUP.md` for architecture details.
+-   **Jest** with `ts-jest` preset, `supertest` for HTTP tests
+-   Test file pattern: `tests/*.test.ts` (e.g., `viewController.test.ts`)
+-   Setup/teardown: `src/config/database.sync()` before, `dropAllTables()` after
+-   Mock services where needed; prefer testing real database in integration tests
+-   Target: >70% coverage globally (focus on controllers, services, routes first)
 
 ---
 
-## v1.0 Frontend (Legacy - Being Migrated)
+## Current Status (as of Dec 5, 2025)
 
-The original static site used:
+**✅ Phase 3 Authentication (100% Complete)**:
 
--   `public/index.html` as the entry point with Materialize carousel
--   `src/data/animeData.js` as a local JSON-like database
--   `src/js/modules/carousel.js`, `auth.js`, `form.js` for UI logic
+-   Session-based login/register with form submission
+-   User context (`req.session.user`) available in all templates
+-   Header shows personalized greeting: "Olá, [name]!" when authenticated
+-   Flash messages with 4-second auto-dismiss via Alpine.js
+-   Protected routes using `requireAuth` middleware
+-   All 18 ViewController tests passing (100%)
 
-When migrating to EJS:
+**📊 Test Coverage**: 60.59% statements, 28.89% branches (target: 70% global)
 
--   Convert HTML sections to partials in `src/views/partials/`
--   Replace `animeData.js` with Sequelize `Anime` model queries
--   Keep `src/css/` styles, update paths for Express static serving
+-   ViewController: 54.65% coverage (18 tests for auth flows)
+-   AuthController: 91.11% coverage
+-   ProfileService: 87.03% coverage
+-   Gap areas: AnimeController (14.97%), AnimeService (18.84%)
+
+**🎨 Frontend Architecture** (Server-rendered with EJS):
+
+-   All pages in `src/views/pages/` have complete HTML structure (no partials-only files)
+-   Styling: TailwindCSS v3.4.18 with dark theme (`bg-black text-white`)
+-   Interactivity: Alpine.js v3 for reactive components + HTMX v1.9.10 for AJAX forms
+-   Responsive: Mobile-first design with `md:` breakpoints
+-   CSS compiled from `src/styles/input.css` → `public/css/output.css` (watched during dev)
+
+**🔄 Next Steps**:
+
+1. Increase test coverage to 70% global (add tests for AnimeController, AnimeService)
+2. Migrate remaining v1.0 views to EJS full-page templates
+3. Implement HTMX integration for anime list CRUD operations
+4. Add SonarQube quality checks to CI/CD
+
+---
+
+## Directory Structure
+
+```
+src/
+├── server.ts                          # Express setup (middleware order critical)
+├── config/
+│   └── database.ts                    # Sequelize connection & sync
+├── controllers/
+│   ├── ViewController.ts              # Page renders (home, login, register, etc.)
+│   ├── AuthController.ts              # API endpoints (for future JSON responses)
+│   ├── AnimeController.ts             # Anime CRUD API
+│   ├── ProfileController.ts           # User profile API
+│   └── ExternalApiController.ts       # Jikan API proxy
+├── models/
+│   ├── User.ts                        # Sequelize User model
+│   ├── Anime.ts                       # Sequelize Anime model
+│   └── UserAnimeList.ts               # User's anime list entries
+├── services/
+│   ├── AuthService.ts                 # Validation, password hashing
+│   ├── AnimeService.ts                # Anime queries
+│   ├── ProfileService.ts              # User profile operations
+│   └── JikanService.ts                # MyAnimeList API integration
+├── routes/
+│   ├── viewRoutes.ts                  # EJS page routes (GET /login, POST /login)
+│   ├── authRoutes.ts                  # API routes (/api/auth/*)
+│   ├── animeRoutes.ts                 # API routes (/api/animes/*)
+│   ├── profileRoutes.ts               # API routes (/api/profile/*)
+│   └── externalApiRoutes.ts           # API routes (/api/external/*)
+├── middlewares/
+│   ├── authMiddleware.ts              # JWT verification + session auth
+│   ├── viewLocals.ts                  # Passes user/flash to views (UNUSED - inline in server.ts)
+│   └── validators/                    # express-validator chains
+├── views/
+│   ├── pages/                         # Full-page templates (home, login, register, etc.)
+│   ├── partials/                      # Reusable components (header, flashMessages, etc.)
+│   ├── layouts/                       # Layout templates (NOT currently used)
+│   └── errors/                        # Error pages (404, 500)
+├── styles/
+│   └── input.css                      # TailwindCSS directives + custom utilities
+└── types/
+    ├── auth.ts                        # AuthenticatedRequest interface
+    └── session.ts                     # Session type declarations
+
+public/
+├── css/
+│   └── output.css                     # Compiled TailwindCSS (generated, don't edit)
+└── images/
+    ├── backgrounds/                   # Anime background images
+    ├── icons/                         # App icons
+    ├── posters/                       # Anime poster images
+    └── titles/                        # Anime title images
+
+tests/
+├── viewController.test.ts             # 18 tests for page rendering + auth flows
+├── auth.test.ts                       # API endpoint tests
+├── anime.test.ts                      # Anime CRUD tests
+├── profile.test.ts                    # Profile operations tests
+├── externalApi.test.ts                # Jikan API integration tests
+├── setup.ts                           # Jest setup (database init)
+└── teardown.ts                        # Jest teardown (database cleanup)
+```
+
+---
+
+## Critical Implementation Details
+
+### Creating a New EJS Page
+
+```ejs
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+    <!-- CSS (REQUIRED) -->
+    <link rel="stylesheet" href="/css/output.css" />
+
+    <!-- Alpine.js (REQUIRED for reactivity) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- HTMX (for AJAX forms) -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  </head>
+  <body class="bg-black text-white min-h-screen flex flex-col font-sans">
+    <%- include('../partials/header') %>
+    <%- include('../partials/flashMessages') %>
+
+    <main class="flex-grow">
+      <!-- Your content here -->
+    </main>
+  </body>
+</html>
+```
+
+### Session Management in Routes
+
+```typescript
+// src/routes/viewRoutes.ts
+import { ViewController } from "../controllers/ViewController";
+import { authenticateSession } from "../middlewares/authMiddleware";
+
+router.post("/login", async (req, res) => {
+	const user = await AuthService.validateCredentials(req.body);
+	req.session.user = { id: user.id, email: user.email, name: user.name };
+	req.session.save((err) => {
+		// CRITICAL: Save before redirect
+		if (err) return res.status(500).send("Login failed");
+		res.redirect("/");
+	});
+});
+
+// Protected route
+router.get("/profile", authenticateSession, ViewController.profilePage);
+```
+
+### Using Flash Messages in Templates
+
+```ejs
+<!-- In any view, flash messages are auto-included via partials/flashMessages -->
+<%- include('../partials/flashMessages') %>
+
+<!-- In controller before redirect -->
+req.flash("success", "Anime adicionado à sua lista!");
+res.redirect("/animes");
+
+<!-- Result: Green success banner auto-dismisses after 4 seconds -->
+```
+
+### HTMX + Alpine Integration Pattern
+
+```ejs
+<!-- Search form with HTMX -->
+<form hx-get="/api/external/search" hx-target="#results" hx-indicator=".loading">
+  <input type="text" name="q" />
+  <button type="submit">Buscar</button>
+  <span class="loading htmx-indicator">Carregando...</span>
+</form>
+<div id="results"></div>
+
+<!-- Alpine for client-side state -->
+<div x-data="{ count: 0 }">
+  <button @click="count++">Incrementar</button>
+  <span x-text="count"></span>
+</div>
+```
+
+---
+
+## Key Middleware Order (Critical!)
+
+In `src/server.ts`, this order is ESSENTIAL:
+
+```typescript
+app.use(session(...));              // 1. Session must come first
+app.use(flash());                   // 2. Flash depends on session
+app.use((req, res, next) => {       // 3. Set locals for ALL routes
+  res.locals.user = req.session?.user || null;
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
+app.set("view engine", "ejs");      // 4. Then EJS config
+app.use(viewRoutes);                // 5. Then routes (order matters: views before APIs)
+app.use("/api/auth", authRoutes);
+```
+
+---
+
+## Environment Variables (.env)
+
+```
+PORT=3000
+NODE_ENV=development
+SESSION_SECRET=change-this-in-production
+DATABASE_URL=./database/database.db
+JIKAN_API_BASE=https://api.jikan.moe/v4
+```
