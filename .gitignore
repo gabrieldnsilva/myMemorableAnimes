@@ -5,9 +5,6 @@
 *.swo
 *~
 
-# Github
-.github/
-
 # Requirements files
 docs/requirements_guides
 
@@ -50,3 +47,5 @@ docs/images/gif/*.gif
 docs/BACKEND_SETUP.md
 NEXT_STEPS.md
 
+# Github
+.github/
