@@ -25,9 +25,9 @@ import request from "supertest";
 import app from "../src/server";
 
 describe("External API (Jikan) Integration", () => {
-	describe("GET /api/external/search", () => {
+	describe("GET /api/external/search-json", () => {
 		it("should return 400 if title is missing", async () => {
-			const res = await request(app).get("/api/external/search");
+			const res = await request(app).get("/api/external/search-json");
 			expect(res.status).toBe(400);
 			expect(res.body.success).toBe(false);
 		});
@@ -36,7 +36,7 @@ describe("External API (Jikan) Integration", () => {
 			// This test should mock axios/JikanService in real scenario
 			// For now, just check endpoint structure
 			const res = await request(app).get(
-				"/api/external/search?title=Naruto"
+				"/api/external/search-json?title=Naruto"
 			);
 			expect([200, 500]).toContain(res.status); // Accept 500 if Jikan is rate-limiting
 			expect(res.body).toHaveProperty("success");

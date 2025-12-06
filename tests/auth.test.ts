@@ -130,7 +130,9 @@ describe("Authentication System", () => {
 
 			expect(res.status).toBe(401);
 			expect(res.body.success).toBe(false);
-			expect(res.body.error).toContain("Invalid credentials");
+			expect(res.body.error).toMatch(
+				/Invalid credentials|Credenciais inválidas/
+			);
 		});
 
 		it("should fail login with invalid password", async () => {
@@ -140,7 +142,9 @@ describe("Authentication System", () => {
 
 			expect(res.status).toBe(401);
 			expect(res.body.success).toBe(false);
-			expect(res.body.error).toContain("Invalid credentials");
+			expect(res.body.error).toMatch(
+				/Invalid credentials|Credenciais inválidas/
+			);
 		});
 
 		it("should fail validation with missing email", async () => {
