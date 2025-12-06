@@ -24,11 +24,9 @@ dist/
 build/
 
 # Database
-database/*.db
 database/*.db-journal
 database/*.db-shm
 database/*.db-wal
-*.db
 
 # Logs
 logs/
