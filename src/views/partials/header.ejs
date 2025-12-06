@@ -1,3 +1,18 @@
+<!--
+  Header Partial
+  
+  Navigation bar with responsive design:
+  - Logo and branding
+  - Navigation links (Home, Search, My List, Profile)
+  - User greeting (when authenticated)
+  - Logout button
+  - Mobile hamburger menu (via Alpine.js x-data)
+  
+  Mobile: hamburger icon toggles mobileOpen data property
+  Desktop: full navigation always visible
+  
+  Responsive: hidden md:flex (Tailwind breakpoint)
+-->
 <header x-data="{ mobileOpen: false }" class="bg-gray-900 text-white shadow-md">
 	<nav class="container mx-auto px-4 py-4 flex items-center justify-between">
 		<a href="/" class="flex items-center space-x-2">

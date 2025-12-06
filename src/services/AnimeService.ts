@@ -45,7 +45,7 @@ export class AnimeService {
   async getAllAnimes(options: GetAllAnimesOptions = {}) {
     const {
       page = 1,
-      limit = 20,
+      limit = 24,
       genre,
       year,
       minRating,

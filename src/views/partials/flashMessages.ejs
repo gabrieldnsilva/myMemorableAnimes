@@ -1,3 +1,22 @@
+<!--
+  Flash Messages Partial
+  
+  Displays success and error notifications:
+  - Success messages (green background, auto-dismisses after 4s)
+  - Error messages (red background, auto-dismisses after 4s)
+  
+  Uses Alpine.js x-data and x-init for auto-dismiss:
+    x-init="setTimeout(() => show = false, 4000)" - auto hide after 4 seconds
+    x-show="show" - toggle visibility via Alpine data
+  
+  Flash messages come from connect-flash middleware:
+    - res.locals.success (array of messages)
+    - res.locals.error (array of messages)
+  
+  Server-side usage:
+    req.flash('success', 'Operation completed!')
+    req.flash('error', 'Something went wrong!')
+-->
 <div class="container mx-auto px-4">
 	<% if (success && success.length) { %>
 	<div

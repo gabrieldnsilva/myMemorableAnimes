@@ -1,33 +1,31 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>
-			<%= typeof title !== 'undefined' ? title : 'Catálogo de Animes' %>
-		</title>
-
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
-			rel="stylesheet"
-		/>
-
-		<link rel="stylesheet" href="/css/output.css" />
-
-		<script
-			defer
-			src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-		></script>
-
-		<script src="https://unpkg.com/htmx.org@1.9.10"></script>
-	</head>
-	<body class="bg-black text-white min-h-screen flex flex-col font-sans">
-		<%- include('../partials/header') %> <%-
-		include('../partials/flashMessages') %>
-
-		<main id="main-content" class="flex-grow">
+<!--
+  Home Page - Interactive Carousel
+  
+  Purpose: Landing page with featured anime carousel
+  
+  Features:
+  - Interactive carousel showing ~5 featured animes
+  - Dynamic background image changes with slide
+  - Alpine.js carousel() component for slide control
+  - Responsive design (works on mobile/tablet/desktop)
+  - Calls AnimeService.getAllAnimes() filtered by local backgrounds
+  
+  Alpine.js carousel component:
+    - current: current slide index (0-based)
+    - next(): move to next slide
+    - prev(): move to previous slide
+    - goTo(index): jump to specific slide
+  
+  TailwindCSS transitions:
+    - x-transition for smooth fade-in/out
+    - transform translateX for slide effect
+  
+  Defensive checks:
+    - typeof animes !== 'undefined' - ensure data exists
+    - animes.length > 0 - show empty state if no animes
+-->
+<!-- Home Page - Carousel -->
+<main id="main-content" class="flex-grow">
 			<section
 				class="relative min-h-screen overflow-hidden flex items-center justify-center py-12"
 				x-data="carousel()"

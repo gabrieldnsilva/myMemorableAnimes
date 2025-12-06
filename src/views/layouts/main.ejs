@@ -1,3 +1,30 @@
+<!--
+  ========================================
+  Main Layout Template
+  ========================================
+  
+  Master layout for all pages. Includes:
+  - HTML5 structure with SEO meta tags
+  - TailwindCSS stylesheet (compiled from src/styles/input.css)
+  - Alpine.js for lightweight client-side reactivity
+  - HTMX for AJAX-based page updates without full reload
+  - Header (navigation bar with auth context)
+  - Flash messages (success/error notifications with auto-dismiss)
+  - Dynamic body content via <%- body %> placeholder
+  - Footer with metadata
+
+  Usage in pages:
+    - Pages just contain the main content (no <!DOCTYPE>, <head>, etc.)
+    - Pass `title` variable to set page title
+    - Use `res.locals.user` to check auth status
+    
+  Variables available in all templates:
+    - user: authenticated user object or null
+    - success: array of success flash messages
+    - error: array of error flash messages
+    
+  Styling: TailwindCSS dark theme (bg-black, text-white, glassmorphism)
+-->
 <!DOCTYPE html>
 <html lang="pt-BR">
 	<head>

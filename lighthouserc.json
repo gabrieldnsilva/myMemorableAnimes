@@ -1,0 +1,11 @@
+{
+	"ci": {
+		"uploadArtifacts": false,
+		"assert": {
+			"preset": "lighthouse:recommended"
+		}
+	},
+	"checks": {
+		"valid-source-maps": "off"
+	}
+}

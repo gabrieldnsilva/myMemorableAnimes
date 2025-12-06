@@ -4,7 +4,7 @@
 		"module": "nodenext",
 		"lib": ["ES2020"],
 		"outDir": "./dist",
-		"rootDir": "./src",
+		"rootDir": ".",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
@@ -21,6 +21,6 @@
 		"noFallthroughCasesInSwitch": true,
 		"removeComments": true
 	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules", "dist", "tests", "**/*.spec.ts", "**/*.test.ts"]
+	"include": ["src/**/*", "e2e/**/*"],
+	"exclude": ["node_modules", "dist"]
 }
