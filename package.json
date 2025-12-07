@@ -10,12 +10,14 @@
 		"build": "npm run build:css && tsc && npm run copy-views",
 		"build:css": "NODE_ENV=production tailwindcss -i ./src/styles/input.css -o ./public/css/output.css --minify",
 		"copy-views": "copyfiles -u 1 \"src/views/**/*\" dist/",
-		"start": "npm run seed && node dist/server.js",
+		"start": "node dist/scripts/seedAnimes.js && node dist/server.js",
+		"start:dev": "npm run seed && node dist/server.js",
 		"test": "jest --coverage",
 		"test:watch": "jest --watch",
 		"lint": "eslint src/**/*.ts",
 		"lint:fix": "eslint src/**/*.ts --fix",
-		"seed": "ts-node src/scripts/seedAnimes.ts"
+		"seed": "ts-node src/scripts/seedAnimes.ts",
+		"seed:prod": "node dist/scripts/seedAnimes.js"
 	},
 	"keywords": [
 		"anime",

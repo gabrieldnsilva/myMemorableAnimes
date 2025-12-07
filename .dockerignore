@@ -1,0 +1,121 @@
+# =============================================================================
+# myMemorableAnimes - Docker Ignore File
+# Excludes unnecessary files from Docker build context
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Version Control
+# -----------------------------------------------------------------------------
+.git
+.gitignore
+.gitattributes
+.github
+
+# -----------------------------------------------------------------------------
+# Dependencies (will be installed fresh in container)
+# -----------------------------------------------------------------------------
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json.bak
+
+# -----------------------------------------------------------------------------
+# Build Artifacts (generated during Docker build)
+# -----------------------------------------------------------------------------
+dist
+build
+*.tsbuildinfo
+
+# -----------------------------------------------------------------------------
+# Testing
+# -----------------------------------------------------------------------------
+tests
+e2e
+coverage
+test-results
+playwright-report
+**/*.test.ts
+**/*.spec.ts
+jest.config.js
+playwright.config.ts
+lighthouserc.json
+
+# -----------------------------------------------------------------------------
+# Development Configuration
+# -----------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+!.env.production.template
+
+# IDE and Editor
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.editorconfig
+
+# -----------------------------------------------------------------------------
+# Documentation (not needed in production)
+# -----------------------------------------------------------------------------
+docs
+README.md
+CHANGELOG.md
+LICENSE
+*.md
+!package.json
+
+# -----------------------------------------------------------------------------
+# Database Files (handled via volumes)
+# -----------------------------------------------------------------------------
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+database/backups
+*.db.bak
+
+# -----------------------------------------------------------------------------
+# OS Generated Files
+# -----------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# -----------------------------------------------------------------------------
+# Temporary Files
+# -----------------------------------------------------------------------------
+tmp
+temp
+*.tmp
+*.temp
+*.log
+logs
+
+# -----------------------------------------------------------------------------
+# TypeScript Source (compiled to dist)
+# -----------------------------------------------------------------------------
+# Note: We need src for the build stage, so don't exclude it entirely
+# These are just extra files not needed
+src/**/*.test.ts
+src/**/*.spec.ts
+
+# -----------------------------------------------------------------------------
+# Miscellaneous
+# -----------------------------------------------------------------------------
+*.tgz
+*.tar.gz
+*.zip
+Makefile
+docker-compose*.yml
+Dockerfile*
+!Dockerfile
+.dockerignore
