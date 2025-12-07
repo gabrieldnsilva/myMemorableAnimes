@@ -1,0 +1,67 @@
+# =============================================================================
+# SonarIgnore - Files to exclude from SonarQube analysis
+# =============================================================================
+# This file works in addition to sonar.exclusions in sonar-project.properties
+# Use this for more specific file-level exclusions
+# =============================================================================
+
+# Test files
+**/*.test.ts
+**/*.spec.ts
+tests/**
+
+# Build outputs
+dist/**
+build/**
+coverage/**
+.scannerwork/**
+
+# Dependencies
+node_modules/**
+
+# Configuration files
+jest.config.js
+tailwind.config.js
+postcss.config.js
+.eslintrc.json
+tsconfig.json
+package.json
+package-lock.json
+
+# Documentation
+docs/**
+*.md
+README.md
+
+# Views and templates
+src/views/**/*.ejs
+public/**
+
+# Database files
+database/**
+**/*.db
+**/*.sqlite
+
+# Scripts (seed data, utilities)
+src/scripts/**
+
+# Type definitions only (no logic)
+src/types/**/*.ts
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# CI/CD
+.github/**
+.git/**
+.gitignore
+
+# IDE
+.vscode/**
+.idea/**
+
+# Environment
+.env
+.env.*
