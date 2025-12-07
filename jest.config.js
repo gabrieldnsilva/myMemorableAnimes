@@ -5,7 +5,13 @@ module.exports = {
 	testMatch: ["**/*.test.ts", "**/*.spec.ts"],
 	collectCoverageFrom: ["src/**/*.ts", "!src/**/*.d.ts", "!src/server.ts"],
 	coverageDirectory: "coverage",
-	coverageReporters: ["text", "lcov", "html"],
+	coverageReporters: [
+		"text",
+		"lcov",
+		"html",
+		"json-summary", // For GitHub Actions summary
+		"cobertura", // For SonarQube
+	],
 	coverageThreshold: {
 		global: {
 			branches: 63, // Ajustado para refletir cobertura atual (63.8%)
