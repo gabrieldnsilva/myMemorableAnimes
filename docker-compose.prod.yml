@@ -1,0 +1,78 @@
+# =============================================================================
+# myMemorableAnimes - Production Docker Compose Override
+# =============================================================================
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# =============================================================================
+# This file overrides the base docker-compose.yml with production settings:
+# - Enforces production environment
+# - Stricter security settings
+# - No development volumes
+# - Production-optimized resource limits
+# =============================================================================
+
+services:
+  app:
+    # Use pre-built image from registry instead of building locally
+    # Uncomment and configure for CI/CD pipelines
+    # image: ghcr.io/gabrieldnsilva/mymemorableanimes:${VERSION:-latest}
+    
+    # Build configuration for production
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    
+    # Environment overrides for production
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      # SESSION_SECRET should be set via .env file or secrets manager
+      SECURE_COOKIES: "true"
+      SAME_SITE: Strict
+    
+    # Production resource limits (adjust based on expected load)
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: start-first
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Read-only filesystem (except for specific paths)
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777,size=64M
+    
+    # Production logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+        labels: "production,mymemorableanimes"
+    
+    # Labels for container orchestration
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mymemorableanimes.rule=Host(`your-domain.com`)"
+      - "traefik.http.routers.mymemorableanimes.tls=true"
+      - "traefik.http.routers.mymemorableanimes.tls.certresolver=letsencrypt"
